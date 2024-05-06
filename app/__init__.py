@@ -18,6 +18,9 @@ class App(flask.Flask):
         def add_self():
             return {"app": self}
 
+        self.jinja_env.lstrip_blocks = True
+        self.jinja_env.trim_blocks = True
+
     def render(self, template_name_or_list, **context):
         return flask.render_template(
             f"{template_name_or_list}.html.j2", **context
