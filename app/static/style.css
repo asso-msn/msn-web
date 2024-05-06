@@ -1,0 +1,209 @@
+:root {
+    --color-black: #333333;
+    --color-white: #ffffff;
+    --color-discord: #7289da;
+    --color-red: #d83333;
+    --color-dark-blue: #003566;
+    --color-gray: #4D4D4D;
+    --font-main: 'Poppins', sans-serif;
+    --font-logo: 'Bungee', sans-serif;
+    --color-shadow: rgba(0, 0, 0, 0.25);
+    --font-size-medium: 500;
+    --size-page-width: 1200px;
+
+    --event-meetup-color: var(--color-red);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-main);
+    background-color: var(--color-white);
+    color: var(--color-black);
+}
+
+a {
+    text-decoration: none;
+}
+
+a:visited {
+    color: initial;
+}
+
+a, a:visited {
+    color: teal;
+}
+
+code {
+    white-space: preserve-breaks;
+}
+
+.emoji {
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
+}
+
+.badge, .button {
+    padding: .25em 1em;
+    border-radius: 2.5em;
+    background: var(--color-white);
+    color: var(--color-black);
+}
+
+.button {
+    border: 1px solid var(--color-gray);
+    color: var(--color-gray);
+    cursor: pointer;
+}
+
+.badge.event-meetup {
+    background: var(--event-meetup-color);
+    color: var(--color-white);
+}
+
+.badge.event-convention {
+    background: var(--event-meetup-color);
+    color: var(--color-white);
+}
+
+.card {
+    position: relative;
+    background-color: var(--color-white);
+    box-shadow: 0 4px 4px var(--color-shadow);
+    padding: 1em;
+    margin: 1em;
+}
+
+.card .hero {
+    margin: -1em;
+    width: calc(100% + 2em);
+    height: 200px;
+    filter: brightness(0.8);
+    object-fit: cover;
+    z-index: -1;
+    padding-bottom: 1em;
+}
+
+.card .relative-time {
+    z-index: 1;
+    position: absolute;
+    left: 1em;
+    top: 1em;
+}
+
+.page {
+    max-width: var(--size-page-width);
+    margin: 0 auto;
+}
+
+#navbar {
+    padding: .5rem 2rem;
+    box-shadow: 0 4px 4px var(--color-shadow);
+}
+
+#navbar a {
+    color: inherit;
+}
+
+#navbar .content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: var(--size-page-width);
+    margin: 0 auto;
+}
+
+#navbar .logo-text {
+    display: flex;
+    font-size: 1.5em;
+    font-weight: bold;
+    align-items: center;
+    font-family: var(--font-logo);
+}
+
+#navbar .logo {
+    width: 2em;
+    height: 2em;
+    margin: 0 .5em;
+}
+
+#navbar .items {
+    list-style: none;
+    display: flex;
+}
+
+#navbar .items li {
+    margin: 0 .5em;
+}
+
+#events {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+}
+
+#events .card {
+    width: 600px;
+    min-height: 100px;
+}
+
+#events .content {
+    display: flex;
+    padding: 1em;
+}
+
+#events .content > * {
+    display: flex;
+    flex-direction: column;
+}
+
+#events .date {
+    align-items: center;
+    padding-right: 2em;
+}
+
+#events .day-number,
+#events .month {
+    font-size: 3em;
+    line-height: 0.8;
+    margin-top: .25em;
+}
+
+#events .day-number {
+    font-weight: bold;
+    color: var(--color-dark-blue);
+    text-wrap: nowrap;
+}
+
+#events .month,
+#events .hours {
+    font-weight: var(--font-size-medium);
+}
+
+#events .month {
+    text-transform: uppercase;
+}
+
+#events .type {
+    font-size: .8em;
+    margin: 1em 0;
+}
+
+#events .name {
+    font-size: 1.5em;
+    font-weight: var(--font-size-medium);
+}
+
+#events .description {
+    margin: 0;
+}
+
+#events .actions {
+    margin-top: 2em;
+}

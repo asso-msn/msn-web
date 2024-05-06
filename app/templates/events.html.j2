@@ -1,0 +1,55 @@
+{% extends "page.html.j2" %}
+
+{% block content %}
+
+    {% if app.debug %}
+    <code>
+    {{ events | e }}
+    </code>
+    {% endif %}
+
+    <h1>Les prochains évènements</h1>
+    <div id="events">
+        {% for event in events %}
+        <div class="event card">
+            {% if event.date %}
+            <div class="relative-time badge">{{ event.relative_time }}</div>
+            {% endif %}
+
+            <img class="hero" src="{{ event.hero }}">
+
+            <div class="content">
+                <div class="date">
+                    <span class="day-name">{{ event.day_name }}</span>
+                    <span class="day-number">{{ event.day_number }}</span>
+                    <span class="month">{{ event.month }}</span>
+                    <span class="hours">{{ event.start_time }} - {{ event.end_time }}</span>
+                </div>
+
+                <div class="details">
+                    <div class="type">
+                        <span class="badge event-{{ event.type }}">{{ event.type }}</span>
+                    </div>
+                    <span class="name">{{ event.name }}</span>
+                    <p class="description">
+                        {{ event.description }}
+                    </p>
+                    <div class="actions">
+                        <a class="button">S'inscrire</a>
+                    </div>
+                    {% if app.debug %}
+                    <p>
+                        Pas encore placés :
+                    </p>
+                    <code>
+                        Nuit={{ event.nightly }}
+                        Location={{ event.location }}
+                        Links={{ event.links }}
+                    </code>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}
