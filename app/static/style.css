@@ -207,3 +207,12 @@ code {
 #events .actions {
     margin-top: 2em;
 }
+
+@media screen and (max-width: 900px) {
+    #navbar .logo-text {
+        font-size: 1.25em;
+    }
+    #navbar .text {
+        display: none;
+    }
+}
