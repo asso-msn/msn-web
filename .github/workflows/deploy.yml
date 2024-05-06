@@ -1,0 +1,17 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    uses: Tina-otoge/infra/.github/workflows/deploy-workflow.yml@master
+    with:
+      app: msnweb-demo
+    secrets:
+      host: "${{ secrets.DEPLOY_HOST }}"
+      user: "${{ secrets.DEPLOY_USER }}"
+      key: "${{ secrets.DEPLOY_KEY }}"
+      login_user: "${{ secrets.DEPLOY_LOGIN_USER }}"
