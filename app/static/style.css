@@ -160,13 +160,13 @@ code {
 
 #events {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 
 }
 
 #events .card {
-    width: 640px;
+    max-width: 800px;
     min-height: 100px;
 }
 
