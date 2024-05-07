@@ -48,6 +48,13 @@ code {
     vertical-align: middle;
 }
 
+.material-icons {
+    max-width: 1em;
+    overflow: hidden;
+    font-size: 1.25em;
+}
+
+
 .badge, .button {
     padding: .25em 1em;
     border-radius: 2.5em;
@@ -61,6 +68,11 @@ code {
     cursor: pointer;
 }
 
+.badge {
+    font-size: .8em;
+    margin: 1em 0;
+}
+
 .badge.event-meetup {
     background: var(--event-meetup-color);
     color: var(--color-white);
@@ -68,6 +80,11 @@ code {
 
 .badge.event-convention {
     background: var(--event-meetup-color);
+    color: var(--color-white);
+}
+
+.badge.nightly {
+    background: var(--color-dark-blue);
     color: var(--color-white);
 }
 
@@ -168,6 +185,10 @@ code {
     padding-right: 2em;
 }
 
+#events .day-name {
+    text-transform: capitalize;
+}
+
 #events .day-number,
 #events .month {
     font-size: 3em;
@@ -190,9 +211,13 @@ code {
     text-transform: uppercase;
 }
 
-#events .type {
-    font-size: .8em;
-    margin: 1em 0;
+#events .games {
+    margin-bottom: 1em;
+    font-size: 0.9em;
+}
+
+#events .game {
+    margin: 0 .25em;
 }
 
 #events .name {
@@ -200,12 +225,24 @@ code {
     font-weight: var(--font-size-medium);
 }
 
-#events .description {
+#events p {
     margin: 0;
 }
 
+#events .location {
+    font-size: 0.9em;
+    color: var(--color-gray);
+    margin: .5em 0;
+}
+
 #events .actions {
-    margin-top: 2em;
+    margin-top: 1em;
+    padding-top: 1em;
+    border-top: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+#events .actions > * {
+    margin: 0 .65em;
 }
 
 @media screen and (max-width: 900px) {

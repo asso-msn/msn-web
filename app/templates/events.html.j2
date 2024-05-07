@@ -22,30 +22,34 @@
                         <span class="day-name">{{ event.day_name }}</span>
                         <span class="day-number">{{ event.day_number }}</span>
                         <span class="month">{{ event.month }}</span>
-                        <span class="hours">{{ event.start_time }} - {{ event.end_time }}</span>
+                        <span class="hours">{{ event.time_range }}</span>
                     </div>
 
                     <div class="details">
+                        <div class="games">
+                            {% for game in event.games %}
+                            <span class="game">#{{ game }}</span>
+                            {% endfor %}
+                        </div>
                         <div class="type">
                             <span class="badge event-{{ event.type }}">{{ event.type }}</span>
+                            {% if event.nightly %}
+                            <span class="badge nightly">nocturne</span>
+                            {% endif %}
                         </div>
                         <span class="name">{{ event.name }}</span>
                         <p class="description">
                             {{ event.description }}
                         </p>
-                        <div class="actions">
-                            <a class="button">S'inscrire</a>
-                        </div>
-                        {% if app.debug %}
-                        <p>
-                            Pas encore placés :
+                        <p class="location">
+                            <span class="material-icons">place</span>
+                            {{ event.location }}
                         </p>
-                        <code>
-                            Nuit={{ event.nightly }}
-                            Location={{ event.location }}
-                            Links={{ event.links }}
-                        </code>
-                        {% endif %}
+                        <div class="actions">
+                            {% for name, url in event.links.items() %}
+                                <a href="{{ url }}">{{ name }}</a>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>

@@ -4,6 +4,7 @@ from dataclasses import dataclass
 import arrow
 
 from app import data
+from app.services.lang import LANG
 
 
 @dataclass
@@ -30,6 +31,7 @@ class Event:
     hero: str = None
     location: str = None
     description: str = None
+    games: list[str] = None
 
     templates = data.load("events_templates")
 
@@ -50,6 +52,21 @@ class Event:
         return self.dates[0]
 
     @property
+    def time_range(self):
+        def display(value):
+            hours = value // 100
+            minutes = value % 100
+            if minutes:
+                return f"{hours}h{minutes:02}"
+            return f"{hours}h"
+
+        if not self.start_time:
+            return None
+        if not self.end_time:
+            return display(self.start_time)
+        return f"{display(self.start_time)} - {display(self.end_time)}"
+
+    @property
     def arrow(self):
         if not self.date:
             return None
@@ -57,11 +74,11 @@ class Event:
 
     @property
     def relative_time(self):
-        return self.arrow and self.arrow.humanize()
+        return self.arrow and self.arrow.humanize(locale=LANG).capitalize()
 
     @property
     def day_name(self):
-        return self.arrow and self.arrow.format("dddd")
+        return self.arrow and self.arrow.format("dddd", locale=LANG)
 
     @property
     def day_number(self):
@@ -72,7 +89,7 @@ class Event:
 
     @property
     def month(self):
-        return self.arrow and self.arrow.format("MMMM")
+        return self.arrow and self.arrow.format("MMMM", locale=LANG)
 
     def load_template(self):
         template = self.templates.get(self.template)

@@ -2,9 +2,15 @@ name: Convention Epitanime 2024
 dates:
   - 2024-05-18
   - 2024-05-19
+games:
+  - ddr
+  - taiko
+  - bms
+  - gc
+  - sdvx
 start_time: 900
 end_time: 1900
 nightly: true
 links:
-  tickets: https://www.helloasso.com/associations/epitanime/evenements/convention-epitanime-2024
-  discord event: https://discord.gg/3axeTsE28W?event=1234115391077351455
+  Billeterie: https://www.helloasso.com/associations/epitanime/evenements/convention-epitanime-2024
+  Event Discord: https://discord.gg/3axeTsE28W?event=1234115391077351455
