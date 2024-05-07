@@ -42,8 +42,10 @@
                             {{ event.description }}
                         </p>
                         <p class="location">
-                            <span class="material-icons">place</span>
-                            {{ event.location }}
+                            <a href="https://www.google.com/maps/search/{{ event.location | urlencode }}/">
+                                <span class="material-icons">place</span>
+                                {{ event.location }}
+                            </a>
                         </p>
                         <div class="actions">
                             {% for name, url in event.links.items() %}
