@@ -3,11 +3,11 @@ dates:
   - 2024-05-18
   - 2024-05-19
 games:
-  - ddr
-  - taiko
   - bms
+  - ddr
   - gc
   - sdvx
+  - taiko
 start_time: 900
 end_time: 1900
 nightly: true
