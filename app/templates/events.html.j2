@@ -32,9 +32,9 @@
                             {% endfor %}
                         </div>
                         <div class="type">
-                            <span class="badge event-{{ event.type }}">{{ event.type }}</span>
+                            <span class="badge event event-{{ event.type }}">{{ event.type }}</span>
                             {% if event.nightly %}
-                            <span class="badge nightly">nocturne</span>
+                            <span class="badge event event-nightly">nocturne</span>
                             {% endif %}
                         </div>
                         <span class="name">{{ event.name }}</span>
@@ -42,7 +42,7 @@
                             {{ event.description }}
                         </p>
                         <p class="location">
-                            <a href="https://www.google.com/maps/search/{{ event.location | urlencode }}/">
+                            <a href="https://www.google.com/maps/search/{{ event.location | urlencode }}/" target="_blank">
                                 <span class="material-icons">place</span>
                                 {{ event.location }}
                             </a>

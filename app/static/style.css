@@ -1,10 +1,19 @@
 :root {
     --color-black: #333333;
-    --color-white: #ffffff;
-    --color-discord: #7289da;
-    --color-red: #d83333;
+    --color-blue: #0056A5;
     --color-dark-blue: #003566;
+    --color-dark-purple: #BEB8DC;
     --color-gray: #4D4D4D;
+    --color-green: #C2E0B2;
+    --color-light-blue: #C8E4F0;
+    --color-orange: #FBDCB9;
+    --color-purple: #DFBED6;
+    --color-red: #FBB9B9;
+    --color-white: #ffffff;
+    --color-yellow: #FFF8B8;
+
+    --color-discord: #7289da;
+
     --font-main: 'Poppins', sans-serif;
     --font-logo: 'Bungee', sans-serif;
     --color-shadow: rgba(0, 0, 0, 0.25);
@@ -35,7 +44,7 @@ a:visited {
 }
 
 a, a:visited {
-    color: teal;
+    color: var(--color-blue);
 }
 
 code {
@@ -52,6 +61,8 @@ code {
     max-width: 1em;
     overflow: hidden;
     font-size: 1.25em;
+    position: relative;
+    top: 0.2em;
 }
 
 
@@ -73,19 +84,20 @@ code {
     margin: 1em 0;
 }
 
+.badge.event {
+    color: var(--color-black);
+}
+
 .badge.event-meetup {
     background: var(--event-meetup-color);
-    color: var(--color-white);
 }
 
 .badge.event-convention {
     background: var(--event-meetup-color);
-    color: var(--color-white);
 }
 
-.badge.nightly {
-    background: var(--color-dark-blue);
-    color: var(--color-white);
+.badge.event-nightly {
+    background: var(--color-dark-purple);
 }
 
 .card {
@@ -223,6 +235,7 @@ code {
 #events .name {
     font-size: 1.5em;
     font-weight: var(--font-size-medium);
+    margin-top: 0.5em;
 }
 
 #events p {
