@@ -31,13 +31,13 @@
                             <span class="game">#{{ game }}</span>
                             {% endfor %}
                         </div>
+                        <span class="name">{{ event.name }}</span>
                         <div class="type">
                             <span class="badge event event-{{ event.type }}">{{ event.type }}</span>
                             {% if event.nightly %}
                             <span class="badge event event-nightly">nocturne</span>
                             {% endif %}
                         </div>
-                        <span class="name">{{ event.name }}</span>
                         <p class="description">
                             {{ event.description }}
                         </p>

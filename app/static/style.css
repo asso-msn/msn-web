@@ -231,8 +231,11 @@ a.button, .button {
     text-transform: uppercase;
 }
 
-#events .games {
+#events .type {
     margin-bottom: 1em;
+}
+
+#events .games {
     font-size: 0.9em;
 }
 
@@ -243,7 +246,7 @@ a.button, .button {
 #events .name {
     font-size: 1.5em;
     font-weight: var(--font-size-medium);
-    margin-top: 0.5em;
+    margin: 0.4em 0;
 }
 
 #events p {
@@ -258,8 +261,6 @@ a.button, .button {
 
 #events .actions {
     margin-top: 0.5em;
-    /* border-top: 1px solid rgba(0, 0, 0, 0.25); */
-
 }
 
 #events .actions > * {
