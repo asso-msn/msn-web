@@ -11,6 +11,5 @@ games:
 start_time: 900
 end_time: 1900
 nightly: true
-links:
-  Billetterie: https://www.helloasso.com/associations/epitanime/evenements/convention-epitanime-2024
-  Event Discord: https://discord.gg/3axeTsE28W?event=1234115391077351455
+signup: https://www.helloasso.com/associations/epitanime/evenements/convention-epitanime-2024
+discord: https://discord.gg/3axeTsE28W?event=1234115391077351455

@@ -75,8 +75,16 @@ code {
 
 .button {
     border: 1px solid var(--color-gray);
-    color: var(--color-gray);
     cursor: pointer;
+}
+
+a.button, .button {
+    color: var(--color-gray);
+}
+
+.button.discord {
+    border-color: var(--color-discord);
+    color: var(--color-discord);
 }
 
 .badge {
@@ -249,13 +257,23 @@ code {
 }
 
 #events .actions {
-    margin-top: 1em;
-    padding-top: 1em;
-    border-top: 1px solid rgba(0, 0, 0, 0.25);
+    margin-top: 0.5em;
+    /* border-top: 1px solid rgba(0, 0, 0, 0.25); */
+
 }
 
 #events .actions > * {
-    margin: 0 .65em;
+    margin: 0 .25em;
+    display: inline-block;
+    text-align: center;
+}
+
+#events .actions > *:first-child {
+    margin-left: 0;
+}
+
+#events .actions .main {
+    min-width: 25%;
 }
 
 @media screen and (max-width: 900px) {

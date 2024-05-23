@@ -25,13 +25,14 @@ class Event:
     start_time: int = None
     end_time: int = None
     nightly: bool = False
-    links: dict[str, str] = None
     template: str = None
     type: Type = Type.CONVENTION  # TODO: Load from string
     hero: str = None
     location: str = None
     description: str = None
     games: list[str] = None
+    signup: str = None
+    discord: str = None
 
     templates = data.load("events_templates")
 

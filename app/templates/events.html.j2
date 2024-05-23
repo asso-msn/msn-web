@@ -48,9 +48,14 @@
                             </a>
                         </p>
                         <div class="actions">
-                            {% for name, url in event.links.items() %}
-                                <a href="{{ url }}">{{ name }}</a>
-                            {% endfor %}
+                            {% if event.signup %}
+                            <a href="{{ event.signup }}" class="button main">S'inscrire</a>
+                            {% endif %}
+                            {% if event.discord %}
+                            <a href="{{ event.discord }}" class="button discord">
+                                <img src="{{ url_for('static', filename='fa-brand/discord-color.svg')}}" alt="Discord" class="emoji">
+                            </a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
