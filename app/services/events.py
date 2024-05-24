@@ -99,6 +99,10 @@ class Event:
                 if not getattr(self, key):
                     setattr(self, key, value)
 
+    @property
+    def is_past(self):
+        return self.arrow and self.arrow < arrow.now()
+
     def __post_init__(self):
         self.load_template()
 

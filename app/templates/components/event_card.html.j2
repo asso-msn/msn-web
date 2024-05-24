@@ -1,0 +1,51 @@
+
+<div class="event card">
+    {% if event.date %}
+    <div class="relative-time badge">{{ event.relative_time }}</div>
+    {% endif %}
+
+    <img class="hero" src="{{ event.hero }}">
+
+    <div class="content">
+        <div class="date">
+            <span class="day-name">{{ event.day_name }}</span>
+            <span class="day-number">{{ event.day_number }}</span>
+            <span class="month">{{ event.month }}</span>
+            <span class="hours">{{ event.time_range }}</span>
+        </div>
+
+        <div class="details">
+            <div class="games">
+                {% for game in event.games %}
+                <span class="game">#{{ game }}</span>
+                {% endfor %}
+            </div>
+            <span class="name">{{ event.name }}</span>
+            <div class="type">
+                <span class="badge event event-{{ event.type }}">{{ event.type }}</span>
+                {% if event.nightly %}
+                <span class="badge event event-nightly">nocturne</span>
+                {% endif %}
+            </div>
+            <p class="description">
+                {{ event.description }}
+            </p>
+            <p class="location">
+                <a href="https://www.google.com/maps/search/{{ event.location | urlencode }}/" target="_blank">
+                    <span class="material-icons">place</span>
+                    {{ event.location }}
+                </a>
+            </p>
+            <div class="actions">
+                {% if event.signup %}
+                <a href="{{ event.signup }}" class="button main">S'inscrire</a>
+                {% endif %}
+                {% if event.discord %}
+                <a href="{{ event.discord }}" class="button discord">
+                    <img src="{{ url_for('static', filename='fa-brand/discord-color.svg')}}" alt="Discord" class="emoji">
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
