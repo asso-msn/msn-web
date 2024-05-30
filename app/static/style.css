@@ -190,6 +190,10 @@ a.button, .button {
     min-height: 100px;
 }
 
+#events .card:first-child {
+    margin-top: 0;
+}
+
 #events .content {
     display: flex;
     padding: 1em;
@@ -203,6 +207,12 @@ a.button, .button {
 #events .date {
     align-items: center;
     padding-right: 2em;
+}
+
+#events .day-month {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #events .day-name {
@@ -229,6 +239,7 @@ a.button, .button {
 
 #events .month {
     text-transform: uppercase;
+    margin-bottom: 0.25em;
 }
 
 #events .type {
@@ -277,11 +288,54 @@ a.button, .button {
     min-width: 25%;
 }
 
-@media screen and (max-width: 900px) {
+#events .future-events {
+    margin-bottom: 2em;
+}
+
+@media screen and (max-width: 700px) {
+    .card {
+        padding: 0.5em;
+        margin: 0.5em;
+    }
+
+    .card .hero {
+        margin: -0.5em;
+        width: calc(100% + 1em);
+    }
+
     #navbar .logo-text {
         font-size: 1.25em;
     }
     #navbar .text {
         display: none;
+    }
+
+    #events .content {
+        flex-direction: column;
+    }
+
+    #events .date {
+        align-items: flex-start;
+    }
+
+    #events .day-month {
+        flex-direction: row;
+        align-items: baseline;
+    }
+
+    #events .day-number {
+        margin-right: 0.5em;
+    }
+
+    #events .day-name, #events .hours {
+        font-size: 1.25em;
+    }
+
+    #events .hours {
+        margin-bottom: 1.5em;
+    }
+
+    #events .actions {
+        text-align: right;
     }
 }

@@ -9,8 +9,10 @@
     <div class="content">
         <div class="date">
             <span class="day-name">{{ event.day_name }}</span>
-            <span class="day-number">{{ event.day_number }}</span>
-            <span class="month">{{ event.month }}</span>
+            <div class="day-month">
+                <span class="day-number">{{ event.day_number }}</span>
+                <span class="month">{{ event.month }}</span>
+            </div>
             <span class="hours">{{ event.time_range }}</span>
         </div>
 
