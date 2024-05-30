@@ -271,7 +271,8 @@ a.button, .button {
 }
 
 #events .actions {
-    margin-top: 0.5em;
+    margin-top: 1.5em;
+    text-align: right;
 }
 
 #events .actions > * {
@@ -324,7 +325,7 @@ a.button, .button {
     }
 
     #events .day-number {
-        margin-right: 0.5em;
+        margin-right: 0.33em;
     }
 
     #events .day-name, #events .hours {
@@ -333,9 +334,5 @@ a.button, .button {
 
     #events .hours {
         margin-bottom: 1.5em;
-    }
-
-    #events .actions {
-        text-align: right;
     }
 }

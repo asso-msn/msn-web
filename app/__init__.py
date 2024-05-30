@@ -50,4 +50,6 @@ logging.basicConfig(
 app = App()
 
 auto_import("pages")
+from app import filters
+
 logging.debug(app.url_map)

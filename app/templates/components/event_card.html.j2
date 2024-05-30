@@ -30,7 +30,7 @@
                 {% endif %}
             </div>
             <p class="description">
-                {{ event.description }}
+                {{ event.description | markdown }}
             </p>
             <p class="location">
                 <a href="https://www.google.com/maps/search/{{ event.location | urlencode }}/" target="_blank">
