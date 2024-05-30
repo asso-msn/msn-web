@@ -90,7 +90,7 @@ class Event:
 
     @property
     def month(self):
-        return self.arrow and self.arrow.format("MMMM", locale=LANG)
+        return self.arrow and self.arrow.format("MMM", locale=LANG)
 
     def load_template(self):
         template = self.templates.get(self.template)
