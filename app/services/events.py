@@ -1,5 +1,7 @@
+import dataclasses
 import enum
 from dataclasses import dataclass
+from datetime import datetime
 
 import arrow
 
@@ -26,11 +28,11 @@ class Event:
     end_time: int = None
     nightly: bool = False
     template: str = None
-    type: Type = Type.CONVENTION  # TODO: Load from string
+    type: Type = None  # TODO: Load from string
     hero: str = None
     location: str = None
     description: str = None
-    games: list[str] = None
+    games: list[str] = dataclasses.field(default_factory=list)
     signup: str = None
     discord: str = None
 
@@ -38,7 +40,9 @@ class Event:
 
     @classmethod
     def from_data_file(cls, key, value):
+        value = value or {}
         date = "-".join(key.split("-")[:3])
+        date = datetime.fromisoformat(date)
         template = key.split("-")[3]
         name = " ".join(key.split("-")[4:]).replace("-", " ").title()
         value.setdefault("name", name)
@@ -113,5 +117,5 @@ def get_events():
         for key, event in data.load("events").items()
     ]
 
-    results.sort(key=lambda x: x.date)
+    results.sort(key=lambda x: x.arrow)
     return results

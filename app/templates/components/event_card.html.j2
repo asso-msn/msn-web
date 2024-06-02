@@ -13,7 +13,9 @@
                 <span class="day-number">{{ event.day_number }}</span>
                 <span class="month">{{ event.month }}</span>
             </div>
+            {% if event.time_range %}
             <span class="hours">{{ event.time_range }}</span>
+            {% endif %}
         </div>
 
         <div class="details">
@@ -24,7 +26,9 @@
             </div>
             <span class="name">{{ event.name }}</span>
             <div class="type">
+                {% if event.type %}
                 <span class="badge event event-{{ event.type }}">{{ event.type }}</span>
+                {% endif %}
                 {% if event.nightly %}
                 <span class="badge event event-nightly">nocturne</span>
                 {% endif %}

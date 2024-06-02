@@ -15,7 +15,7 @@
                 {% for event in future_events %}
                 {% include "components/event_card.html.j2" %}
                 {% endfor %}
-                {% if not future_events | list %}
+                {% if not future_events %}
                 <p>
                     Aucun évènement n'est prévu pour le moment.
                 </p>
