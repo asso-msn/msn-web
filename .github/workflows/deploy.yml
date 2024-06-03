@@ -10,8 +10,10 @@ jobs:
     uses: Tina-otoge/infra/.github/workflows/deploy-workflow.yml@master
     with:
       app: msnweb-demo
+      webhook_msg: "Demo du site mise à jour. Visitez https://demo.asso-msn.fr/ pour voir les changements."
     secrets:
       host: "${{ secrets.DEPLOY_HOST }}"
       user: "${{ secrets.DEPLOY_USER }}"
       key: "${{ secrets.DEPLOY_KEY }}"
       login_user: "${{ secrets.DEPLOY_LOGIN_USER }}"
+      webhook_url: "${{ secrets.WEBHOOK_URL }}"
