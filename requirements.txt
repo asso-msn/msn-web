@@ -1,4 +1,6 @@
 arrow
 Flask
-sssimp
+Flask-Assets
+pyScss
 pyyaml
+sssimp

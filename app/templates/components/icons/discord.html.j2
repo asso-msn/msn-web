@@ -1,0 +1,7 @@
+{% if discord_icon_file is undefined %}
+{% set discord_icon_file='discord-color' %}
+{% endif %}
+
+{% with path='fa-brand/' + discord_icon_file + '.svg', alt='Discord' %}
+{% include "components/icons/icon.html.j2" %}
+{% endwith %}

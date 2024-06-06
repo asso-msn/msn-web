@@ -57,6 +57,20 @@ code {
     vertical-align: middle;
 }
 
+.logo {
+    width: 2em;
+    height: 2em;
+    margin: 0 .5em;
+}
+
+.logo-text {
+    display: flex;
+    font-size: 1.5em;
+    font-weight: bold;
+    align-items: center;
+    font-family: var(--font-logo);
+}
+
 .material-icons {
     max-width: 1em;
     overflow: hidden;
@@ -143,7 +157,8 @@ a.button, .button {
     box-shadow: 0 4px 4px var(--color-shadow);
 }
 
-#navbar a {
+#navbar a,
+#footer a {
     color: inherit;
 }
 
@@ -155,20 +170,6 @@ a.button, .button {
     margin: 0 auto;
 }
 
-#navbar .logo-text {
-    display: flex;
-    font-size: 1.5em;
-    font-weight: bold;
-    align-items: center;
-    font-family: var(--font-logo);
-}
-
-#navbar .logo {
-    width: 2em;
-    height: 2em;
-    margin: 0 .5em;
-}
-
 #navbar .items {
     list-style: none;
     display: flex;
@@ -178,161 +179,82 @@ a.button, .button {
     margin: 0 .5em;
 }
 
-#events {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 
-}
-
-#events .card {
-    max-width: 800px;
-    min-height: 100px;
-}
-
-#events .card:first-child {
-    margin-top: 0;
-}
-
-#events .content {
-    display: flex;
-    padding: 1em;
-}
-
-#events .content > * {
-    display: flex;
-    flex-direction: column;
-}
-
-#events .date {
-    align-items: center;
-    padding-right: 2em;
-}
-
-#events .day-month {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-#events .day-name {
-    text-transform: capitalize;
-}
-
-#events .day-number,
-#events .month {
-    font-size: 3em;
-    line-height: 0.8;
-    margin-top: .25em;
-}
-
-#events .day-number {
-    font-weight: bold;
-    color: var(--color-dark-blue);
-    text-wrap: nowrap;
-}
-
-#events .month,
-#events .hours {
-    font-weight: var(--font-size-medium);
-}
-
-#events .month {
-    text-transform: uppercase;
-    margin-bottom: 0.25em;
-}
-
-#events .type {
-    margin-bottom: 1em;
-}
-
-#events .games {
-    font-size: 0.9em;
-}
-
-#events .game {
-    margin: 0 .25em;
-}
-
-#events .name {
-    font-size: 1.5em;
-    font-weight: var(--font-size-medium);
-    margin: 0.4em 0;
-}
-
-#events p {
-    margin: 0;
-}
-
-#events .location {
-    font-size: 0.9em;
-    color: var(--color-gray);
-    margin: .5em 0;
-}
-
-#events .actions {
-    margin-top: 1.5em;
-    text-align: right;
-}
-
-#events .actions > * {
-    margin: 0 .25em;
-    display: inline-block;
+#footer {
+    background-color: var(--color-black);
+    color: var(--color-white);
     text-align: center;
+    margin-top: 2em;
+    padding: 2em;
+    position: relative;
+    overflow: hidden;
 }
 
-#events .actions > *:first-child {
-    margin-left: 0;
+#footer .bar {
+    position: absolute;
+    width: 300px;
+    height: 30px;
+    border-radius: 15px;
+    background: var(--color-white);
+    transform: rotate(-50deg);
 }
 
-#events .actions .main {
-    min-width: 25%;
+#footer .bar:nth-child(1) {
+    top: 50%;
+    left: -200px;
 }
 
-#events .future-events {
-    margin-bottom: 2em;
+#footer .bar:nth-child(2) {
+    top: calc(50% + 68px);
+    left: -200px;
 }
 
-@media screen and (max-width: 700px) {
-    .card {
-        padding: 0.5em;
-        margin: 0.5em;
-    }
+#footer .bar:nth-child(3) {
+    top: 50%;
+    right: -200px;
+}
 
-    .card .hero {
-        margin: -0.5em;
-        width: calc(100% + 1em);
-    }
+#footer .bar:nth-child(4) {
+    top: calc(50% - 68px);
+    right: -200px;
+}
 
-    #navbar .logo-text {
-        font-size: 1.25em;
-    }
-    #navbar .text {
-        display: none;
-    }
+#footer .logo-text {
+    font-size: 1.5em;
+    font-family: var(--font-logo);
+    margin: 1em 0;
+}
 
-    #events .content {
-        flex-direction: column;
-    }
+#footer .logo {
+    font-size: 1.5em;
+}
 
-    #events .date {
-        align-items: flex-start;
-    }
+#footer .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-    #events .day-month {
-        flex-direction: row;
-        align-items: baseline;
-    }
+#footer .nav {
+    display: flex;
+    margin: 2em 0;
+    width: 100%;
+    justify-content: space-evenly;
+}
 
-    #events .day-number {
-        margin-right: 0.33em;
-    }
+#footer .title {
+    font-weight: bold;
+}
 
-    #events .day-name, #events .hours {
-        font-size: 1.25em;
-    }
+#footer .socials {
+    font-size: 2em;
+    margin: 1em 0;
+}
 
-    #events .hours {
-        margin-bottom: 1.5em;
-    }
+#footer .socials > * {
+    margin: 0 .25em;
+}
+
+#copyright {
+    text-align: center;
 }

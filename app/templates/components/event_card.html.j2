@@ -1,4 +1,3 @@
-
 <div class="event card">
     {% if event.date %}
     <div class="relative-time badge">{{ event.relative_time }}</div>
@@ -33,9 +32,9 @@
                 <span class="badge event event-nightly">nocturne</span>
                 {% endif %}
             </div>
-            <p class="description">
+            <div class="description">
                 {{ event.description | markdown }}
-            </p>
+            </div>
             <p class="location">
                 <a href="https://www.google.com/maps/search/{{ event.location | urlencode }}/" target="_blank">
                     <span class="material-icons">place</span>
@@ -48,7 +47,7 @@
                 {% endif %}
                 {% if event.discord %}
                 <a href="{{ event.discord }}" class="button discord">
-                    <img src="{{ url_for('static', filename='fa-brand/discord-color.svg')}}" alt="Discord" class="emoji">
+                    {% include "components/icons/discord.html.j2" %}
                 </a>
                 {% endif %}
             </div>

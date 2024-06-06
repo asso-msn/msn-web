@@ -1,12 +1,6 @@
 {% extends "page.html.j2" %}
 
 {% block content %}
-        {% if app.debug %}
-        <code>
-        {{ events | e }}
-        </code>
-        {% endif %}
-
         <div id="events">
             {% set future_events = events | selectattr("is_past", "false") %}
             {% set past_events = events | selectattr("is_past", "true") %}
@@ -26,5 +20,6 @@
                 {% for event in events | selectattr("is_past", "true") %}
                 {% include "components/event_card.html.j2" %}
                 {% endfor %}
+            </div>
         </div>
 {% endblock %}

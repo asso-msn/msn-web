@@ -1,0 +1,48 @@
+
+@media screen and (max-width: 700px) {
+    .card {
+        padding: 0.5em;
+        margin: 0.5em;
+    }
+
+    .card .hero {
+        margin: -0.5em;
+        width: calc(100% + 1em);
+    }
+
+    #footer .bars {
+        display: none;
+    }
+
+    #navbar .logo-text {
+        font-size: 1.25em;
+    }
+    #navbar .text {
+        display: none;
+    }
+
+    #events .content {
+        flex-direction: column;
+    }
+
+    #events .date {
+        align-items: flex-start;
+    }
+
+    #events .day-month {
+        flex-direction: row;
+        align-items: baseline;
+    }
+
+    #events .day-number {
+        margin-right: 0.33em;
+    }
+
+    #events .day-name, #events .hours {
+        font-size: 1.25em;
+    }
+
+    #events .hours {
+        margin-bottom: 1.5em;
+    }
+}

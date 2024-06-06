@@ -15,7 +15,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons&display=block" />
-    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+    {% assets "css" %}
+    <link href="{{ ASSET_URL }}" rel="stylesheet">
+    {% endassets %}
 </head>
 
 <body>
@@ -33,6 +35,45 @@
     </nav>
 
 {% block body %}{% endblock %}
+
+    <footer id="footer">
+        <div class="bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <div class="content">
+            <a class="logo-text" href="{{ url_for('index') }}">
+                <img class="logo" src="{{ url_for('static', filename='logo-white.svg') }}">
+                <span class="text">Make Some Noise</span>
+            </a>
+            <nav class="nav page">
+                <section>
+                    <a class="title" href="{{ url_for('about')}}">L'association</a>
+                </section>
+                <section>
+                    <a class="title" href="{{ url_for('events')}}">Évènements</a>
+                </section>
+            </nav>
+            <div class="socials">
+                <a href="{{ data.links.discord }}">
+                    {% include "components/icons/discord_white.html.j2" %}
+                </a>
+                <a href="{{ data.links.instagram }}">
+                    {% include "components/icons/instagram_white.html.j2" %}
+                </a>
+                <a href="{{ data.links.x }}">
+                    {% include "components/icons/x_white.html.j2" %}
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <p id="copyright">
+        MIT Licensed - MAKE SOME NOISE
+    </p>
+
 </body>
 
 </html>

@@ -1,0 +1,114 @@
+#events {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+#events .card {
+    max-width: 800px;
+    min-height: 100px;
+}
+
+#events .card:first-child {
+    margin-top: 0;
+}
+
+#events .content {
+    display: flex;
+    padding: 1em;
+}
+
+#events .content>* {
+    display: flex;
+    flex-direction: column;
+}
+
+#events .date {
+    align-items: center;
+    padding-right: 2em;
+}
+
+#events .day-month {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#events .day-name {
+    text-transform: capitalize;
+}
+
+#events .day-number,
+#events .month {
+    font-size: 3em;
+    line-height: 0.8;
+    margin-top: .25em;
+}
+
+#events .day-number {
+    font-weight: bold;
+    color: var(--color-dark-blue);
+    text-wrap: nowrap;
+}
+
+#events .month,
+#events .hours {
+    font-weight: var(--font-size-medium);
+}
+
+#events .month {
+    text-transform: uppercase;
+    margin-bottom: 0.25em;
+}
+
+#events .type {
+    margin-bottom: 1em;
+}
+
+#events .games {
+    font-size: 0.9em;
+}
+
+#events .game {
+    margin: 0 .25em;
+}
+
+#events .name {
+    font-size: 1.5em;
+    font-weight: var(--font-size-medium);
+    margin: 0.4em 0;
+}
+
+#events p {
+    margin: 0;
+}
+
+#events .location {
+    font-size: 0.9em;
+    color: var(--color-gray);
+    margin: .5em 0;
+}
+
+#events .actions {
+    margin-top: 1.5em;
+    text-align: right;
+}
+
+#events .actions>* {
+    margin: 0 .25em;
+    display: inline-block;
+    text-align: center;
+}
+
+#events .actions>*:first-child {
+    margin-left: 0;
+}
+
+#events .actions .main {
+    min-width: 25%;
+}
+
+#events .future-events {
+    margin-bottom: 2em;
+}
