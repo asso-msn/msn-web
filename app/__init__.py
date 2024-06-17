@@ -68,7 +68,5 @@ logging.basicConfig(
 app = App()
 
 
-auto_import("pages")
-from app import filters
-
-logging.debug(app.url_map)
+for module in ("cli", "pages", "filters"):
+    auto_import(module)

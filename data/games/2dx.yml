@@ -1,0 +1,99 @@
+name: beatmania IIDX
+colors:
+  main: "#6cccdc"
+  accent: "#d1eef9"
+start: 1999
+publisher: KONAMI
+image: 2dx_epolis_idol.jpg
+platforms:
+  - Arcade
+  - Mobile
+  - PC
+  - PS2
+description:
+  en: |
+    The pioneer of the whole genre. beatmania IIDX challenges the player with an
+    **easy to understand** and **hard to master** concept: hit the notes with
+    the corresponding key when they reach the judgment line. IIDX is all about
+    **timing** and top of the art **original songs**.
+  fr: |
+    Véritable pionnier du genre, beatmania IIDX met au défi le joueur avec un
+    concept **simple à comprendre**, mais **difficile à maîtriser** : taper les
+    notes avec la touche correspondante lorsqu’elles atteignent le bas de
+    l’écran.
+
+    IIDX se définie par son **timing** strict et ses musiques
+    **originales**.
+
+games:
+  - name: IIDX INFINITAS
+    type: pc
+    subtext:
+      en: Official
+      fr: Officiel
+    description:
+      fr: |
+        Abonnement **12€/mo**
+
+        UI et options modernes
+
+        DLCs **45€** pour 30 sons récents
+  - name: "BMS: beatoraja / Lunatic Rave 2"
+    type: pc
+    description:
+      fr: |
+        **Gratuit** contenu fait par la communauté
+
+        Abondance de sons originaux
+
+        Difficile à configurer
+
+        Contenu IIDX disponible illégalement, mais mal vu
+  - name: PS2 beatmania IIDX
+    type: console
+    subtext:
+      en: Official
+      fr: Officiel
+    description:
+      fr: |
+        Besoin d'une PS2 JP **80€**
+
+        Jeux de **35€** à **150€**
+
+        Anciennes UI, options et sons
+
+controllers:
+  - name: GAMO2 FPS
+    price: $200
+    description:
+      fr: |
+        Peu cher, plus petite TT
+  - name: GAMO2 FP7
+    image: fp7.jpg
+    price: $217
+    description:
+      fr: |
+        TT plus grande que le FPS
+  - name: GAMO2 PWAN+
+    price: $300
+    description:
+      fr: |
+        Haute qualité
+  - name: Yuan DX6th
+    price: $209
+    description:
+      fr: |
+        Autre fabricant
+  - name: IST Mall IIDX
+    price: $175
+    description:
+      fr: |
+        Fabricant coréen
+
+controllers_notes:
+  extras:
+    - fr: "Boutons arcade : +$80"
+  shipping:
+    asia: $50 - $80
+    world: $80 - $130
+    france: $90 - $120

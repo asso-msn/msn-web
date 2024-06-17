@@ -1,0 +1,308 @@
+<!doctype html>
+
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons&display=block" />
+<style>
+    @page {
+        size: A4 portrait;
+    }
+
+    :root {
+        --font-logo: 'Bungee';
+        --font-main: 'Poppins';
+        --color-main: {{ series.colors.main }};
+        --color-accent: {{ series.colors.accent }};
+    }
+
+    * {
+        box-sizing: border-box;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+    }
+
+    body {
+        font-family: var(--font-main);
+        margin: 0 auto;
+        padding: 0;
+        background: white;
+        color: black;
+        font-weight: 500;
+        font-size: 16px;
+        max-width: 790px;
+    }
+
+    img {
+        max-width: 100%;
+    }
+
+    p {
+        margin: 0;
+    }
+
+    .columns {
+        display: flex;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+
+    .columns > * {
+        flex: 1 1 0px;
+        min-width: 0;
+    }
+
+    .full-bar {
+        background-color: var(--color-accent);
+        font-weight: 600;
+        padding: 0 2rem;
+    }
+
+    .container {
+        padding: 0 3rem;
+    }
+
+    h1 {
+        text-align: center;
+        font-family: var(--font-logo);
+        color: var(--color-main);
+        font-size: 4rem;
+        line-height: 4rem;
+    }
+
+    h1, h2, h3, h4 {
+        margin: 0;
+    }
+
+    h2 {
+        font-size: 1.3rem;
+    }
+
+    .subtext {
+        font-weight: normal;
+    }
+
+    header {
+        margin-top: 1.5rem;
+        margin-bottom: 2rem;
+        transform: rotate(-2deg);
+    }
+
+    footer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 3rem;
+    }
+
+    .logo-text {
+        font-size: 1.25rem;
+        font-family: var(--font-logo);
+        display: flex;
+        align-items: center;
+    }
+
+    .logo-text .logo {
+        width: 2.5em;
+        height: 2.5em;
+        margin-right: 0.5rem;
+        margin-left: 1rem;
+    }
+
+    #subtext {
+        display: flex;
+        justify-content: space-between;
+        font-size: 1.8rem;
+        text-transform: uppercase;
+    }
+
+    #platforms {
+        margin-bottom: 1rem;
+    }
+
+    #platforms .item {
+        background-color: var(--color-accent);
+        padding: 0 1.5rem;
+        border-radius: 1rem;
+        font-size: 1.15rem;
+    }
+
+    #description p {
+        margin-bottom: .35rem;
+    }
+
+    #image {
+        border-radius: 1rem;
+        object-fit: contain;
+    }
+
+    #home-play {
+        margin-top: 2rem;
+    }
+
+    #home-play .full-bar {
+        margin-bottom: 1rem;
+    }
+
+    #home-play h2,
+    #home-play h3 {
+        text-align: center;
+    }
+
+    #home-play h3 {
+        margin-bottom: 1rem;
+    }
+
+    #games .item {
+        margin-bottom: 1rem;
+    }
+
+    #games .icon {
+        flex-grow: 1;
+        display: block;
+    }
+
+    #games .content {
+        flex-grow: 5;
+    }
+
+    #controllers {
+        text-align: center;
+    }
+
+    #controllers .items {
+        display: flex;
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    #controllers .item {
+        width: 50%;
+        margin-bottom: 1rem;
+    }
+
+    #controllers img {
+        width: 80%;
+    }
+
+    #controllers .name {
+        font-size: 1rem;
+    }
+    #controllers .description {
+        font-size: 0.85rem;
+    }
+
+    #controllers .notes {
+        font-size: 0.8rem;
+        background-color: var(--color-accent);
+        padding: 0.25rem;
+    }
+
+    #controllers .customs-warning {
+        font-weight: bold;
+    }
+</style>
+</head>
+
+
+<body>
+
+<header>
+    <h1>{{ series.name }}</h1>
+    <div id="subtext" class="full-bar">
+        <span id="dates">
+            <span>{{ series.start }}</span>
+            <span> - </span>
+            <span>{{ series.end | default("Aujourd'hui") }}</span>
+        </span>
+        <span id="publisher">{{ series.publisher }}</span>
+    </div>
+</header>
+
+<div id="intro" class="container">
+    <div id="platforms">
+        {% for platform in series.platforms %}
+        <span class="item">{{ platform }}</span>
+        {% endfor %}
+    </div>
+
+    <div class="columns">
+        <div id="description">
+            <p>{{ series.description[lang] | markdown }}</p>
+        </div>
+        <img id="image" src="https://asso-msn.fr/assets/games/{{ series.image }}">
+    </div>
+</div>
+
+<div id="home-play">
+    <div class="full-bar">
+        <h2>Comment jouer chez soi</h2>
+    </div>
+
+    <div class="container">
+
+        <div class="columns">
+
+            <div id="games">
+                <h3>Jeux</h3>
+                <div class="items">
+                    {% for game in series.games %}
+                    <div class="item">
+                        <div class="columns">
+                            <div class="icon">
+                                <img src="https://asso-msn.fr/assets/icons/{{ game.type }}.png">
+                            </div>
+                            <div class="content">
+                                <h4>
+                                    {{ game.name }}
+                                    {% if game.subtext %}
+                                    <span class="subtext">({{ game.subtext[lang] }})</span>
+                                    {% endif %}
+                                </h4>
+                                <p>{{ game.description[lang] | markdown }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div id="controllers">
+                <h3>Manettes</h3>
+                <div class="items">
+                    {% for controller in series.controllers %}
+                    <div class="item">
+                        <img src="https://asso-msn.fr/assets/controllers/{{ controller.image }}">
+                        <h4 class="name">{{ controller.name }} {{ controller.price }}</h4>
+                        <div class="description">{{ controller.description[lang] | markdown }}</div>
+                    </div>
+                    {% endfor %}
+                    <div class="item notes">
+                        {% for extra in series.controllers_notes.extras %}
+                        <p>{{ extra[lang] }}</p>
+                        {% endfor %}
+                        <h4>Frais de port :</h4>
+                        {% for region, price in series.controllers_notes.shipping.items() %}
+                        <p>{{ region }} <strong>{{ price }}</strong></p>
+                        {% endfor %}
+                        <p class="customs-warning">⚠ Attention douane ⚠</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>
+        Présenté par
+    </p>
+    <span class="logo-text">
+        <img class="logo" src="https://asso-msn.fr/assets/icons/msn-black.svg">
+        <span class="text">Make Some Noise</span>
+    </span>
+</footer>
+
+</body>

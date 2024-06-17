@@ -2,5 +2,6 @@ arrow
 Flask
 Flask-Assets
 pyScss
+playwright
 pyyaml
 sssimp
