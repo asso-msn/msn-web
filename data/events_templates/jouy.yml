@@ -1,6 +1,10 @@
 name: Stand MSN à l'Été en Fête de Jouy-le-Moutier
 location: Théâtre de Jouy, 96 Av. des Bruzacques, 95280 Jouy-le-Moutier, France
 hero: https://asso-msn.fr/assets/events/jouy2023.png
+games:
+  - ddr
+  - taiko
+  - sdvx
 description: |
   Pendant tout l'été, la ville de Jouy-le-Moutier organise des activités pour
   les jeunes. À cette date en particulier, MSN sera présent et animera un
