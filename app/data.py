@@ -1,6 +1,6 @@
 from pathlib import Path
 
-import yaml
+import sssimp.generators.data
 from sssimp.generators.markdown import markdown_to_html
 
 
@@ -8,12 +8,14 @@ def resolve(path: str):
     return Path("data") / path
 
 
-def load(path: str):
+def load(path: str, flat=False) -> dict:
+    """
+    Load data from a path in the data directory.
+    Use flat=True to get a single level dictionary instead of one that mirrors
+    the directory structure.
+    """
     path = resolve(path)
-    result = {}
-    for file in path.rglob("*.yml"):
-        result[file.stem] = yaml.safe_load(file.read_text())
-    return result
+    return sssimp.generators.data.get(path, flat=flat)
 
 
 def markdown(path: str):

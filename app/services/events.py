@@ -114,7 +114,7 @@ class Event:
 def get_events():
     results = [
         Event.from_data_file(key, event)
-        for key, event in data.load("events").items()
+        for key, event in data.load("events", flat=True).items()
     ]
 
     results.sort(key=lambda x: x.arrow)
