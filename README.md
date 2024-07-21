@@ -41,6 +41,10 @@ This project is developped using Python 3.10 and later. The backend
 functionality is provided by Flask. Database ORM is provided by SQLAlchemy. We
 recommend getting familiar with those first.
 
+This project leverages [Tina's sssimp][sssimp] for several file handling
+features, such as Markdown conversions, and loading of data files (JSON, YAML,
+...).
+
 ### Running locally
 
 If you do not have Python 3.10 or later provided by your OS, we recommend using
@@ -97,12 +101,11 @@ directory.
 a database. This contains non-sensitive data that can be easily modified through
 traditional git flows, allowing for peer reviewing of content etc.
 
-
 If you need more help, please use GitHub issues or reach out on Discord.
-
 
 ## License
 
 MIT.
 
 [roadmap]: https://github.com/asso-msn/msn-web/milestones?direction=asc&sort=title&state=open
+[sssimp]: https://github.com/Tina-otoge/sssimp
