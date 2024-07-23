@@ -152,6 +152,26 @@ a.button, .button {
     margin: 0 auto;
 }
 
+.pager {
+    display: flex;
+    justify-content: center;
+    margin: 1em 0;
+    font-size: 1.25em;
+}
+
+.pager > * {
+    margin: 0 .3em;
+}
+
+.pager .current {
+    font-weight: bold;
+    color: var(--color-black);
+}
+
+.pager .disabled {
+    color: var(--color-gray);
+}
+
 #navbar {
     padding: .5rem 2rem;
     box-shadow: 0 4px 4px var(--color-shadow);

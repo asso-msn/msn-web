@@ -2,7 +2,7 @@
 
 {% block content %}
         <div id="events">
-            {% if past_events_pager.pages_current == 1 %}
+            {% if past_events_pager.current == 1 %}
             <h2>Les prochains évènements</h2>
             <div class="future-events">
                 {% for event in future_events %}

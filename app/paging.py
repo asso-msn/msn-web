@@ -3,9 +3,9 @@ import typing as t
 
 class Pager:
     items_total: int = 0
-    index: int = 0
+    index: int = 0  # Current selected item index in the iterable
     pages_total: int = 0
-    pages_current: int = 1
+    current: int = 1  # Current page
 
     def __init__(
         self,
@@ -17,11 +17,11 @@ class Pager:
         self.iterable = iterable
         self.items_total = total or len(iterable)
         self.per_page = per_page
-        self.pages_current = page
+        self.current = page
         self.pages_total = (self.items_total // self.per_page) + bool(
             self.items_total % self.per_page
         )
-        self.index = self.per_page * (self.pages_current - 1)
+        self.index = self.per_page * (self.current - 1)
 
     def get_page(self, page: int):
         cls = type(self)
@@ -34,33 +34,33 @@ class Pager:
 
     @property
     def has_next(self) -> bool:
-        return self.pages_current < self.pages_total
+        return self.current < self.pages_total
 
     @property
     def has_prev(self) -> bool:
-        return self.pages_current > 1
+        return self.current > 1
 
     @property
     def next(self):
         if not self.has_next:
             return None
-        return self.pages_current + 1
+        return self.current + 1
 
     @property
     def prev(self):
         if not self.has_prev:
             return None
-        return self.pages_current - 1
+        return self.current - 1
 
     @property
     def items(self):
-        start_pos = self.per_page * (self.pages_current - 1)
+        start_pos = self.per_page * (self.current - 1)
         end_pos = start_pos + self.per_page
         return self.iterable[start_pos:end_pos]
 
     @property
     def index_in_page(self) -> int:
-        return self.index - (self.per_page * (self.pages_current - 1))
+        return self.index - (self.per_page * (self.current - 1))
 
     @property
     def pages(self) -> t.Iterator[int]:

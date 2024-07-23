@@ -1,34 +1,45 @@
 <div class="pager">
     {% if pager.has_prev %}
-    <a href="{{ pager.get_url(pager.prev) }}">&lt;</a>
+    <a class="prev" href="{{ pager.get_url(pager.prev) }}">&lt;</a>
     {% else %}
-    <span class="disabled">&lt;</span>
+    <span class="prev disabled">&lt;</span>
     {% endif %}
 
     {% if pager.pages_total <= 5 %}
     {% for page in pager.pages %}
+    {% if page == pager.current %}
+    <a class="current" href="{{ pager.get_url(page) }}">{{ page }}</a>
+    {% else %}
     <a href="{{ pager.get_url(page) }}">{{ page }}</a>
+    {% endif %}
     {% endfor %}
     {% else %}
 
+    {% if pager.current > 1 %}
     <a href="{{ pager.get_url(1) }}">1</a>
-    {% if pager.pages_current > 2 %}
+    {% endif %}
+
+    {% if pager.current > 2 %}
     ...
-    <a href="{{ pager.get_url(pager.pages_current - 1) }}">{{ pager.pages_current - 1 }}</a>
+    <a href="{{ pager.get_url(pager.current - 1) }}">{{ pager.current - 1 }}</a>
     {% endif %}
-    {% if pager.pages_current > 1 and pager.pages_current < pager.pages_total %}
-    <a href="{{ pager.get_url(pager.pages_current) }}">{{ pager.pages_current }}</a>
-    {% endif %}
-    {% if pager.pages_current < pager.pages_total - 1 %}
-    <a href="{{ pager.get_url(pager.pages_current + 1) }}">{{ pager.pages_current + 1 }}</a>
+
+    <a class="current" href="{{ pager.get_url(pager.current) }}">{{ pager.current }}</a>
+
+    {% if pager.current < pager.pages_total - 1 %}
+    <a href="{{ pager.get_url(pager.current + 1) }}">{{ pager.current + 1 }}</a>
     ...
     {% endif %}
+
+    {% if pager.current < pager.pages_total %}
     <a href="{{ pager.get_url(pager.pages_total) }}">{{ pager.pages_total }}</a>
     {% endif %}
 
+    {% endif %}
+
     {% if pager.has_next %}
-    <a href="{{ pager.get_url(pager.next) }}">&gt;</a>
+    <a class="next" href="{{ pager.get_url(pager.next) }}">&gt;</a>
     {% else %}
-    <span class="disabled">&gt;</span>
+    <span class="next disabled">&gt;</span>
     {% endif %}
 </div>
