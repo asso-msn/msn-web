@@ -1,6 +1,7 @@
 arrow
 Flask
 Flask-Assets
+furl
 pyScss
 playwright
 pyyaml

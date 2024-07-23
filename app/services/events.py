@@ -1,5 +1,6 @@
 import dataclasses
 import enum
+import functools
 from dataclasses import dataclass
 from datetime import datetime
 
@@ -111,6 +112,7 @@ class Event:
         self.load_template()
 
 
+@functools.cache
 def get_events():
     results = [
         Event.from_data_file(key, event)
@@ -118,4 +120,19 @@ def get_events():
     ]
 
     results.sort(key=lambda x: x.arrow)
+    return results
+
+
+@functools.cache
+def get_future_events():
+    results = get_events()
+    results = [event for event in results if not event.is_past]
+    return results
+
+
+@functools.cache
+def get_past_events():
+    results = get_events()
+    results = [event for event in results if event.is_past]
+    results.sort(key=lambda x: x.arrow, reverse=True)
     return results

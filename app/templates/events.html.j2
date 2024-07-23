@@ -2,8 +2,7 @@
 
 {% block content %}
         <div id="events">
-            {% set future_events = events | selectattr("is_past", "false") %}
-            {% set past_events = events | selectattr("is_past", "true") %}
+            {% if past_events_pager.pages_current == 1 %}
             <h2>Les prochains évènements</h2>
             <div class="future-events">
                 {% for event in future_events %}
@@ -15,11 +14,16 @@
                 </p>
                 {% endif %}
             </div>
+            {% endif %}
+
             <h2>Les évènements passés</h2>
             <div class="past-events">
-                {% for event in events | selectattr("is_past", "true") %}
+                {% for event in past_events_pager %}
                 {% include "components/event_card.html.j2" %}
                 {% endfor %}
             </div>
+            {% with pager=past_events_pager %}
+            {% include "components/pager.html.j2" %}
+            {% endwith %}
         </div>
 {% endblock %}
