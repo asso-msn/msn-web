@@ -1,3 +1,4 @@
+import functools
 from pathlib import Path
 
 import sssimp.generators.data
@@ -8,6 +9,7 @@ def resolve(path: str):
     return Path("data") / path
 
 
+@functools.cache
 def load(path: str, flat=False) -> dict:
     """
     Load data from a path in the data directory.
@@ -18,6 +20,7 @@ def load(path: str, flat=False) -> dict:
     return sssimp.generators.data.get(path, flat=flat)
 
 
+@functools.cache
 def markdown(path: str):
     path = resolve(path).with_suffix(".md")
     return markdown_to_html(path.read_text())
