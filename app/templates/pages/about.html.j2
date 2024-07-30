@@ -1,0 +1,68 @@
+{% extends "page.html.j2" %}
+
+{% block content %}
+    <h2>Motivation</h2>
+    <p>
+        Make Some Noise est une association dont les activités ont débutés fin
+        2016, peu de temps après la fermeture de la salle de jeux parisienne
+        "Arcade Street".
+    </p>
+    <p>
+        En effet, la fermeture de cette salle a laissé un grand vide dans la
+        scène des jeux vidéos musicaux dans la région, et c'est du désir de
+        combler cela que l'association est née.
+    </p>
+
+    <h2>Activités</h2>
+    <p>
+        Afin de promouvoir les jeux vidéos musicaux, l'association mène
+        plusieurs actions, dont :
+    </p>
+    <ul>
+        <li>
+            Mise à disposition de jeux vidéos musicaux lors d'événements, tel
+            que Japan Expo, Epitanime, et bien d'autres.
+        </li>
+        <li>
+            Relai d'informations et nouveautés sur les jeux à travers les
+            réseaux sociaux.
+        </li>
+        <li>
+            Organisation de rencontres entre joueurs, pour permettre à la
+            communauté de se rencontrer et de s'affronter, ainsi que d'initier
+            de nouveaux joueurs.
+        </li>
+        <li>
+            Mise à disposition d'<a href="{{ data.links.discord }}">un serveur
+            Discord</a> sur lequel les joueurs peuvent échanger et
+            s'entre-aider.
+        </li>
+    </ul>
+
+    <h2>Contact</h2>
+    <p>
+        Si vous souhaitez contacter l'association, nous recommandons l'échange
+        par mail. Merci d'utiliser notre mailing list dédiée :
+    </p>
+    <ul>
+        <li>
+            <a href="mailto:contact@asso-msn.fr">contact@asso-msn.fr</a>
+        </li>
+    </ul>
+    <p>
+        Si vous souhaitez simplement nous rencontrer et en apprendre plus sur
+        nous, nous vous invitons fortement à rejoindre et vous familiariser
+        avec notre Discord, ou nos différent réseaux sociaux:
+    </p>
+    <ul>
+        <li>
+            Discord: <a href="{{ data.links.discord }}">{{ data.links.discord }}</a>
+        </li>
+        <li>
+            Instagram: <a href="{{ data.links.instagram }}">@{{ data.links.instagram_username }}</a>
+        </li>
+        <li>
+            X: <a href="{{ data.links.x }}">@{{ data.links.x_username }}</a>
+        </li>
+    </ul>
+{% endblock %}
