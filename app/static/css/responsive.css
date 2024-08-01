@@ -10,6 +10,25 @@
         width: calc(100% + 1em);
     }
 
+    .columns {
+        flex-direction: column;
+    }
+
+    .gallery {
+        flex-direction: column;
+    }
+
+    .gallery.small img {
+        max-height: 200px;
+    }
+
+    .side-hero {
+        width: 80%;
+        margin: 20px auto;
+        position: relative;
+        left: 40px;
+    }
+
     #footer .bars {
         display: none;
     }

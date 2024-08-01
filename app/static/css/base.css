@@ -51,6 +51,11 @@ code {
     white-space: preserve-breaks;
 }
 
+img {
+    max-width: 100%;
+    object-fit: contain;
+}
+
 .emoji {
     width: 1em;
     height: 1em;
@@ -147,9 +152,39 @@ a.button, .button {
     top: 1em;
 }
 
+.columns {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.columns > * {
+    flex: 1;
+}
+
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.gallery > * {
+    flex: 1;
+}
+
+.gallery img {
+    width: 100%;
+    margin: 1em 0;
+}
+
+.gallery.small img {
+    max-height: 300px;
+}
+
 .page {
     max-width: var(--size-page-width);
     margin: 0 auto;
+    padding: 1em;
+    overflow-x: hidden;
 }
 
 .pager {
@@ -172,9 +207,19 @@ a.button, .button {
     color: var(--color-gray);
 }
 
+.side-hero {
+    box-shadow: 0 4px 4px var(--color-shadow);
+    transform: rotate(5deg) skew(-5deg);
+    margin: 20px 40px;
+}
+
 #navbar {
     padding: .5rem 2rem;
     box-shadow: 0 4px 4px var(--color-shadow);
+    position: sticky;
+    top: 0;
+    background: var(--color-white);
+    z-index: 100;
 }
 
 #navbar a,
