@@ -210,7 +210,9 @@ a.button, .button {
 .side-hero {
     box-shadow: 0 4px 4px var(--color-shadow);
     transform: rotate(5deg) skew(-5deg);
-    margin: 20px 40px;
+    margin: 30px 40px;
+    position: relative;
+    top: 20px;
 }
 
 #navbar {
