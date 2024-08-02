@@ -30,6 +30,17 @@
             <ul class="items">
                 <li><a href="{{ url_for('about') }}">L'association</a></li>
                 <li><a href="{{ url_for('events') }}">Évènements</a></li>
+                <li>
+                    {% if not current_user.is_authenticated %}
+                    <a href="{{ url_for('login') }}" class="login">
+                        {% include "components/icons/user_black.html.j2" %}
+                    </a>
+                    {% else %}
+                    <a href="{{ url_for('settings') }}">
+                        Hi, {{ current_user.name }}
+                    </a>
+                    {% endif %}
+                </li>
             </ul>
         </div>
     </nav>
@@ -74,7 +85,9 @@
     </footer>
 
     <p id="copyright">
-        MIT Licensed - MAKE SOME NOISE
+        <a href="https://github.com/asso-msn/msn-web/blob/main/LICENSE">MIT Licensed</a>
+        -
+        MAKE SOME NOISE
     </p>
 
 </body>

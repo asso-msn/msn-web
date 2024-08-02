@@ -3,15 +3,18 @@ import os
 from logging import Formatter
 from pathlib import Path
 
+import flask
+import werkzeug.utils
 from flask_assets import Bundle, Environment
+from flask_login import LoginManager
 
 ROOT_DIR = Path(__file__).parent
+VAR_DIR = Path("var")
 
-import flask
+from app import db
+from app.auto_import import auto_import  # noqa: E402
 
-from app.auto_import import auto_import
-
-from . import data
+from . import data  # noqa: E402
 
 
 class App(flask.Flask):
@@ -39,10 +42,34 @@ class App(flask.Flask):
             ),
         )
 
-    def render(self, template_name_or_list, **context):
-        return flask.render_template(
-            f"{template_name_or_list}.html.j2", **context
-        )
+        self.login_manager = LoginManager(self)
+
+        VAR_DIR.mkdir(exist_ok=True)
+        secret_key_path = VAR_DIR / "secret_key.txt"
+        if not secret_key_path.exists():
+            secret_key_path.write_text(os.urandom(24).hex())
+        self.config["SECRET_KEY"] = secret_key_path.read_text().strip()
+
+        db.create_all()
+
+    def redirect(self, route, code=302):
+        url = flask.url_for(route)
+        return werkzeug.utils.redirect(url, code)
+
+    def render(self, template_name, **context):
+        context.setdefault("page", template_name)
+        return flask.render_template(f"{template_name}.html.j2", **context)
+
+    def session(self, **kwargs):
+        return db.session(**kwargs)
+
+    def route(self, rule, **options):
+        """
+        Using @app.route instead of @app.<method> defaults to accepting both GET
+        and POST methods, useful for form-based routes.
+        """
+        options.setdefault("methods", ("GET", "POST"))
+        return super().route(rule, **options)
 
 
 format = "[%(levelname)s] %(name)s - %(pathname)s:%(lineno)s: %(message)s"
@@ -68,5 +95,5 @@ logging.basicConfig(
 app = App()
 
 
-for module in ("cli", "pages", "filters"):
+for module in ("cli", "filters", "routes"):
     auto_import(module)

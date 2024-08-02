@@ -1,9 +1,23 @@
 {% extends "base.html.j2" %}
 
 {% block body %}
+    {% if page %}
+    <div class="page page-{{ page }}">
+    {% else %}
     <div class="page">
+    {% endif %}
+
+    <div id="flashes">
+        {% for category, message in get_flashed_messages(with_categories=true) %}
+        <div class="flash {{ category }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+
     {% block content %}
     {{ content.html | safe }}
     {% endblock %}
+
     </div>
 {% endblock %}

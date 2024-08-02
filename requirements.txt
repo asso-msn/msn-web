@@ -1,8 +1,12 @@
 arrow
 Flask
 Flask-Assets
+Flask-Login
+Flask-WTF
 furl
 pyScss
 playwright
+pyhumps
 pyyaml
+sqlalchemy
 sssimp

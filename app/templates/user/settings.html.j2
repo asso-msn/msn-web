@@ -1,0 +1,8 @@
+{% extends "page.html.j2" %}
+
+{% block content %}
+<form method="post">
+    {{ logout.hidden_tag() }}
+    <button type="submit">Se déconnecter</button>
+</form>
+{% endblock content %}

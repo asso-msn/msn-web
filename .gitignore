@@ -1,3 +1,4 @@
 .webassets-cache/
 /app/static/style.css
 /output/
+/var/

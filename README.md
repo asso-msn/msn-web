@@ -37,7 +37,7 @@ You can reach us on Discord at https://asso-msn.fr/discord.
 
 ## Developing
 
-This project is developped using Python 3.10 and later. The backend
+This project is developped using Python 3.11 and later. The backend
 functionality is provided by Flask. Database ORM is provided by SQLAlchemy. We
 recommend getting familiar with those first.
 
@@ -47,9 +47,9 @@ features, such as Markdown conversions, and loading of data files (JSON, YAML,
 
 ### Running locally
 
-If you do not have Python 3.10 or later provided by your OS, we recommend using
-[pyenv](https://github.com/pyenv/pyenv). Then `pyenv install 3.10` and `pyenv
-shell 3.10` before running the following commands.
+If you do not have Python 3.11 or later provided by your OS, we recommend using
+[pyenv](https://github.com/pyenv/pyenv). Then `pyenv install 3.11` and `pyenv
+shell 3.11` before running the following commands.
 
 Setting up:
 

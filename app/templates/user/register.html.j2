@@ -1,0 +1,23 @@
+{% extends "page.html.j2" %}
+
+{% block content %}
+<form method="post">
+    {{ form.hidden_tag() }}
+    <div class="input">
+        <label for="{{ form.login.id }}">Identifiant</label>
+        {{ form.login }}
+        {{ form.login.errors }}
+    </div>
+    <div class="input">
+        <label for="{{ form.password.id }}">Mot de passe</label>
+        {{ form.password }}
+        {{ form.password.errors }}
+    </div>
+    <button type="submit">S'inscrire</button>
+</form>
+
+<p>
+    Vous avez déjà un compte ?
+    <a href="{{ url_for('login') }}">Connectez-vous</a>.
+</p>
+{% endblock content %}
