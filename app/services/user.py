@@ -33,7 +33,7 @@ def register(id: str, password: str) -> User:
         user = User(id=id, password=password)
         session.add(user)
         session.commit()
-    login(user)
+        login(user)
     return user
 
 
