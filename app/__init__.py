@@ -21,11 +21,18 @@ class App(flask.Flask):
     def __init__(self):
         super().__init__(__name__)
 
+        self.data = data.load(".")
+        if links := self.data.get("links"):
+            if username := self.data["links"].get("instagram_username"):
+                links["instagram"] = f"https://instagram.com/{username}"
+            if username := self.data["links"].get("x_username"):
+                links["x"] = f"https://x.com/{username}"
+
         @self.context_processor
         def _():
             return {
                 "app": self,
-                "data": data.load("."),
+                "data": self.data,
             }
 
         self.jinja_env.lstrip_blocks = True
