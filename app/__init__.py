@@ -11,7 +11,7 @@ from flask_login import LoginManager
 ROOT_DIR = Path(__file__).parent
 VAR_DIR = Path("var")
 
-from app import db
+from app import db  # noqa: E402
 from app.auto_import import auto_import  # noqa: E402
 
 from . import data  # noqa: E402
