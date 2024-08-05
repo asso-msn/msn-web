@@ -1,16 +1,16 @@
-name: Deploy
+name: Deploy new development version
+
 on:
   push:
     branches:
       - main
-      - release
 
 jobs:
   deploy:
     uses: Tina-otoge/infra/.github/workflows/deploy-workflow.yml@master
     with:
-      app: ${{ github.ref == 'refs/heads/release' && 'msnweb' || 'msnweb-demo' }}
-      webhook_msg: ${{ github.ref == 'refs/heads/main' && 'Démo du site mise à jour. Visitez https://demo.asso-msn.fr/ pour voir les changements.' || 'Version publique du site mise à jour. Visitez https://asso-msn.fr/ pour voir les changements.' }}
+      app: msnweb-demo
+      webhook_msg: "Démo du site mise à jour. Visitez https://demo.asso-msn.fr/ pour voir les changements."
     secrets:
       host: "${{ secrets.DEPLOY_HOST }}"
       user: "${{ secrets.DEPLOY_USER }}"
