@@ -1,6 +1,10 @@
 {% extends "page.html.j2" %}
 
 {% block content %}
+<p>
+    Vous êtes connecté en tant que {{ current_user }}.
+</p>
+
 <form method="post">
     {{ logout.hidden_tag() }}
     <button type="submit">Se déconnecter</button>

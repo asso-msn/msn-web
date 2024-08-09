@@ -2,22 +2,26 @@ import enum
 
 from flask_login import UserMixin
 
-from . import Column, Table, column
+from . import Column, Id, Table, Timed, column
 
 
-class User(Table, UserMixin):
+class User(Table, UserMixin, Id, Timed):
     class ImageType(enum.StrEnum):
         local = enum.auto()
         gravatar = enum.auto()
         discord = enum.auto()
 
-    id: Column[str] = column(primary_key=True)
+    login: Column[str] = column(unique=True)
     email: Column[str | None]
     password: Column[str | None]
     display_name: Column[str | None]
     bio: Column[str | None]
     image: Column[str | None]
+    image_type: Column[ImageType] = column(default=ImageType.local)
 
-    @property
-    def name(self) -> str:
-        return self.display_name or self.id
+    discord_id: Column[str | None]
+    discord_access_token: Column[str | None]
+    discord_refresh_token: Column[str | None]
+
+    def __str__(self):
+        return self.display_name or self.login

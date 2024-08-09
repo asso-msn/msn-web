@@ -1,12 +1,16 @@
 import logging
 import os
+import secrets
 from logging import Formatter
 from pathlib import Path
 
 import flask
 import werkzeug.utils
+from cachelib import SimpleCache
 from flask_assets import Bundle, Environment
 from flask_login import LoginManager
+from flask_session import Session
+from pydantic import BaseModel as Model
 
 ROOT_DIR = Path(__file__).parent
 VAR_DIR = Path("var")
@@ -49,19 +53,27 @@ class App(flask.Flask):
             ),
         )
 
+        self.config["USE_SESSION_FOR_NEXT"] = True
         self.login_manager = LoginManager(self)
+        self.login_manager.login_view = "login"
+
+        self.config["SESSION_TYPE"] = "cachelib"
+        self.config["SESSION_CACHELIB"] = SimpleCache()
+        Session(self)
 
         VAR_DIR.mkdir(exist_ok=True)
         secret_key_path = VAR_DIR / "secret_key.txt"
         if not secret_key_path.exists():
-            secret_key_path.write_text(os.urandom(24).hex())
+            secret_key_path.write_text(secrets.token_hex())
         self.config["SECRET_KEY"] = secret_key_path.read_text().strip()
 
         db.create_all()
 
-    def redirect(self, route, code=302):
-        url = flask.url_for(route)
-        return werkzeug.utils.redirect(url, code)
+    def redirect(self, route, external=False, code=302):
+        external = external or route.split(":")[0] in ("http", "https")
+        if not external and not route.startswith("/"):
+            route = flask.url_for(route)
+        return werkzeug.utils.redirect(route, code)
 
     def render(self, template_name, **context):
         context.setdefault("page", template_name)
@@ -77,6 +89,12 @@ class App(flask.Flask):
         """
         options.setdefault("methods", ("GET", "POST"))
         return super().route(rule, **options)
+
+    def make_response(self, rv):
+        if isinstance(rv, Model):
+            rv = rv.model_dump()
+
+        return super().make_response(rv)
 
 
 format = "[%(levelname)s] %(name)s - %(pathname)s:%(lineno)s: %(message)s"
@@ -100,6 +118,12 @@ logging.basicConfig(
 
 
 app = App()
+
+from app.services.config import Config  # noqa: E402
+
+config = Config()
+
+app.config.from_object(config)
 
 
 for module in ("cli", "filters", "routes"):

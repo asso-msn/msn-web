@@ -14,7 +14,6 @@ from app.services import user as service
 
 class RegisterForm(FlaskForm):
     login = StringField(
-        "Login",
         validators=[
             DataRequired(),
             AlnumPlusValidator(),
@@ -23,7 +22,6 @@ class RegisterForm(FlaskForm):
         ],
     )
     password = PasswordField(
-        "Password",
         validators=[
             DataRequired(),
             Length(min=4),

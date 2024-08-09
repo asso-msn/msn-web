@@ -1,4 +1,5 @@
 .webassets-cache/
 /app/static/style.css
+/config.yml
 /output/
 /var/

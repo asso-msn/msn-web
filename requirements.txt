@@ -1,11 +1,14 @@
 arrow
+cachelib
 Flask
 Flask-Assets
 Flask-Login
+Flask-Session
 Flask-WTF
 furl
 pyScss
 playwright
+pydantic
 pyhumps
 pyyaml
 sqlalchemy

@@ -9,14 +9,12 @@ from app.services import user as service
 
 class LoginForm(FlaskForm):
     login = StringField(
-        "Login",
         validators=[
             DataRequired(),
             AlnumPlusValidator(),
         ],
     )
     password = PasswordField(
-        "Password",
         validators=[
             DataRequired(),
             Length(min=4),
@@ -36,5 +34,4 @@ def login():
     if not service.check_login(form.login.data, form.password.data):
         flask.flash("Identifiant ou mot de passe incorrect", "error")
         return get()
-    flask.flash("Vous êtes désormais connecté")
     return app.redirect("index")

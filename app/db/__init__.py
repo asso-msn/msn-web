@@ -1,7 +1,13 @@
+from datetime import UTC, datetime
+
 import humps
 import sqlalchemy as sa
 from sqlalchemy import orm
-from sqlalchemy.orm import DeclarativeBase, Session
+from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.orm import Mapped as Column
+from sqlalchemy.orm import Session
+from sqlalchemy.orm import declarative_mixin as mixin
+from sqlalchemy.orm import mapped_column as column
 
 from app import VAR_DIR
 
@@ -31,7 +37,17 @@ def create_all():
     Table.metadata.create_all(engine)
 
 
-from sqlalchemy.orm import Mapped as Column  # noqa: E402
-from sqlalchemy.orm import mapped_column as column  # noqa: E402
+@mixin
+class Id:
+    id: Column[int] = column(primary_key=True)
+
+
+@mixin
+class Timed:
+    created_at: Column[datetime] = column(default=lambda: datetime.now(UTC))
+    updated_at: Column[datetime | None] = column(
+        onupdate=lambda: datetime.now(UTC)
+    )
+
 
 from .user import User  # noqa: E402

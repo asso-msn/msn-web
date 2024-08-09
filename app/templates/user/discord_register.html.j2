@@ -1,0 +1,24 @@
+{% extends "page.html.j2" %}
+
+{% block content %}
+
+<p>
+    Création de votre compte via votre profil Discord.
+</p>
+
+<form method="post">
+    {{ form.hidden_tag() }}
+    <div class="input">
+        <label for="{{ form.login.id }}">Identifiant</label>
+        {{ form.login }}
+        {{ form.login.errors }}
+    </div>
+    <div class="input checkbox">
+        <label for="{{ form.use_avatar.id }}">Importer mon avatar depuis Discord</label>
+        {{ form.use_avatar }}
+        {{ form.use_avatar.errors }}
+    </div>
+    <button type="submit">Créer mon compte</button>
+    <a href="{{ url_for('index')}}">Je ne souhaite pas créer de compte</a>
+</form>
+{% endblock content %}
