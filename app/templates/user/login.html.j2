@@ -1,6 +1,7 @@
 {% extends "page.html.j2" %}
 
 {% block content %}
+<h1>Je me connecte</h1>
 <form method="post">
     {{ form.hidden_tag() }}
     <div class="input">
@@ -23,7 +24,7 @@
 </p>
 
 <p>
-    Vous n'avez pas de compte ?
-    <a href="{{ url_for('register') }}">Inscrivez-vous</a>.
+    Pas encore de compte ?
+    <a href="{{ url_for('register') }}">Inscris-toi</a>.
 </p>
 {% endblock content %}

@@ -15,6 +15,6 @@ def settings():
     logout = LogoutForm()
     if logout.validate_on_submit():
         service.logout()
-        flask.flash("Vous avez été déconnecté")
+        flask.flash("Tu as été déconnecté")
         return app.redirect("index")
     return app.render("user/settings", logout=logout)
