@@ -2,6 +2,12 @@
 
 {% block content %}
 <h1>Je me connecte</h1>
+
+<p>
+    Pas encore de compte ?
+    <a href="{{ url_for('register') }}">Inscris-toi</a>.
+</p>
+
 <form method="post">
     {{ form.hidden_tag() }}
     <div class="input">
@@ -21,10 +27,5 @@
     <a href="{{ url_for('discord_login')}}" class="button discord">
         Se connecter avec Discord
     </a>
-</p>
-
-<p>
-    Pas encore de compte ?
-    <a href="{{ url_for('register') }}">Inscris-toi</a>.
 </p>
 {% endblock content %}
