@@ -1,0 +1,11 @@
+<div class="input">
+    <label for="{{ form[input].id }}">
+        {{ label }}
+    </label>
+    {{ form[input] }}
+    <div class="input-errors">
+        {% if form[input].errors %}
+        {{ form[input].errors }}
+        {% endif %}
+    </div>
+</div>

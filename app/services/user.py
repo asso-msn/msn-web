@@ -12,7 +12,7 @@ def user_loader(id) -> User:
 
 
 def login(user: User) -> User:
-    flask_login.login_user(user)
+    flask_login.login_user(user, remember=True)
     return user
 
 

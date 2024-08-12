@@ -1,33 +1,13 @@
 from flask_wtf import FlaskForm
-from wtforms import PasswordField, StringField
 
 from app import app
-from app.forms import (
-    AlnumPlusValidator,
-    DataRequired,
-    Length,
-    LoginTakenValidator,
-    NotReservedNameValidator,
-)
+from app.forms import DataRequired, Length, LoginField, PasswordField
 from app.services import user as service
 
 
 class RegisterForm(FlaskForm):
-    login = StringField(
-        validators=[
-            AlnumPlusValidator(),
-            DataRequired(),
-            Length(max=30),
-            LoginTakenValidator(),
-            NotReservedNameValidator(),
-        ],
-    )
-    password = PasswordField(
-        validators=[
-            DataRequired(),
-            Length(min=4),
-        ],
-    )
+    login = LoginField()
+    password = PasswordField()
 
 
 @app.route("/register/")

@@ -1,4 +1,5 @@
 import enum
+import hashlib
 
 from flask_login import UserMixin
 
@@ -25,3 +26,24 @@ class User(Table, UserMixin, Id, Timed):
 
     def __str__(self):
         return self.display_name or self.login
+
+    def update_avatar(self):
+        if self.image_type == User.ImageType.discord:
+            from app.services import discord
+
+            api = discord.API(self.discord_access_token)
+            user = api.get_user()
+            self.image = user.avatar_url
+            return
+
+        if self.image_type == User.ImageType.gravatar:
+            email_hash = hashlib.sha256(self.email.lower().encode()).hexdigest()
+            self.image = f"https://www.gravatar.com/avatar/{email_hash}?d=mp"
+            return
+
+    def refresh_discord_token(self):
+        from app.services import discord
+
+        response = discord.refresh(self.discord_refresh_token)
+        self.discord_access_token = response.access_token
+        self.discord_refresh_token = response.refresh_token

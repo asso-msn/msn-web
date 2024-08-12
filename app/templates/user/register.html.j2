@@ -29,9 +29,10 @@
     {% include "components/forms/input.html.j2" %}
     {% endwith %}
 
-    <div class="input">
-        <button type="submit">S'inscrire</button>
-    </div>
+
+    {% with button_text='S\'inscrire' %}
+    {% include "components/forms/submit.html.j2" %}
+    {% endwith %}
 </form>
 
 {% endblock content %}

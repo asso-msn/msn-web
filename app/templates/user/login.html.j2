@@ -28,8 +28,9 @@
     {% include "components/forms/input.html.j2" %}
     {% endwith %}
 
-    <div class="input">
-        <button type="submit">Se connecter</button>
-    </div>
+
+    {% with button_text='Se connecter' %}
+    {% include "components/forms/submit.html.j2" %}
+    {% endwith %}
 </form>
 {% endblock content %}

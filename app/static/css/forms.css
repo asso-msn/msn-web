@@ -6,6 +6,12 @@ textarea:focus, input:focus{
     outline: none;
 }
 
+textarea {
+    resize: none;
+    display: block;
+    width: 100%;
+}
+
 /* Hides yellow background on autofilled inputs */
 input:autofill {
     box-shadow: 0 0 0px 1000px var(--input-background) inset;

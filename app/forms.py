@@ -1,8 +1,34 @@
-from wtforms import ValidationError
+from flask_login import current_user
+from wtforms import PasswordField, StringField, ValidationError
 from wtforms.validators import DataRequired, Length
 
 from app import db
 from app.db import User
+
+
+class LoginField(StringField):
+    def __init__(self, **kwargs):
+        super().__init__(
+            validators=[
+                AlnumPlusValidator(),
+                DataRequired(),
+                Length(max=30),
+                LoginTakenValidator(),
+                NotReservedNameValidator(),
+            ],
+            **kwargs,
+        )
+
+
+class PasswordField(PasswordField):
+    def __init__(self, **kwargs):
+        super().__init__(
+            validators=[
+                DataRequired(),
+                Length(min=4),
+            ],
+            **kwargs,
+        )
 
 
 class DataRequired(DataRequired):
@@ -60,5 +86,7 @@ class LoginTakenValidator:
     def __call__(self, form, field):
         with db.session() as session:
             result = session.query(User).filter(User.id == field.data).first()
+        if current_user is not None and current_user.id == result.id:
+            return
         if result is not None:
             raise ValidationError(self.message)

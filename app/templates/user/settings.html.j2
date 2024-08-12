@@ -1,12 +1,75 @@
 {% extends "page.html.j2" %}
 
 {% block content %}
-<p>
-    Tu es connecté en tant que {{ current_user }}.
-</p>
+<h1>Paramètres</h1>
+
+<form method="post">
+    {{ form.hidden_tag() }}
+
+    <div class="columns">
+        <div class="column">
+            <h2>Mon profil</h2>
+
+            {% with input='display_name', label='Nom d\'affichage' %}
+            {% include "components/forms/input.html.j2" %}
+            {% endwith %}
+
+            {% with input='bio', label='Description' %}
+            {% include "components/forms/textarea.html.j2" %}
+            {% endwith %}
+
+            {% with input='image_type', label='Service d\'avatar '%}
+            {% include "components/forms/select.html.j2" %}
+            {% endwith %}
+
+            {% with input='image', label='Avatar' %}
+            {% include "components/forms/file.html.j2" %}
+            {% endwith %}
+        </div>
+        <div class="column">
+            <h2>Mon compte</h2>
+
+            {% with input='login', label='Identifiant' %}
+            {% include "components/forms/input.html.j2" %}
+            {% endwith %}
+
+            {% with input='email', label='Email' %}
+            {% include "components/forms/input.html.j2" %}
+            {% endwith %}
+
+            {% with input='password', label='Mot de passe' %}
+            {% include "components/forms/input.html.j2" %}
+            {% endwith %}
+        </div>
+    </div>
+
+    {% with button_text='Sauvegarder' %}
+    {% include "components/forms/submit.html.j2" %}
+    {% endwith %}
+</form>
 
 <form method="post">
     {{ logout.hidden_tag() }}
-    <button type="submit">Se déconnecter</button>
+
+    {% with button_text='Se déconnecter' %}
+    {% include "components/forms/submit.html.j2" %}
+    {% endwith %}
 </form>
 {% endblock content %}
+
+{% block scripts %}
+<script>
+    const image_type = document.getElementById('image_type');
+    const uploader = document.getElementById('image');
+
+    function updateUploaderDisplay() {
+        if (image_type.value != 'local') {
+            uploader.style.display = 'none';
+        } else {
+            uploader.style.display = 'block';
+        }
+    }
+    image_type.addEventListener('change', updateUploaderDisplay);
+    updateUploaderDisplay();
+</script>
+{% endblock %}

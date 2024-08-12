@@ -119,6 +119,12 @@ class API:
         public_flags: int | None
         avatar_decoration_data: dict | None
 
+        @property
+        def avatar_url(self):
+            if not self.avatar:
+                return None
+            return f"{BASE_URL}/avatars/{self.id}/{self.avatar}.webp"
+
     def get_user(self) -> "API.User":
         data = self.get("/users/@me")
         return self.User(**data)
@@ -136,3 +142,11 @@ def get_db_user(access_token) -> User | None:
             or s.query(User).filter_by(email=user.email)
         ).first()
     return user
+
+
+if __name__ == "__main__":
+    with app.session() as s:
+        user = s.query(User).first()
+        api = API(user.discord_access_token)
+        print(api.get_user())
+        print(api.get_oauth())
