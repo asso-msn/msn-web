@@ -1,8 +1,12 @@
 <div class="input">
     <div class="checkbox">
         <div class="label-group">
-            <label for="{{ form[input].id }}">{{ label }}</label>
+            <label class="label" for="{{ form[input].id }}">{{ label }}</label>
             {{ form[input] }}
+            <div class="checkbox-icon">
+                <label class="material-icons icon " for="{{ form[input].id }}">check_box_outline_blank</label>
+                <label class="material-icons icon active" for="{{ form[input].id }}">check_box</label>
+            </div>
         </div>
     </div>
     <div class="input-errors">
