@@ -1,29 +1,37 @@
 {% extends "page.html.j2" %}
 
 {% block content %}
-<p>
-    As-tu déjà un compte ?
+<h1>Je m'inscris</h1>
+
+<p class="small">
+    Déjà membre ?
     <a href="{{ url_for('login') }}">Connectes-toi</a>.
 </p>
 
+<p class="buttons">
+    {% include "components/buttons/discord.html.j2" %}
+</p>
+
+<div class="separator">
+    ou
+</div>
+
+
 <form method="post">
     {{ form.hidden_tag() }}
+
+    {% with input='login', label='Identifiant', icon='person' %}
+    {% include "components/forms/input.html.j2" %}
+    {% endwith %}
+
+
+    {% with input='password', label='Mot de passe', icon='lock' %}
+    {% include "components/forms/input.html.j2" %}
+    {% endwith %}
+
     <div class="input">
-        <label for="{{ form.login.id }}">Identifiant</label>
-        {{ form.login }}
-        {{ form.login.errors }}
+        <button type="submit">S'inscrire</button>
     </div>
-    <div class="input">
-        <label for="{{ form.password.id }}">Mot de passe</label>
-        {{ form.password }}
-        {{ form.password.errors }}
-    </div>
-    <button type="submit">S'inscrire</button>
 </form>
 
-<p>
-    <a href="{{ url_for('discord_login')}}" class="button discord">
-        Se connecter avec Discord
-    </a>
-</p>
 {% endblock content %}

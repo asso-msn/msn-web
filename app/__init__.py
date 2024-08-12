@@ -47,6 +47,8 @@ class App(flask.Flask):
             "css",
             Bundle(
                 "css/base.css",
+                "css/forms.css",
+                "css/login.css",
                 "css/events.css",
                 "css/responsive.css",
                 output="style.css",
@@ -56,6 +58,9 @@ class App(flask.Flask):
         self.config["USE_SESSION_FOR_NEXT"] = True
         self.login_manager = LoginManager(self)
         self.login_manager.login_view = "login"
+        self.login_manager.login_message = (
+            "Tu dois te connecter pour accéder à cette page."
+        )
 
         self.config["SESSION_TYPE"] = "cachelib"
         self.config["SESSION_CACHELIB"] = SimpleCache()
@@ -76,7 +81,10 @@ class App(flask.Flask):
         return werkzeug.utils.redirect(route, code)
 
     def render(self, template_name, **context):
-        context.setdefault("page", template_name)
+        default_page = template_name
+        default_page = default_page.replace("/", "-")
+        default_page = default_page.replace("_", "-")
+        context.setdefault("page", default_page)
         return flask.render_template(f"{template_name}.html.j2", **context)
 
     def session(self, **kwargs):

@@ -1,0 +1,13 @@
+<div class="input">
+    <div class="checkbox">
+        <div class="label-group">
+            <label for="{{ form[input].id }}">{{ label }}</label>
+            {{ form[input] }}
+        </div>
+    </div>
+    <div class="input-errors">
+        {% if form[input].errors %}
+        {{ form[input].errors }}
+        {% endif %}
+    </div>
+</div>

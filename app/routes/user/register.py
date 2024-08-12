@@ -15,10 +15,11 @@ from app.services import user as service
 class RegisterForm(FlaskForm):
     login = StringField(
         validators=[
-            DataRequired(),
             AlnumPlusValidator(),
-            NotReservedNameValidator(),
+            DataRequired(),
+            Length(max=30),
             LoginTakenValidator(),
+            NotReservedNameValidator(),
         ],
     )
     password = PasswordField(
@@ -33,6 +34,8 @@ class RegisterForm(FlaskForm):
 def register():
     form = RegisterForm()
     if not form.validate_on_submit():
-        return app.render("user/register", form=form)
+        return app.render(
+            "user/register", form=form, page="login", title="Inscription"
+        )
     service.register(form.login.data, form.password.data)
     return app.redirect("index")

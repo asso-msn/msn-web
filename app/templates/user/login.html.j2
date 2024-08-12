@@ -3,29 +3,33 @@
 {% block content %}
 <h1>Je me connecte</h1>
 
-<p>
+<p class="small">
     Pas encore de compte ?
     <a href="{{ url_for('register') }}">Inscris-toi</a>.
 </p>
 
+<p class="buttons">
+    {% include "components/buttons/discord.html.j2" %}
+</p>
+
+<div class="separator">
+    ou
+</div>
+
 <form method="post">
     {{ form.hidden_tag() }}
-    <div class="input">
-        <label for="{{ form.login.id }}">Identifiant</label>
-        {{ form.login }}
-        {{ form.login.errors }}
-    </div>
-    <div class="input">
-        <label for="{{ form.password.id }}">Mot de passe</label>
-        {{ form.password }}
-        {{ form.password.errors }}
-    </div>
-    <button type="submit">Se connecter</button>
-</form>
 
-<p>
-    <a href="{{ url_for('discord_login')}}" class="button discord">
-        Se connecter avec Discord
-    </a>
-</p>
+    {% with input='login', label='Identifiant', icon='person' %}
+    {% include "components/forms/input.html.j2" %}
+    {% endwith %}
+
+
+    {% with input='password', label='Mot de passe', icon='lock' %}
+    {% include "components/forms/input.html.j2" %}
+    {% endwith %}
+
+    <div class="input">
+        <button type="submit">Se connecter</button>
+    </div>
+</form>
 {% endblock content %}

@@ -66,7 +66,12 @@ def discord_register():
         # This is the only special character allowed by Discord but not by us
         form.login.data = user.username.replace(".", "_")
         form.use_avatar.data = True
-        return app.render("user/discord_register", form=form)
+        return app.render(
+            "user/discord_register",
+            form=form,
+            page="login",
+            title="Inscription via Discord",
+        )
 
     with app.session() as s:
         user = User(

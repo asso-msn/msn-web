@@ -4,6 +4,7 @@
     --color-dark-blue: #003566;
     --color-dark-purple: #BEB8DC;
     --color-gray: #4D4D4D;
+    --color-light-gray: #b2b2b2;
     --color-green: #C2E0B2;
     --color-light-blue: #C8E4F0;
     --color-orange: #FBDCB9;
@@ -76,6 +77,20 @@ img {
     font-family: var(--font-logo);
 }
 
+.separator::before, .separator::after {
+    flex: 1;
+    content: '';
+    padding: 1px;
+    background-color: var(--color-light-gray);
+    margin: 5px;
+}
+
+.separator {
+    display: flex;
+    align-items: center;
+    margin: 2em 0;
+}
+
 .material-icons {
     max-width: 1em;
     overflow: hidden;
@@ -85,16 +100,23 @@ img {
 }
 
 
-.badge, .button {
+.badge, .button, button {
     padding: .25em 1em;
     border-radius: 2.5em;
     background: var(--color-white);
     color: var(--color-black);
 }
 
-.button {
+.button, button {
     border: 1px solid var(--color-gray);
     cursor: pointer;
+    padding: 0.5em 1.5em;
+}
+
+.button .emoji {
+    position: relative;
+    top: -0.05em;
+    margin-right: 0.5em;
 }
 
 a.button, .button {
@@ -102,8 +124,11 @@ a.button, .button {
 }
 
 .button.discord {
-    border-color: var(--color-discord);
-    color: var(--color-discord);
+    /* border-color: var(--color-discord);
+    color: var(--color-discord); */
+    background: var(--color-discord);
+    color: var(--color-white);
+    border: none;
 }
 
 .badge {
@@ -185,6 +210,15 @@ a.button, .button {
     margin: 0 auto;
     padding: 1em;
     overflow-x: hidden;
+}
+
+.page .small {
+    font-size: 0.9em;
+}
+
+.page .buttons {
+    margin-top: 2.5em;
+    margin-bottom: 1.5em;
 }
 
 .pager {

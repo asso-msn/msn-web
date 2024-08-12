@@ -1,0 +1,7 @@
+{% if button_text is undefined %}
+{% set button_text = "Se connecter avec Discord" %}
+{% endif %}
+<a href="{{ url_for('discord_login')}}" class="button discord">
+    {% include "components/icons/discord_white.html.j2" %}
+    {{ button_text }}
+</a>

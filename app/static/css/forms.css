@@ -1,0 +1,66 @@
+:root {
+    --input-background: #f4f4f4;
+}
+
+textarea:focus, input:focus{
+    outline: none;
+}
+
+/* Hides yellow background on autofilled inputs */
+input:autofill {
+    box-shadow: 0 0 0px 1000px var(--input-background) inset;
+}
+
+.input {
+    margin: 0.5em 0;
+}
+
+.input .text-field {
+    background: var(--input-background);
+    border-radius: 8px;
+    padding: 0.5em 1em;
+    display: flex;
+}
+
+.input .text-field .label-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.input .text-field .label-group label {
+    text-align: left;
+    font-size: 0.8em;
+}
+
+.input .text-field .label-group input {
+    border: none;
+    background: unset;
+    font-size: 1.1em;
+}
+
+.input .checkbox .label-group {
+    display: flex;
+}
+
+.input .checkbox label {
+    text-align: left;
+}
+
+.input .checkbox input {
+    width: 2em;
+    height: 2em;
+    margin: .5em;
+}
+
+.input .label-icon {
+    width: 2em;
+    display: flex;
+    align-items: center;
+}
+
+button[type="submit"] {
+    background: var(--color-black);
+    color: var(--color-white);
+    border: none;
+}
