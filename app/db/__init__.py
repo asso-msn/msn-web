@@ -11,7 +11,16 @@ from sqlalchemy.orm import mapped_column as column
 
 from app import VAR_DIR
 
-engine = sa.create_engine(f"sqlite:///{VAR_DIR / 'app.db'}")
+try:
+    engine = sa.create_engine(f"sqlite:///{VAR_DIR / 'app.db'}")
+except ModuleNotFoundError as e:
+    raise Exception(
+        f"{e}"
+        "\nPlease install the required dependencies to use the database."
+        "\nFor Ubuntu: sudo apt install libsqlite3-dev"
+        "\nIf you installed libsqlite after installing Python via pyenv, you"
+        " also need to reinstall Python by running `pyenv install` again."
+    ) from e
 
 
 def session(**kwargs) -> Session:
