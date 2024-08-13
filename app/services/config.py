@@ -15,6 +15,15 @@ class Config:
 
     def __init__(self, path="config.yml"):
         path = Path(path)  # 🐶
+        if not path.exists():
+            with path.open("w") as f:
+                yaml.safe_dump(
+                    {
+                        field.name: getattr(self, field.name, "REPLACE_ME")
+                        for field in fields(self)
+                    },
+                    f,
+                )
         with path.open() as f:
             data = yaml.safe_load(f)
         for field in fields(self):
