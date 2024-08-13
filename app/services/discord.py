@@ -124,7 +124,10 @@ class API:
         def avatar_url(self):
             if not self.avatar:
                 return None
-            return f"{CDN_URL}/avatars/{self.id}/{self.avatar}.webp?size=256"
+            return (
+                f"{CDN_URL}/avatars/{self.id}"
+                f"/{self.avatar}.webp?size={config.DISCORD_AVATAR_SIZE}"
+            )
 
     def get_user(self) -> "API.User":
         data = self.get("/users/@me")

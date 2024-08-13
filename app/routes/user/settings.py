@@ -1,11 +1,13 @@
 import flask
 from flask_login import current_user
 from flask_wtf import FlaskForm
+from werkzeug.datastructures import FileStorage
 from wtforms import EmailField, FileField, SelectField, StringField, SubmitField
 
 from app import app
 from app.db import User
 from app.forms import Length, LoginField, PasswordField
+from app.services import avatar
 from app.services import user as service
 
 
@@ -37,18 +39,18 @@ def settings():
     logout = LogoutForm()
     form = EditProfileForm()
 
+    if form.is_submitted() and form.password.data == "":
+        del form.password
+
     if logout.submit.data and logout.validate_on_submit():
         service.logout()
         flask.flash("Tu as été déconnecté")
         return app.redirect("index")
 
-    if form.is_submitted():
-        if form.password.data == "" and current_user.password is None:
-            del form.password
-
     if form.validate_on_submit():
         with app.session() as s:
-            need_avatar_update = False
+            need_avatar_refresh = False
+            changed_avatar_type = False
             user = s.query(User).get(current_user.id)
 
             user.login = form.login.data
@@ -60,17 +62,41 @@ def settings():
 
             if user.image_type != form.image_type.data:
                 user.image_type = form.image_type.data
-                need_avatar_update = True
+                changed_avatar_type = True
+
+            if user.image_type != User.ImageType.local:
+                del form.image
+                if changed_avatar_type:
+                    need_avatar_refresh = True
+            elif form.image.data:
+                image: FileStorage = form.image.data
+                image = avatar.convert(image)
+                image_hash = avatar.save(image)
+                if (
+                    not changed_avatar_type
+                    and user.image
+                    and (
+                        s.query(User)
+                        .filter(
+                            User.image == user.image,
+                            User.id != user.id,
+                        )
+                        .count()
+                    )
+                    == 0
+                ):
+                    avatar.delete(user.image)
+                user.image = image_hash
 
             if (
                 user.email != form.email.data
                 and user.image_type == User.ImageType.gravatar
             ):
-                need_avatar_update = True
+                need_avatar_refresh = True
             user.email = form.email.data
 
-            if need_avatar_update:
-                user.update_avatar()
+            if need_avatar_refresh:
+                user.refresh_avatar()
 
             s.commit()
             flask.flash("Profil mis à jour")

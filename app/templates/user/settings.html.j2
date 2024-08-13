@@ -1,9 +1,14 @@
 {% extends "page.html.j2" %}
 
 {% block content %}
+<div id="profile-header">
+    <img class="avatar" src="{{ current_user.avatar_url }}">
+    <h2>{{ current_user }}</h2>
+</div>
+
 <h1>Paramètres</h1>
 
-<form method="post" id="profile-settings">
+<form method="post" id="profile-settings" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
 
     <div class="columns" id="profile-settings-sections">

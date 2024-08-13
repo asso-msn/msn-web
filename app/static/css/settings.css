@@ -11,3 +11,15 @@
 #profile-settings #bio {
     height: 20em;
 }
+
+#profile-header {
+    display: flex;
+    align-items: start;
+}
+
+#profile-header img {
+    width: 128px;
+    height: 128px;
+    border-radius: 12px;
+    margin-right: 1em;
+}

@@ -12,8 +12,8 @@ from flask_login import LoginManager
 from flask_session import Session
 from pydantic import BaseModel as Model
 
-ROOT_DIR = Path(__file__).parent
-VAR_DIR = Path("var")
+ROOT_DIR = Path(__file__).parent.resolve()
+VAR_DIR = Path("var").resolve()
 
 from app import db  # noqa: E402
 from app.auto_import import auto_import  # noqa: E402

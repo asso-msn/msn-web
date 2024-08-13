@@ -10,6 +10,8 @@ class Config:
     SERVER_NAME: str
     DISCORD_CLIENT_ID: str
     DISCORD_CLIENT_SECRET: str
+    AVATAR_SIZE: int = 256
+    DISCORD_AVATAR_SIZE: int = AVATAR_SIZE
 
     def __init__(self, path="config.yml"):
         path = Path(path)  # 🐶

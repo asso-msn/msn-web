@@ -1,6 +1,7 @@
 import enum
 import hashlib
 
+import flask
 from flask_login import UserMixin
 
 from . import Column, Id, Table, Timed, column
@@ -8,7 +9,7 @@ from . import Column, Id, Table, Timed, column
 
 class User(Table, UserMixin, Id, Timed):
     class ImageType(enum.StrEnum):
-        # local = enum.auto()
+        local = enum.auto()
         gravatar = enum.auto()
         discord = enum.auto()
 
@@ -18,8 +19,7 @@ class User(Table, UserMixin, Id, Timed):
     display_name: Column[str | None]
     bio: Column[str | None]
     image: Column[str | None]
-    image_type: Column[ImageType | None]
-    # image_type: Column[ImageType] = column(default=ImageType.local)
+    image_type: Column[ImageType] = column(default=ImageType.local)
 
     discord_id: Column[str | None]
     discord_access_token: Column[str | None]
@@ -30,9 +30,11 @@ class User(Table, UserMixin, Id, Timed):
 
     @property
     def avatar_url(self):
+        if self.image_type == User.ImageType.local:
+            return flask.url_for("avatar", hash=self.image)
         return self.image or "https://www.gravatar.com/avatar/?d=mp"
 
-    def update_avatar(self):
+    def refresh_avatar(self):
         if self.image_type == User.ImageType.discord:
             from app.services import discord
 
@@ -42,7 +44,8 @@ class User(Table, UserMixin, Id, Timed):
             return
 
         if self.image_type == User.ImageType.gravatar:
-            email_hash = hashlib.sha256(self.email.lower().encode()).hexdigest()
+            email = self.email.lower()
+            email_hash = hashlib.sha256(email.encode()).hexdigest()
             self.image = f"https://www.gravatar.com/avatar/{email_hash}?d=mp"
             return
 
