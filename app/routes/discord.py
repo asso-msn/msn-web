@@ -1,3 +1,5 @@
+import secrets
+
 import flask
 from flask_wtf import FlaskForm
 from wtforms import BooleanField, StringField
@@ -16,7 +18,8 @@ from app.services import user as user_service
 
 @app.get("/login/discord/")
 def discord_login():
-    state = None  # TODO: random token, stored in session and verified later
+    state = secrets.token_hex(16)
+    flask.session["discord_state"] = state
     url = service.get_authorization_url(state=state)
     return flask.redirect(url)
 
@@ -24,9 +27,10 @@ def discord_login():
 @app.get("/login/discord/callback")
 def discord_callback():
     code = flask.request.args.get("code")
-    state = flask.request.args.get(  # noqa F841
-        "state"
-    )  # TODO: verify using session
+    state = flask.request.args.get("state")  # noqa F841
+    if not state or state != flask.session.pop("discord_state", None):
+        flask.flash("Token de sécurité OAuth 2.0 State invalide.", "error")
+        return app.redirect("index")
     token = service.get_discord_token(code)
     user = service.get_db_user(token.access_token)
     if not user:
