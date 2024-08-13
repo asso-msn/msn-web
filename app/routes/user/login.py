@@ -35,4 +35,8 @@ def login():
     if not service.check_login(form.login.data, form.password.data):
         flask.flash("Identifiant ou mot de passe incorrect", "error")
         return get()
+
+    if next := flask.session.pop("next", None):
+        return app.redirect(next)
+
     return app.redirect("index")

@@ -38,6 +38,10 @@ def discord_callback():
         flask.session["discord_refresh_token"] = token.refresh_token
         return app.redirect("discord_register")
     user_service.login(user)
+
+    if next := flask.session.pop("next", None):
+        return app.redirect(next)
+
     return app.redirect("index")
 
 
@@ -90,4 +94,8 @@ def discord_register():
         s.add(user)
         s.commit()
         user_service.login(user)
+
+    if next := flask.session.pop("next", None):
+        return app.redirect(next)
+
     return app.redirect("index")
