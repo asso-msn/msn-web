@@ -22,11 +22,10 @@ class LoginField(StringField):
 
 class PasswordField(PasswordField):
     def __init__(self, **kwargs):
+        validators = kwargs.pop("validators", [])
+        validators.append(Length(min=4))
         super().__init__(
-            validators=[
-                DataRequired(),
-                Length(min=4),
-            ],
+            validators=validators,
             **kwargs,
         )
 
@@ -86,7 +85,7 @@ class LoginTakenValidator:
     def __call__(self, form, field):
         with db.session() as session:
             result = session.query(User).filter(User.id == field.data).first()
-        if current_user is not None and current_user.id == result.id:
-            return
         if result is not None:
+            if current_user and current_user.id == result.id:
+                return
             raise ValidationError(self.message)

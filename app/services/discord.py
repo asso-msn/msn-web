@@ -9,6 +9,7 @@ from app.db import User
 
 BASE_URL = "https://discord.com"
 API_URL = f"{BASE_URL}/api/v10"
+CDN_URL = "https://cdn.discordapp.com"
 SCOPES = ("email", "identify")
 
 session = Session()
@@ -123,7 +124,7 @@ class API:
         def avatar_url(self):
             if not self.avatar:
                 return None
-            return f"{BASE_URL}/avatars/{self.id}/{self.avatar}.webp"
+            return f"{CDN_URL}/avatars/{self.id}/{self.avatar}.webp"
 
     def get_user(self) -> "API.User":
         data = self.get("/users/@me")
@@ -142,11 +143,3 @@ def get_db_user(access_token) -> User | None:
             or s.query(User).filter_by(email=user.email)
         ).first()
     return user
-
-
-if __name__ == "__main__":
-    with app.session() as s:
-        user = s.query(User).first()
-        api = API(user.discord_access_token)
-        print(api.get_user())
-        print(api.get_oauth())

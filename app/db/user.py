@@ -8,7 +8,7 @@ from . import Column, Id, Table, Timed, column
 
 class User(Table, UserMixin, Id, Timed):
     class ImageType(enum.StrEnum):
-        local = enum.auto()
+        # local = enum.auto()
         gravatar = enum.auto()
         discord = enum.auto()
 
@@ -18,7 +18,8 @@ class User(Table, UserMixin, Id, Timed):
     display_name: Column[str | None]
     bio: Column[str | None]
     image: Column[str | None]
-    image_type: Column[ImageType] = column(default=ImageType.local)
+    image_type: Column[ImageType | None]
+    # image_type: Column[ImageType] = column(default=ImageType.local)
 
     discord_id: Column[str | None]
     discord_access_token: Column[str | None]
@@ -26,6 +27,10 @@ class User(Table, UserMixin, Id, Timed):
 
     def __str__(self):
         return self.display_name or self.login
+
+    @property
+    def avatar_url(self):
+        return self.image or "https://www.gravatar.com/avatar/?d=mp"
 
     def update_avatar(self):
         if self.image_type == User.ImageType.discord:

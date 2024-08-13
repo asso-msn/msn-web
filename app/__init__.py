@@ -47,9 +47,10 @@ class App(flask.Flask):
             "css",
             Bundle(
                 "css/base.css",
+                "css/events.css",
                 "css/forms.css",
                 "css/login.css",
-                "css/events.css",
+                "css/settings.css",
                 "css/responsive.css",
                 output="style.css",
             ),

@@ -1,0 +1,13 @@
+#profile-settings-sections > .column {
+    margin: 0 1em;
+}
+
+#profile-settings [type="submit"] {
+    min-width: 40%;
+    margin: 1em auto;
+    display: inherit;
+}
+
+#profile-settings #bio {
+    height: 20em;
+}

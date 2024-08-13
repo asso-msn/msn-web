@@ -1,3 +1,15 @@
 <div class="input">
-    <button type="submit">{{ button_text }}</button>
+    <input
+        type="submit"
+        {% if input is not undefined %}
+        name="{{ form[input].id }}"
+        id="{{ form[input].id }}"
+        {% endif %}
+        {% if type is not undefined %}
+        class="button {{ type }}"
+        {% else %}
+        class="button"
+        {% endif %}
+        value="{{ button_text }}"
+    />
 </div>

@@ -37,7 +37,7 @@
                     </a>
                     {% else %}
                     <a href="{{ url_for('settings') }}">
-                        Hi, {{ current_user }}
+                        <img class="avatar" src="{{ current_user.avatar_url }}">
                     </a>
                     {% endif %}
                 </li>

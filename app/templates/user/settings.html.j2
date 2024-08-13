@@ -3,10 +3,10 @@
 {% block content %}
 <h1>Paramètres</h1>
 
-<form method="post">
+<form method="post" id="profile-settings">
     {{ form.hidden_tag() }}
 
-    <div class="columns">
+    <div class="columns" id="profile-settings-sections">
         <div class="column">
             <h2>Mon profil</h2>
 
@@ -14,16 +14,16 @@
             {% include "components/forms/input.html.j2" %}
             {% endwith %}
 
-            {% with input='bio', label='Description' %}
-            {% include "components/forms/textarea.html.j2" %}
-            {% endwith %}
-
             {% with input='image_type', label='Service d\'avatar '%}
             {% include "components/forms/select.html.j2" %}
             {% endwith %}
 
-            {% with input='image', label='Avatar' %}
+            {% with input='image', label='Avatar', id='image-input' %}
             {% include "components/forms/file.html.j2" %}
+            {% endwith %}
+
+            {% with input='bio', label='Description', placeholder='Parle de qui tu es ici...' %}
+            {% include "components/forms/textarea.html.j2" %}
             {% endwith %}
         </div>
         <div class="column">
@@ -40,6 +40,15 @@
             {% with input='password', label='Mot de passe' %}
             {% include "components/forms/input.html.j2" %}
             {% endwith %}
+
+            <p>
+                Lié à Discord :
+                {% if current_user.discord_id %}
+                <span class="badge good">Oui</span>
+                {% else %}
+                <span class="badge">Non</span>
+                {% endif %}
+            </p>
         </div>
     </div>
 
@@ -48,10 +57,11 @@
     {% endwith %}
 </form>
 
+<hr>
+
 <form method="post">
     {{ logout.hidden_tag() }}
-
-    {% with button_text='Se déconnecter' %}
+    {% with form=logout, input='submit', button_text='Se déconnecter', type='alert' %}
     {% include "components/forms/submit.html.j2" %}
     {% endwith %}
 </form>
@@ -60,7 +70,7 @@
 {% block scripts %}
 <script>
     const image_type = document.getElementById('image_type');
-    const uploader = document.getElementById('image');
+    const uploader = document.getElementById('image-input');
 
     function updateUploaderDisplay() {
         if (image_type.value != 'local') {

@@ -4,12 +4,14 @@
     --color-dark-blue: #003566;
     --color-dark-purple: #BEB8DC;
     --color-gray: #4D4D4D;
+    --color-lighter-gray: #dcdcdc;
     --color-light-gray: #b2b2b2;
     --color-green: #C2E0B2;
     --color-light-blue: #C8E4F0;
     --color-orange: #FBDCB9;
     --color-purple: #DFBED6;
     --color-red: #FBB9B9;
+    --color-strong-red: #f95151;
     --color-white: #ffffff;
     --color-yellow: #FFF8B8;
 
@@ -85,7 +87,7 @@ img {
     margin: 5px;
 }
 
-.separator {
+.separator, hr {
     display: flex;
     align-items: center;
     margin: 2em 0;
@@ -131,13 +133,19 @@ a.button, .button {
     border: none;
 }
 
+.button.alert,
+button.alert,
+button[type="submit"].alert,
+.button[type="submit"].alert {
+    background: var(--color-strong-red);
+    color: var(--color-white);
+}
+
 .badge {
     font-size: .8em;
     margin: 1em 0;
-}
-
-.badge.event {
     color: var(--color-black);
+    background: var(--color-lighter-gray);
 }
 
 .badge.event-meetup {
@@ -150,6 +158,9 @@ a.button, .button {
 
 .badge.event-nightly {
     background: var(--color-dark-purple);
+}
+.badge.good {
+    background: var(--color-green);
 }
 
 .card {
@@ -291,6 +302,15 @@ a.button, .button {
     border: 1px solid var(--color-black);
     position: relative;
     top: -0.2em;
+}
+
+#navbar .avatar {
+    width: 2.5em;
+    height: 2.5em;
+    margin: -1em 0;
+    border-radius: 4px;
+    border: 1px solid var(--color-light-gray);
+    /* box-shadow: 0 0 6px var(--color-shadow); */
 }
 
 

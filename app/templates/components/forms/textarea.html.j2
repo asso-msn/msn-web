@@ -1,7 +1,15 @@
 <div class="input">
-    <label for="{{ input }}">
-        {{ label }}
-    </label>
-    <textarea id="{{ input }}">
-    </textarea>
+    <div class="text-field">
+        <div class="label-group">
+            <label for="{{ form[input].id }}">
+                {{ label }}
+            </label>
+            <textarea
+                id="{{ form[input].id }}"
+                {% if placeholder is not undefined %}
+                placeholder="{{ placeholder }}"
+                {% endif %}
+            >{{ form[input].data or '' }}</textarea>
+        </div>
+    </div>
 </div>

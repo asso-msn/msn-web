@@ -1,4 +1,9 @@
-<div class="input">
+<div
+    class="input"
+    {% if id is not undefined %}
+    id="{{ id }}"
+    {% endif %}
+>
     <label for="{{ input }}">
         {{ label }}
     </label>

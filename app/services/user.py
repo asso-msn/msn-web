@@ -28,13 +28,17 @@ def check_login(login_: str, password: str) -> User:
 
 
 def register(login_: str, password: str) -> User:
-    password = werkzeug.security.generate_password_hash(password)
+    password = hash(password)
     with app.session() as s:
         user = User(login=login_, password=password)
         s.add(user)
         s.commit()
         login(user)
     return user
+
+
+def hash(password: str) -> str:
+    return werkzeug.security.generate_password_hash(password)
 
 
 def logout():

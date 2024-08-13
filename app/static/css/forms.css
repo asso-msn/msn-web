@@ -86,7 +86,12 @@ input:autofill {
     align-items: center;
 }
 
-button[type="submit"] {
+.text-field textarea {
+    background: none;
+    border: none;
+}
+
+.button[type="submit"] {
     background: var(--color-black);
     color: var(--color-white);
     border: none;
