@@ -124,7 +124,7 @@ class API:
         def avatar_url(self):
             if not self.avatar:
                 return None
-            return f"{CDN_URL}/avatars/{self.id}/{self.avatar}.webp"
+            return f"{CDN_URL}/avatars/{self.id}/{self.avatar}.webp?size=256"
 
     def get_user(self) -> "API.User":
         data = self.get("/users/@me")
