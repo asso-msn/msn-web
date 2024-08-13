@@ -30,7 +30,7 @@ class User(Table, UserMixin, Id, Timed):
 
     @property
     def avatar_url(self):
-        if self.image_type == User.ImageType.local:
+        if self.image and self.image_type == User.ImageType.local:
             return flask.url_for("avatar", hash=self.image)
         return self.image or "https://www.gravatar.com/avatar/?d=mp"
 
