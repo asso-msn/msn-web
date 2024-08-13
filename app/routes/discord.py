@@ -82,7 +82,7 @@ def discord_register():
         )
         if form.use_avatar.data:
             user.image_type = User.ImageType.discord
-        user.update_avatar()
+        user.refresh_avatar()
         s.add(user)
         s.commit()
         user_service.login(user)
