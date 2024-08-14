@@ -72,6 +72,8 @@ class AlnumPlusValidator:
 
     def __call__(self, form, field):
         name = field.data
+        if not name:
+            return
         name = name.replace("-", "")
         name = name.replace("_", "")
         if not name.isalnum():
