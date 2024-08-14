@@ -17,7 +17,10 @@ AVATARS_DIR = VAR_DIR / "avatars"
 
 def convert(image: FileStorage) -> BytesIO:
     if Image is None:
-        raise ImportError("Wand is not installed") from wand_import_error
+        raise ImportError(
+            "Wand is not installed. See documentation:"
+            " https://docs.wand-py.org/en/latest/guide/install.html"
+        ) from wand_import_error
 
     stream = BytesIO()
     with Image(file=image) as img:
