@@ -1,14 +1,14 @@
 <div class="input">
     <div class="text-field">
-        <div class="label-group">
-            <label for="{{ form[input].id }}">{{ label }}</label>
-            {{ form[input] }}
-        </div>
         {% if icon %}
         <label class="label-icon" for="{{ form[input].id }}">
             <span class="material-icons">{{ icon }}</span>
         </label>
         {% endif %}
+        <div class="label-group">
+            <label for="{{ form[input].id }}">{{ label }}</label>
+            {{ form[input] }}
+        </div>
     </div>
     <div class="input-errors">
         {% if form[input].errors %}

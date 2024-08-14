@@ -19,6 +19,7 @@ input:not([type="password"]):autofill {
 
 input {
     font-size: 1em;
+    padding: 0;
 }
 
 .input {
@@ -89,6 +90,7 @@ input {
     width: 2em;
     display: flex;
     align-items: center;
+    margin-right: 1em;
 }
 
 .text-field textarea {
