@@ -4,12 +4,11 @@
             <label for="{{ form[input].id }}">
                 {{ label }}
             </label>
-            <textarea
-                id="{{ form[input].id }}"
-                {% if placeholder is not undefined %}
-                placeholder="{{ placeholder }}"
-                {% endif %}
-            >{{ form[input].data or '' }}</textarea>
+            {% if placeholder is not undefined %}
+            {{ form[input](placeholder=placeholder) }}
+            {% else %}
+            {{ form[input] }}
+            {% endif %}
         </div>
     </div>
 </div>

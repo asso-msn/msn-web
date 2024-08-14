@@ -2,7 +2,14 @@ import flask
 from flask_login import current_user
 from flask_wtf import FlaskForm
 from werkzeug.datastructures import FileStorage
-from wtforms import EmailField, FileField, SelectField, StringField, SubmitField
+from wtforms import (
+    EmailField,
+    FileField,
+    SelectField,
+    StringField,
+    SubmitField,
+    TextAreaField,
+)
 
 from app import app
 from app.db import User
@@ -22,7 +29,7 @@ class EditProfileForm(FlaskForm):
     display_name = StringField(validators=[Length(max=32)])
     email = EmailField()
     password = PasswordField()
-    bio = StringField(validators=[Length(max=1000)])
+    bio = TextAreaField(validators=[Length(max=1000)])
     image = FileField()
     image_type = SelectField(
         choices=[(x, translate_image_type(x)) for x in User.ImageType]
