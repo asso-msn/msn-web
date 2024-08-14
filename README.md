@@ -83,16 +83,21 @@ interface with `-h <IP>`.
 The entrypoint of the web server is the `app` symbol available in the `app`
 module, defined in `app/__init__.py`.
 
-`app/pages` is a collection of Flask routes that serve rendered HTML pages.
+HTTP routes are defined in `app/routes`. Associated forms are defined above each
+route.
 
 `app/services` holds the code for features implementation / "business logic", in
-a form that is easy to import and execute, so that it can be imported in `pages`
-while only having to add web specific logic on top of it (requests handling,
-etc). Data models are defined there.
+a form that is easy to import and execute, so that it can be imported in
+`routes` while only having to add web specific logic on top of it (requests
+handling, etc). Data models are defined there.
 
-`app/static` contains static files such as images, CSS and JS.
+`app/static` contains static files such as images, CSS and JS. Bundling of files
+is made using [Flask-Assets][Flask-Assets] and is defined in the constructor of
+`App`.
 
-`app/templates` contains Jinja2 HTML templates to be used by `pages`.
+`app/templates` contains Jinja2 HTML templates to be used by `routes`.
+
+Database tables are defined in `app/db`, each in their own file.
 
 Generic Python helpers are directly added in their own file in the `app`
 directory.
@@ -109,3 +114,4 @@ MIT.
 
 [roadmap]: https://github.com/asso-msn/msn-web/milestones?direction=asc&sort=title&state=open
 [sssimp]: https://github.com/Tina-otoge/sssimp
+[flask-assets]: https://flask-assets.readthedocs.io/en/latest/
