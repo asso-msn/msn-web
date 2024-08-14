@@ -16,7 +16,8 @@
     --color-yellow: #FFF8B8;
 
     --color-discord-old: #7289da;
-    --color-discord: #5865F2;
+    --color-discord-new: #5865F2;
+    --color-discord: var(--color-discord-new);
 
     --font-main: 'Poppins', sans-serif;
     --font-logo: 'Bungee', sans-serif;
