@@ -65,6 +65,14 @@ def settings():
         unlink_discord.unlink_discord.data
         and unlink_discord.validate_on_submit()
     ):
+        if not current_user.password:
+            flask.flash(
+                "Tu dois définir un mot de passe pour déconnecter ton compte de"
+                " Discord",
+                "error",
+            )
+            return app.redirect("settings")
+
         with app.session() as s:
             user = s.query(User).get(current_user.id)
             user.discord_id = None
