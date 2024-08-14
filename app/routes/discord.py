@@ -1,6 +1,7 @@
 import secrets
 
 import flask
+from flask_login import current_user
 from flask_wtf import FlaskForm
 from wtforms import BooleanField, StringField
 
@@ -36,6 +37,8 @@ def discord_callback():
     if not user:
         flask.session["discord_access_token"] = token.access_token
         flask.session["discord_refresh_token"] = token.refresh_token
+        if current_user.is_authenticated:
+            return app.redirect("discord_link")
         return app.redirect("discord_register")
     user_service.login(user)
 
@@ -99,3 +102,46 @@ def discord_register():
         return app.redirect(next)
 
     return app.redirect("index")
+
+
+class DiscordLinkForm(FlaskForm):
+    pass
+
+
+@app.route("/link/discord/")
+@user_service.authenticated
+def discord_link():
+    if current_user.has_discord:
+        flask.flash("Tu as déjà lié ton compte Discord.", "error")
+        return app.redirect("index")
+
+    access_token = flask.session.get("discord_access_token")
+    refresh_token = flask.session.get("discord_refresh_token")
+
+    if not access_token or not refresh_token:
+        return app.redirect("discord_login")
+
+    api = service.API(access_token=access_token)
+    discord_user = api.get_user()
+
+    form = DiscordLinkForm()
+
+    if not form.validate_on_submit():
+        return app.render(
+            "user/discord_link",
+            form=form,
+            page="login",
+            title="Lier Discord",
+            discord_user=discord_user,
+        )
+
+    with app.session() as s:
+        user = s.query(User).get(current_user.id)
+        user.discord_id = discord_user.id
+        user.discord_access_token = access_token
+        user.discord_refresh_token = refresh_token
+        user.refresh_avatar()
+        s.commit()
+
+    flask.flash("Ton compte Discord a été lié avec succès.")
+    return app.redirect("settings")

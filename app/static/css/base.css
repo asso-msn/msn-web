@@ -126,8 +126,6 @@ a.button, .button {
 }
 
 .button.discord {
-    /* border-color: var(--color-discord);
-    color: var(--color-discord); */
     background: var(--color-discord);
     color: var(--color-white);
     border: none;

@@ -23,3 +23,12 @@
     border-radius: 12px;
     margin-right: 1em;
 }
+
+.page-user-settings #actions {
+    margin-top: 3em;
+}
+
+.page-user-settings #actions .action {
+    display: inline-block;
+    margin: 0 1em;
+}

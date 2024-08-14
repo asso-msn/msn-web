@@ -17,6 +17,10 @@ input:autofill {
     box-shadow: 0 0 0px 1000px var(--input-background) inset;
 }
 
+input {
+    font-size: 1em;
+}
+
 .input {
     margin: 0.5em 0;
 }

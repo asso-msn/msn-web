@@ -48,7 +48,7 @@
 
             <p>
                 Lié à Discord :
-                {% if current_user.discord_id %}
+                {% if current_user.has_discord %}
                 <span class="badge good">Oui</span>
                 {% else %}
                 <span class="badge">Non</span>
@@ -62,14 +62,35 @@
     {% endwith %}
 </form>
 
-<hr>
+<div id="actions">
+    <div class="separator">
+        Actions
+    </div>
 
-<form method="post">
-    {{ logout.hidden_tag() }}
-    {% with form=logout, input='submit', button_text='Se déconnecter', type='alert' %}
-    {% include "components/forms/submit.html.j2" %}
-    {% endwith %}
-</form>
+    <form method="post" class="action">
+        {{ logout.hidden_tag() }}
+        {% with form=logout, input='logout', button_text='Se déconnecter', type='alert' %}
+        {% include "components/forms/submit.html.j2" %}
+        {% endwith %}
+    </form>
+
+    {% if current_user.has_discord %}
+    <form method="post" class="action">
+        {{ logout.hidden_tag() }}
+        {% with form=unlink_discord, input='unlink_discord', button_text='Désassocier Discord' %}
+        {% include "components/forms/submit.html.j2" %}
+        {% endwith %}
+    </form>
+    {% else %}
+    <div class="action">
+        <a href="{{ url_for('discord_link') }}" class="button discord">
+            {% include "components/icons/discord_white.html.j2" %}
+            Associer Discord
+        </a>
+    </div>
+    {% endif %}
+</div>
+
 {% endblock content %}
 
 {% block scripts %}

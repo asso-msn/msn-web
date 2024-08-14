@@ -29,13 +29,17 @@ class User(Table, UserMixin, Id, Timed):
         return self.display_name or self.login
 
     @property
-    def avatar_url(self):
+    def avatar_url(self) -> str:
         from app import config
 
         if self.image and self.image_type == User.ImageType.local:
             return flask.url_for("avatar", hash=self.image)
         size = config.GRAVATAR_AVATAR_SIZE
         return self.image or f"https://www.gravatar.com/avatar/?s={size}&d=mp"
+
+    def reset_avatar(self):
+        self.image = None
+        self.image_type = User.ImageType.local
 
     def refresh_avatar(self):
         from app import config
@@ -56,6 +60,10 @@ class User(Table, UserMixin, Id, Timed):
                 f"https://www.gravatar.com/avatar/{email_hash}?s={size}&d=mp"
             )
             return
+
+    @property
+    def has_discord(self) -> bool:
+        return bool(self.discord_id)
 
     def refresh_discord_token(self):
         from app.services import discord

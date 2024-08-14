@@ -1,0 +1,33 @@
+{% extends "page.html.j2" %}
+
+{% block content %}
+
+<h1>
+    Je lie mon compte Discord
+</h1>
+
+<p>
+    <img class="avatar" src="{{ current_user.avatar_url }}">
+</p>
+
+<p>
+    Tu es actuellement connecté au site MSN en tant que : {{ current_user }}.
+</p>
+
+<p>
+    Tu t'apprêtes à lier ton compte Discord : {{ discord_user.username }}.
+</p>
+
+<p class="small">
+    Je ne souhaite pas lier mon Discord :
+    <a href="{{ url_for('index')}}">retour à la page d'accueil</a>.
+</p>
+
+<form method="post">
+    {{ form.hidden_tag() }}
+
+    {% with button_text='Lier Discord' %}
+    {% include "components/forms/submit.html.j2" %}
+    {% endwith %}
+</form>
+{% endblock content %}

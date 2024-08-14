@@ -12,8 +12,8 @@ from app.services import user as service
 
 
 def translate_image_type(image_type):
-    # if image_type == User.ImageType.local:
-    #     return "Fichier"
+    if image_type == User.ImageType.local:
+        return "Fichier"
     return image_type.capitalize().replace("_", " ")
 
 
@@ -30,22 +30,42 @@ class EditProfileForm(FlaskForm):
 
 
 class LogoutForm(FlaskForm):
-    submit = SubmitField()
+    logout = SubmitField()
+
+
+class UnlinkDiscordForm(FlaskForm):
+    unlink_discord = SubmitField()
 
 
 @app.route("/settings/")
 @service.authenticated
 def settings():
-    logout = LogoutForm()
     form = EditProfileForm()
+    unlink_discord = UnlinkDiscordForm()
+    logout = LogoutForm()
 
     if form.is_submitted() and form.password.data == "":
         del form.password
 
-    if logout.submit.data and logout.validate_on_submit():
+    if logout.logout.data and logout.validate_on_submit():
         service.logout()
         flask.flash("Tu as été déconnecté")
         return app.redirect("index")
+
+    if (
+        unlink_discord.unlink_discord.data
+        and unlink_discord.validate_on_submit()
+    ):
+        with app.session() as s:
+            user = s.query(User).get(current_user.id)
+            user.discord_id = None
+            user.discord_access_token = None
+            user.discord_refresh_token = None
+            if user.image_type == User.ImageType.discord:
+                user.reset_avatar()
+            s.commit()
+        flask.flash("Ton compte Discord a été délié")
+        return app.redirect("settings")
 
     if form.validate_on_submit():
         with app.session() as s:
@@ -121,5 +141,9 @@ def settings():
         ]
 
     return app.render(
-        "user/settings", form=form, logout=logout, title="Paramètres"
+        "user/settings",
+        form=form,
+        logout=logout,
+        unlink_discord=unlink_discord,
+        title="Paramètres",
     )
