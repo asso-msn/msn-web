@@ -54,6 +54,14 @@
                 <span class="badge">Non</span>
                 {% endif %}
             </p>
+
+            <div class="separator">
+                Confidentialité
+            </div>
+
+            {% with input='hide_in_list', label='Me cacher de la liste de membres' %}
+            {% include "components/forms/checkbox.html.j2" %}
+            {% endwith %}
         </div>
     </div>
 

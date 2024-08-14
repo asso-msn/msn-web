@@ -25,6 +25,8 @@ class User(Table, UserMixin, Id, Timed):
     discord_access_token: Column[str | None]
     discord_refresh_token: Column[str | None]
 
+    hide_in_list: Column[bool] = column(default=False)
+
     def __str__(self):
         return self.display_name or self.login
 

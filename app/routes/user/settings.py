@@ -3,6 +3,7 @@ from flask_login import current_user
 from flask_wtf import FlaskForm
 from werkzeug.datastructures import FileStorage
 from wtforms import (
+    BooleanField,
     EmailField,
     FileField,
     SelectField,
@@ -34,6 +35,7 @@ class EditProfileForm(FlaskForm):
     image_type = SelectField(
         choices=[(x, translate_image_type(x)) for x in User.ImageType]
     )
+    hide_in_list = BooleanField()
 
 
 class LogoutForm(FlaskForm):
@@ -83,6 +85,7 @@ def settings():
             user.login = form.login.data
             user.display_name = form.display_name.data
             user.bio = form.bio.data
+            user.hide_in_list = form.hide_in_list.data
 
             if getattr(form, "password"):
                 user.password = service.hash(form.password.data)
@@ -138,6 +141,7 @@ def settings():
     form.email.data = current_user.email
     form.bio.data = current_user.bio
     form.image_type.data = current_user.image_type
+    form.hide_in_list.data = current_user.hide_in_list
 
     if not current_user.email:
         form.image_type.choices = [
