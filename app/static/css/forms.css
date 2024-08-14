@@ -13,7 +13,7 @@ textarea {
 }
 
 /* Hides yellow background on autofilled inputs */
-input:autofill {
+input:not([type="password"]):autofill {
     box-shadow: 0 0 0px 1000px var(--input-background) inset;
 }
 
