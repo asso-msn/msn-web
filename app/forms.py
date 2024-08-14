@@ -52,7 +52,7 @@ class Length(Length):
 class NotReservedNameValidator:
     RESERVED_USERNAMES = ["admin", "root", "administrator", "system"]
 
-    def __init__(self, message="Reserved username"):
+    def __init__(self, message="Nom réservé"):
         self.message = message
 
     def __call__(self, form, field):
