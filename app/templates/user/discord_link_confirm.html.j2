@@ -1,0 +1,33 @@
+{% extends "page.html.j2" %}
+
+{% block content %}
+
+<h1>
+    Je lie mon compte Discord
+</h1>
+
+<p>
+    Est-que c'est bien toi ?
+</p>
+
+<div id="discord-profile">
+    <img src="{{ discord_user.avatar_url }}" alt="Avatar Discord" class="avatar">
+    <h2 id="discord-name">
+        {{ discord_user }}
+    </h2>
+</div>
+
+
+<form method="post" class="actions">
+    {{ form.hidden_tag() }}
+
+    {% with button_text="Lier ce compte Discord" %}
+    {% include "components/forms/submit.html.j2" %}
+    {% endwith %}
+</form>
+
+<p class="small">
+    Je ne souhaite pas lier mon Discord :
+    <a href="{{ url_for('settings')}}">retour à mes paramètres</a>.
+</p>
+{% endblock content %}

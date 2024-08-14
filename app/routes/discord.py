@@ -16,6 +16,8 @@ from app.forms import (
 from app.services import discord as service
 from app.services import user as user_service
 
+ALREADY_LINKED_MESSAGE = "Tu as déjà lié ton compte Discord."
+
 
 @app.get("/login/discord/")
 def discord_login():
@@ -38,7 +40,7 @@ def discord_callback():
         flask.session["discord_access_token"] = token.access_token
         flask.session["discord_refresh_token"] = token.refresh_token
         if current_user.is_authenticated:
-            return app.redirect("discord_link")
+            return app.redirect("discord_link_confirm")
         return app.redirect("discord_register")
     user_service.login(user)
 
@@ -112,7 +114,21 @@ class DiscordLinkForm(FlaskForm):
 @user_service.authenticated
 def discord_link():
     if current_user.has_discord:
-        flask.flash("Tu as déjà lié ton compte Discord.", "error")
+        flask.flash(ALREADY_LINKED_MESSAGE, "error")
+        return app.redirect("index")
+
+    return app.render(
+        "user/discord_link",
+        page="link",
+        title="Lier Discord",
+    )
+
+
+@app.route("/link/discord/confirm/")
+@user_service.authenticated
+def discord_link_confirm():
+    if current_user.has_discord:
+        flask.flash(ALREADY_LINKED_MESSAGE, "error")
         return app.redirect("index")
 
     access_token = flask.session.get("discord_access_token")
@@ -124,13 +140,20 @@ def discord_link():
     api = service.API(access_token=access_token)
     discord_user = api.get_user()
 
+    with app.session() as s:
+        if s.query(User).filter_by(discord_id=discord_user.id).count():
+            flask.flash(
+                "Ce compte Discord est déjà lié à un compte MSN.", "error"
+            )
+            return app.redirect("index")
+
     form = DiscordLinkForm()
 
     if not form.validate_on_submit():
         return app.render(
-            "user/discord_link",
+            "user/discord_link_confirm",
             form=form,
-            page="login",
+            page="link",
             title="Lier Discord",
             discord_user=discord_user,
         )
@@ -140,7 +163,6 @@ def discord_link():
         user.discord_id = discord_user.id
         user.discord_access_token = access_token
         user.discord_refresh_token = refresh_token
-        user.refresh_avatar()
         s.commit()
 
     flask.flash("Ton compte Discord a été lié avec succès.")

@@ -56,6 +56,7 @@ input {
 .input .checkbox .label {
     text-align: left;
     font-size: .9em;
+    align-self: center;
 }
 
 .input .checkbox input {

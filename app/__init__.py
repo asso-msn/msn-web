@@ -54,6 +54,7 @@ class App(flask.Flask):
                 "css/base.css",
                 "css/events.css",
                 "css/forms.css",
+                "css/link.css",
                 "css/login.css",
                 "css/settings.css",
                 "css/responsive.css",

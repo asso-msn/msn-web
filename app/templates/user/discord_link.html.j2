@@ -7,27 +7,26 @@
 </h1>
 
 <p>
-    <img class="avatar" src="{{ current_user.avatar_url }}">
+    En associant mon Discord, je pourrai :
 </p>
 
-<p>
-    Tu es actuellement connecté au site MSN en tant que : {{ current_user }}.
-</p>
+<ul>
+    <li>Synchroniser mon avatar Discord au site MSN.</li>
+    <li>Me connecter via Discord au lieu d'un identifiant et mot de passe.</li>
+</ul>
 
 <p>
-    Tu t'apprêtes à lier ton compte Discord : {{ discord_user.username }}.
+    Aucune modification ne sera apportée à votre compte MSN automatiquement.
+</p>
+
+<p class="actions">
+    {% with button_text='Connecter mon Discord' %}
+    {% include "components/buttons/discord.html.j2" %}
+    {% endwith %}
 </p>
 
 <p class="small">
     Je ne souhaite pas lier mon Discord :
-    <a href="{{ url_for('index')}}">retour à la page d'accueil</a>.
+    <a href="{{ url_for('settings')}}">retour à mes paramètres</a>.
 </p>
-
-<form method="post">
-    {{ form.hidden_tag() }}
-
-    {% with button_text='Lier Discord' %}
-    {% include "components/forms/submit.html.j2" %}
-    {% endwith %}
-</form>
 {% endblock content %}

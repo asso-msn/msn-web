@@ -120,6 +120,13 @@ class API:
         public_flags: int | None
         avatar_decoration_data: dict | None
 
+        def __str__(self):
+            return self.name
+
+        @property
+        def name(self):
+            return self.global_name or self.username
+
         @property
         def avatar_url(self):
             if not self.avatar:
