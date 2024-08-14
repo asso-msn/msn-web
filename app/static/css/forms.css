@@ -2,6 +2,11 @@
     --input-background: #f4f4f4;
 }
 
+input, textarea {
+    border: none;
+    background: none;
+}
+
 textarea:focus, input:focus{
     outline: none;
 }
@@ -45,7 +50,6 @@ input {
 }
 
 .input .text-field .label-group input {
-    border: none;
     background: unset;
     font-size: 1.1em;
 }
@@ -95,11 +99,9 @@ input {
 
 .text-field textarea {
     background: none;
-    border: none;
 }
 
 .button[type="submit"] {
     background: var(--color-black);
     color: var(--color-white);
-    border: none;
 }

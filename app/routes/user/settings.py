@@ -29,20 +29,14 @@ class EditProfileForm(FlaskForm):
     login = LoginField()
     display_name = StringField(validators=[Length(max=32)])
     email = EmailField()
-    password = PasswordField()
     bio = TextAreaField(validators=[Length(max=1000)])
     image = FileField()
     image_type = SelectField(
         choices=[(x, translate_image_type(x)) for x in User.ImageType]
     )
     hide_in_list = BooleanField()
-
-
-class LogoutForm(FlaskForm):
+    save = SubmitField()
     logout = SubmitField()
-
-
-class UnlinkDiscordForm(FlaskForm):
     unlink_discord = SubmitField()
 
 
@@ -50,21 +44,16 @@ class UnlinkDiscordForm(FlaskForm):
 @service.authenticated
 def settings():
     form = EditProfileForm()
-    unlink_discord = UnlinkDiscordForm()
-    logout = LogoutForm()
 
-    if form.is_submitted() and form.password.data == "":
-        del form.password
+    if form.logout.data or form.unlink_discord.data:
+        form._csrf.validate_csrf_token(form, form.csrf_token)
 
-    if logout.logout.data and logout.validate_on_submit():
+    if form.logout.data:
         service.logout()
         flask.flash("Tu as été déconnecté")
         return app.redirect("index")
 
-    if (
-        unlink_discord.unlink_discord.data
-        and unlink_discord.validate_on_submit()
-    ):
+    if form.unlink_discord.data:
         if not current_user.password:
             flask.flash(
                 "Tu dois définir un mot de passe pour déconnecter ton compte de"
@@ -94,9 +83,6 @@ def settings():
             user.display_name = form.display_name.data
             user.bio = form.bio.data
             user.hide_in_list = form.hide_in_list.data
-
-            if getattr(form, "password"):
-                user.password = service.hash(form.password.data)
 
             if user.image_type != form.image_type.data:
                 user.image_type = form.image_type.data
@@ -163,10 +149,45 @@ def settings():
             x for x in form.image_type.choices if x[0] != User.ImageType.discord
         ]
 
-    return app.render(
-        "user/settings",
-        form=form,
-        logout=logout,
-        unlink_discord=unlink_discord,
-        title="Paramètres",
-    )
+    return app.render("user/settings", form=form, title="Paramètres")
+
+
+class PasswordForm(FlaskForm):
+    password = PasswordField()
+    delete = SubmitField()
+
+
+@app.route("/settings/password/")
+@service.authenticated
+def settings_password():
+    form = PasswordForm()
+
+    if form.delete.data:
+        del form.password
+        if form.validate_on_submit():
+            if not current_user.has_discord:
+                flask.flash(
+                    "Ton compte doit être lié à Discord pour pouvoir supprimer"
+                    " l'authentification par mot de passe",
+                    "error",
+                )
+                return app.redirect("settings_password")
+
+            with app.session() as s:
+                user = s.query(User).get(current_user.id)
+                user.password = None
+                s.commit()
+            flask.flash("Mot de passe supprimé")
+            return app.redirect("settings")
+
+    if not form.validate_on_submit():
+        return app.render(
+            "user/password", form=form, title="Mot de passe", page="password"
+        )
+
+    with app.session() as s:
+        user = s.query(User).get(current_user.id)
+        service.set_password(user, form.password.data)
+        s.commit()
+    flask.flash("Mot de passe mis à jour")
+    return app.redirect("settings")

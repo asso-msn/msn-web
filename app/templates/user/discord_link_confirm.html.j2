@@ -21,13 +21,15 @@
 <form method="post" class="actions">
     {{ form.hidden_tag() }}
 
-    {% with button_text="Lier ce compte Discord" %}
-    {% include "components/forms/submit.html.j2" %}
-    {% endwith %}
+    <div id="actions">
+        <a href="{{ url_for('settings') }}" class="button">
+            Retour
+        </a>
+
+        {% with button_text="Lier ce compte Discord" %}
+        {% include "components/forms/submit.html.j2" %}
+        {% endwith %}
+    </div>
 </form>
 
-<p class="small">
-    Je ne souhaite pas lier mon Discord :
-    <a href="{{ url_for('settings')}}">retour à mes paramètres</a>.
-</p>
 {% endblock content %}

@@ -28,9 +28,9 @@ def check_login(login_: str, password: str) -> User:
 
 
 def register(login_: str, password: str) -> User:
-    password = hash(password)
     with app.session() as s:
-        user = User(login=login_, password=password)
+        user = User(login=login_)
+        set_password(user, password)
         s.add(user)
         s.commit()
         login(user)
@@ -39,6 +39,10 @@ def register(login_: str, password: str) -> User:
 
 def hash(password: str) -> str:
     return werkzeug.security.generate_password_hash(password)
+
+
+def set_password(user: User, password: str):
+    user.password = hash(password)
 
 
 def logout():

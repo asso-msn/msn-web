@@ -27,7 +27,11 @@
             {% include "components/forms/file.html.j2" %}
             {% endwith %}
 
-            {% with input='bio', label='Description', placeholder='Parle de qui tu es ici...' %}
+            {% with
+                input='bio',
+                label='Description',
+                placeholder='Parle de qui tu es ici...'
+            %}
             {% include "components/forms/textarea.html.j2" %}
             {% endwith %}
         </div>
@@ -42,9 +46,11 @@
             {% include "components/forms/input.html.j2" %}
             {% endwith %}
 
-            {% with input='password', label='Mot de passe' %}
-            {% include "components/forms/input.html.j2" %}
-            {% endwith %}
+            <div class="action input">
+                <a href="{{ url_for('settings_password') }}" class="button">
+                    Changer de mot de passe
+                </a>
+            </div>
 
             <p>
                 Lié à Discord :
@@ -55,49 +61,48 @@
                 {% endif %}
             </p>
 
+            {% if current_user.has_discord %}
+            <div class="action">
+                {% with
+                    input='unlink_discord',
+                    button_text='Désassocier Discord',
+                    class='discord'
+                %}
+                {% include "components/forms/button.html.j2" %}
+                {% endwith %}
+            </div>
+            {% else %}
+            <div class="action">
+                <a href="{{ url_for('discord_link') }}" class="button discord input">
+                    {% include "components/icons/discord_white.html.j2" %}
+                    Associer Discord
+                </a>
+            </div>
+            {% endif %}
+
+            <div class="action">
+                {% with
+                    input='logout', button_text='Se déconnecter', class='alert'
+                %}
+                {% include "components/forms/button.html.j2" %}
+                {% endwith %}
+            </div>
+
             <div class="separator">
                 Confidentialité
             </div>
 
-            {% with input='hide_in_list', label='Me cacher de la liste de membres' %}
+            {% with input='hide_in_list', label='Me cacher de la liste de
+            membres' %}
             {% include "components/forms/checkbox.html.j2" %}
             {% endwith %}
         </div>
     </div>
 
-    {% with button_text='Sauvegarder' %}
+    {% with input='save', button_text='Sauvegarder' %}
     {% include "components/forms/submit.html.j2" %}
     {% endwith %}
 </form>
-
-<div id="actions">
-    <div class="separator">
-        Actions
-    </div>
-
-    <form method="post" class="action">
-        {{ logout.hidden_tag() }}
-        {% with form=logout, input='logout', button_text='Se déconnecter', type='alert' %}
-        {% include "components/forms/submit.html.j2" %}
-        {% endwith %}
-    </form>
-
-    {% if current_user.has_discord %}
-    <form method="post" class="action">
-        {{ logout.hidden_tag() }}
-        {% with form=unlink_discord, input='unlink_discord', button_text='Désassocier Discord' %}
-        {% include "components/forms/submit.html.j2" %}
-        {% endwith %}
-    </form>
-    {% else %}
-    <div class="action">
-        <a href="{{ url_for('discord_link') }}" class="button discord">
-            {% include "components/icons/discord_white.html.j2" %}
-            Associer Discord
-        </a>
-    </div>
-    {% endif %}
-</div>
 
 {% endblock content %}
 
@@ -115,5 +120,23 @@
     }
     image_type.addEventListener('change', updateUploaderDisplay);
     updateUploaderDisplay();
+
+    const unlink_discord = document.getElementById('unlink_discord');
+    const logout = document.getElementById('logout');
+    const form = document.getElementById('profile-settings');
+
+    function makeActionButton(button) {
+        button.addEventListener('click', () => {
+            const input = document.createElement('input');
+            input.name = button.name;
+            input.value = '1';
+            input.type = 'hidden';
+            form.appendChild(input);
+            form.submit();
+        });
+    }
+    if (unlink_discord)
+        makeActionButton(unlink_discord);
+    makeActionButton(logout);
 </script>
 {% endblock %}

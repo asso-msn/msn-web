@@ -61,6 +61,19 @@ img {
     object-fit: contain;
 }
 
+.flash {
+    padding: 1em;
+    margin: 1em 0;
+    border-radius: 4px;
+    background: var(--color-light-blue);
+    color: var(--color-blue);
+}
+
+.flash.error {
+    background: var(--color-red);
+    color: var(--color-strong-red);
+}
+
 .emoji {
     width: 1em;
     height: 1em;
@@ -136,9 +149,11 @@ a.button, .button {
 .button.alert,
 button.alert,
 button[type="submit"].alert,
-.button[type="submit"].alert {
+.button[type="submit"].alert,
+input[type="button"].alert {
     background: var(--color-strong-red);
     color: var(--color-white);
+    border: none;
 }
 
 .badge {
