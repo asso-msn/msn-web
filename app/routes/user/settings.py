@@ -88,25 +88,29 @@ def settings():
                 del form.image
                 if changed_avatar_type:
                     need_avatar_refresh = True
-            elif form.image.data:
-                image: FileStorage = form.image.data
-                image = avatar.convert(image)
-                image_hash = avatar.save(image)
-                if (
-                    not changed_avatar_type
-                    and user.image
-                    and (
-                        s.query(User)
-                        .filter(
-                            User.image == user.image,
-                            User.id != user.id,
+
+            if user.image_type == User.ImageType.local:
+                if not form.image.data:
+                    user.image = None
+                else:
+                    image: FileStorage = form.image.data
+                    image = avatar.convert(image)
+                    image_hash = avatar.save(image)
+                    if (
+                        not changed_avatar_type
+                        and user.image
+                        and (
+                            s.query(User)
+                            .filter(
+                                User.image == user.image,
+                                User.id != user.id,
+                            )
+                            .count()
                         )
-                        .count()
-                    )
-                    == 0
-                ):
-                    avatar.delete(user.image)
-                user.image = image_hash
+                        == 0
+                    ):
+                        avatar.delete(user.image)
+                    user.image = image_hash
 
             if (
                 user.email != form.email.data
