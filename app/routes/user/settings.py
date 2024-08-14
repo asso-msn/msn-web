@@ -73,7 +73,7 @@ def settings():
             if user.image_type == User.ImageType.discord:
                 user.reset_avatar()
             s.commit()
-        flask.flash("Ton compte Discord a été délié")
+        flask.flash("Ton compte Discord a été retiré")
         return app.redirect("settings")
 
     if form.validate_on_submit():
