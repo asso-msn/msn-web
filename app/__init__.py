@@ -120,8 +120,10 @@ format = "[%(levelname)s] %(name)s - %(pathname)s:%(lineno)s: %(message)s"
 
 class CustomFormatter(Formatter):
     def format(self, record):
-        # Replace the pathname with a path relative to the current working directory
-        # This allows for easy navigation to the file from an IDE
+        # Replace the pathname with a path relative to the current working
+        # directory
+        # This allows for easy navigation to the file from an IDE, usually using
+        # Ctrl+Click
         record.pathname = os.path.relpath(record.pathname)
         return super().format(record)
 

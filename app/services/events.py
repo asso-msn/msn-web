@@ -89,7 +89,9 @@ class Event:
     @property
     def day_number(self):
         if len(self.dates) > 1:
-            return f"{self.arrow.format('D')} - {arrow.get(self.dates[-1]).format('D')}"
+            start = self.arrow.format("D")
+            end = arrow.get(self.dates[-1]).format("D")
+            return f"{start} - {end}"
 
         return self.arrow and self.arrow.format("D")
 

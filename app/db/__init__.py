@@ -59,4 +59,4 @@ class Timed:
     )
 
 
-from .user import User  # noqa: E402
+from .user import User  # noqa: E402 F401
