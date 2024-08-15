@@ -105,3 +105,36 @@ input {
     background: var(--color-black);
     color: var(--color-white);
 }
+
+.input .password {
+    z-index: 1;
+    position: relative;
+}
+
+.input .password input {
+    width: calc(100% - 2em);
+}
+
+.input .password .show,
+.input .password .hide {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    right: 1em;
+    cursor: pointer;
+    z-index: 2;
+    display: none;
+}
+
+.input .password.show .show {
+    display: none;
+}
+.input .password.show .hide {
+    display: inline-block;
+}
+.input .password.hide .show {
+    display: inline-block;
+}
+.input .password.hide .hide {
+    display: none;
+}

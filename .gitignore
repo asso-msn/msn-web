@@ -1,5 +1,6 @@
 .webassets-cache/
 /app/static/style.css
+/app/static/script.js
 /config.yml
 /output/
 /var/
