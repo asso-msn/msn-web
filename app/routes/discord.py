@@ -13,6 +13,7 @@ from app.forms import (
     LoginTakenValidator,
     NotReservedNameValidator,
 )
+from app.services import audit
 from app.services import discord as service
 from app.services import user as user_service
 
@@ -98,6 +99,7 @@ def discord_register():
         user.refresh_avatar()
         s.add(user)
         s.commit()
+        audit.log("User creation from Discord", user)
         user_service.login(user)
 
     if next := flask.session.pop("next", None):
@@ -164,6 +166,7 @@ def discord_link_confirm():
         user.discord_access_token = access_token
         user.discord_refresh_token = refresh_token
         s.commit()
+        audit.log("Discord account linked", user)
 
     flask.flash("Ton compte Discord a été lié avec succès.")
     return app.redirect("settings")

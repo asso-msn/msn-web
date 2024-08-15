@@ -47,7 +47,7 @@ def register(login_: str, password: str) -> User:
         s.add(user)
         s.commit()
         login(user)
-    return user
+        return user
 
 
 def hash(password: str) -> str:

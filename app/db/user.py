@@ -29,6 +29,9 @@ class User(Table, UserMixin, Id, Timed):
 
     hide_in_list: Column[bool] = column(default=False)
 
+    def __repr__(self):
+        return f"{self.__class__.__name__}(login={self.login}, id={self.id})"
+
     def __str__(self):
         return self.display_name or self.login
 

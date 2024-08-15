@@ -10,6 +10,7 @@ class Config:
     SERVER_NAME: str
     DISCORD_CLIENT_ID: str
     DISCORD_CLIENT_SECRET: str
+    AUDIT_WEBHOOK: str = None
     ARROW_LANG: str = "fr"
     AVATAR_SIZE: int = 256
     DISCORD_AVATAR_SIZE: int = AVATAR_SIZE

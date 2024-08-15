@@ -144,5 +144,5 @@ config = Config()
 app.config.from_object(config)
 
 
-for module in ("cli", "filters", "routes"):
+for module in ("cli", "filters", "routes", "services"):
     auto_import(module)

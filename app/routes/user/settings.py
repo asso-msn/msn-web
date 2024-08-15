@@ -15,7 +15,7 @@ from wtforms import (
 from app import app
 from app.db import User
 from app.forms import Length, LoginField, PasswordField
-from app.services import avatar
+from app.services import audit, avatar
 from app.services import user as service
 
 
@@ -70,6 +70,7 @@ def settings():
             if user.image_type == User.ImageType.discord:
                 user.reset_avatar()
             s.commit()
+            audit.log("Discord unlinked", user)
         flask.flash("Ton compte Discord a été retiré")
         return app.redirect("settings")
 
@@ -177,6 +178,7 @@ def settings_password():
                 user = s.query(User).get(current_user.id)
                 user.password = None
                 s.commit()
+                audit.log("Password deleted", user)
             flask.flash("Mot de passe supprimé")
             return app.redirect("settings")
 
@@ -189,5 +191,6 @@ def settings_password():
         user = s.query(User).get(current_user.id)
         service.set_password(user, form.password.data)
         s.commit()
+        audit.log("Password changed", user)
     flask.flash("Mot de passe mis à jour")
     return app.redirect("settings")

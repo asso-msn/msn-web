@@ -2,6 +2,7 @@ from flask_wtf import FlaskForm
 
 from app import app
 from app.forms import DataRequired, LoginField, PasswordField
+from app.services import audit
 from app.services import user as service
 
 
@@ -17,5 +18,6 @@ def register():
         return app.render(
             "users/register", form=form, page="login", title="Inscription"
         )
-    service.register(form.login.data, form.password.data)
+    user = service.register(form.login.data, form.password.data)
+    audit.log("User creation from ID / password", user)
     return app.redirect("index")
