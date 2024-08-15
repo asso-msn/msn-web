@@ -140,7 +140,7 @@ a.button, .button {
     color: var(--color-gray);
 }
 
-.button.discord {
+.button.discord, button.discord {
     background: var(--color-discord);
     color: var(--color-white);
     border: none;

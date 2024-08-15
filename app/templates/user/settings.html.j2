@@ -53,27 +53,29 @@
             </div>
 
             <p>
+                Authentification via mot de passe :
+                {% with condition=current_user.password %}
+                {% include "components/boolean_badge.html.j2" %}
+                {% endwith %}
+            </p>
+
+            <p>
                 Lié à Discord :
-                {% if current_user.has_discord %}
-                <span class="badge good">Oui</span>
-                {% else %}
-                <span class="badge">Non</span>
-                {% endif %}
+                {% with condition=current_user.has_discord %}
+                {% include "components/boolean_badge.html.j2" %}
+                {% endwith %}
             </p>
 
             {% if current_user.has_discord %}
             <div class="action">
-                {% with
-                    input='unlink_discord',
-                    button_text='Dissocier Discord',
-                    class='discord'
-                %}
-                {% include "components/forms/button.html.j2" %}
-                {% endwith %}
+                <button class="discord input" type="button" name="{{ form.unlink_discord.id }}" id="{{ form.unlink_discord.id }}">
+                    {% include "components/icons/discord_white.html.j2" %}
+                    Dissocier Discord
+                </button>
             </div>
             {% else %}
             <div class="action">
-                <a href="{{ url_for('discord_link') }}" class="button discord input">
+                <a href="{{ url_for('discord_link') }}" type="button" class="button discord input">
                     {% include "components/icons/discord_white.html.j2" %}
                     Associer Discord
                 </a>
@@ -121,8 +123,8 @@
     image_type.addEventListener('change', updateUploaderDisplay);
     updateUploaderDisplay();
 
-    const unlink_discord = document.getElementById('unlink_discord');
-    const logout = document.getElementById('logout');
+    const unlink_discord = document.getElementById('{{ form.unlink_discord.id }}');
+    const logout = document.getElementById('{{ form.logout.id }}');
     const form = document.getElementById('profile-settings');
 
     function makeActionButton(button) {

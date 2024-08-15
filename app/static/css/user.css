@@ -25,6 +25,10 @@
     display: inline-block;
 }
 
+.page-user-settings .input {
+    margin: 1em 0;
+}
+
 .pager-user-settings .action input {
     margin: 0;
 }
@@ -51,6 +55,7 @@
 #profile-header {
     display: flex;
     align-items: start;
+    margin: 2em 0 3em;
 }
 
 #profile-header img {
