@@ -7,6 +7,7 @@ from werkzeug.datastructures import FileStorage
 from app import VAR_DIR, config
 
 try:
+    from wand.exceptions import MissingDelegateError
     from wand.image import Image
 except ImportError as e:
     wand_import_error = e
@@ -23,11 +24,14 @@ def convert(image: FileStorage) -> BytesIO:
         ) from wand_import_error
 
     stream = BytesIO()
-    with Image(file=image) as img:
-        size = config.AVATAR_SIZE
-        img.format = "webp"
-        img.resize(size, size)
-        img.save(file=stream)
+    try:
+        with Image(file=image) as img:
+            size = config.AVATAR_SIZE
+            img.format = "webp"
+            img.resize(size, size)
+            img.save(file=stream)
+    except MissingDelegateError as e:
+        raise ValueError("Unsupported image format") from e
     stream.seek(0)
     return stream
 

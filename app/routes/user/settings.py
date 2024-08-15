@@ -99,7 +99,11 @@ def settings():
                     user.image = None
                 else:
                     image: FileStorage = form.image.data
-                    image = avatar.convert(image)
+                    try:
+                        image = avatar.convert(image)
+                    except ValueError:
+                        flask.flash("Format d'image non supporté", "error")
+                        return app.redirect("settings")
                     image_hash = avatar.save(image)
                     if (
                         not changed_avatar_type
