@@ -61,6 +61,12 @@ img {
     object-fit: contain;
 }
 
+#flashes {
+    max-width: var(--size-page-width);
+    padding: 0 1em;
+    margin: 0 auto;
+}
+
 .flash {
     padding: 1em;
     margin: 1em 0;
@@ -71,7 +77,13 @@ img {
 
 .flash.error {
     background: var(--color-red);
-    color: var(--color-strong-red);
+    color: var(--color-black);
+}
+
+.flash .flash-close {
+    float: right;
+    cursor: pointer;
+    margin-left: 1em;
 }
 
 .emoji {
@@ -128,6 +140,7 @@ img {
     border: 1px solid var(--color-gray);
     cursor: pointer;
     padding: 0.5em 1.5em;
+    display: inline-block;
 }
 
 .button .emoji {

@@ -48,6 +48,20 @@
         </div>
     </nav>
 
+
+    <div id="flashes">
+        {% for category, message in get_flashed_messages(with_categories=true) %}
+        <div class="flash {{ category }}">
+            <span class="content">
+                {{ message }}
+            </span>
+            <span class="flash-close">
+                <span class="material-icons icon">close</span>
+            </span>
+        </div>
+        {% endfor %}
+    </div>
+
 {% block body %}{% endblock %}
 
     <footer id="footer">
@@ -68,6 +82,10 @@
                 </section>
                 <section>
                     <a class="title" href="{{ url_for('events')}}">Évènements</a>
+                </section>
+                <section>
+                    <div class="title">Communauté</div>
+                    <a href="{{ url_for('users') }}">Membres</a>
                 </section>
             </nav>
             <div class="socials">

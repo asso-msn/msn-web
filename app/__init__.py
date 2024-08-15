@@ -59,7 +59,9 @@ class App(flask.Flask):
                 output="style.css",
             ),
         )
-        self.assets.register("js", Bundle("js/forms.js", output="script.js"))
+        self.assets.register(
+            "js", Bundle("js/flash.js", "js/forms.js", output="script.js")
+        )
 
         # OAuth dance does not work with SameSite=Srict
         self.config["SESSION_COOKIE_SAMESITE"] = "Lax"

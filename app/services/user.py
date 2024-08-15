@@ -1,5 +1,8 @@
+from datetime import UTC, datetime
+
 import flask_login
 import werkzeug.security
+from flask_login import current_user
 
 from app import app
 from app.db import User
@@ -9,6 +12,16 @@ from app.db import User
 def user_loader(id) -> User:
     with app.session() as s:
         return s.query(User).get(id)
+
+
+@app.before_request
+def update_last_seen():
+    if not current_user.is_authenticated:
+        return
+    with app.session() as s:
+        user = s.query(User).get(current_user.id)
+        user.last_seen = datetime.now(UTC)
+        s.commit()
 
 
 def login(user: User) -> User:

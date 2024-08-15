@@ -1,10 +1,20 @@
 {% extends "page.html.j2" %}
 
+{% block style %}
+<style>
+#actions {
+    display: flex;
+    gap: 1em;
+    margin-top: 1em;
+}
+</style>
+{% endblock style %}
+
 {% block content %}
-<div id="profile-header">
-    <img class="avatar" src="{{ current_user.avatar_url }}">
-    <h2>{{ current_user }}</h2>
-</div>
+
+{% with user=current_user%}
+{% include "components/profile_header.html.j2" %}
+{% endwith %}
 
 <h1>Paramètres</h1>
 
@@ -66,23 +76,19 @@
                 {% endwith %}
             </p>
 
-            {% if current_user.has_discord %}
-            <div class="action">
+            <div id="actions">
+                {% if current_user.has_discord %}
                 <button class="discord input" type="button" name="{{ form.unlink_discord.id }}" id="{{ form.unlink_discord.id }}">
                     {% include "components/icons/discord_white.html.j2" %}
                     Dissocier Discord
                 </button>
-            </div>
-            {% else %}
-            <div class="action">
+                {% else %}
                 <a href="{{ url_for('discord_link') }}" type="button" class="button discord input">
                     {% include "components/icons/discord_white.html.j2" %}
                     Associer Discord
                 </a>
-            </div>
-            {% endif %}
+                {% endif %}
 
-            <div class="action">
                 {% with
                     input='logout', button_text='Se déconnecter', class='alert'
                 %}

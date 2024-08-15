@@ -27,7 +27,7 @@ def login():
 
     def get():
         return app.render(
-            "user/login", form=form, page="login", title="Connexion"
+            "users/login", form=form, page="login", title="Connexion"
         )
 
     if not form.validate_on_submit():

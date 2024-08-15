@@ -80,7 +80,7 @@ def discord_register():
         form.login.data = user.username.replace(".", "_")
         form.use_avatar.data = True
         return app.render(
-            "user/discord_register",
+            "users/discord_register",
             form=form,
             page="login",
             title="Inscription via Discord",
@@ -118,7 +118,7 @@ def discord_link():
         return app.redirect("index")
 
     return app.render(
-        "user/discord_link",
+        "users/discord_link",
         page="link",
         title="Lier Discord",
     )
@@ -151,7 +151,7 @@ def discord_link_confirm():
 
     if not form.validate_on_submit():
         return app.render(
-            "user/discord_link_confirm",
+            "users/discord_link_confirm",
             form=form,
             page="link",
             title="Lier Discord",

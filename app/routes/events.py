@@ -3,7 +3,7 @@ from app.paging import Pager
 from app.services import events as service
 
 
-@app.route("/events/")
+@app.get("/events/")
 def events():
     past_events = service.get_past_events()
     pager = Pager.get_from_request(past_events, per_page=5)

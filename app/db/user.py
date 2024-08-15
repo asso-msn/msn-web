@@ -1,5 +1,6 @@
 import enum
 import hashlib
+from datetime import datetime
 
 import flask
 from flask_login import UserMixin
@@ -20,6 +21,7 @@ class User(Table, UserMixin, Id, Timed):
     bio: Column[str | None]
     image: Column[str | None]
     image_type: Column[ImageType] = column(default=ImageType.local)
+    last_seen: Column[datetime | None]
 
     discord_id: Column[str | None]
     discord_access_token: Column[str | None]

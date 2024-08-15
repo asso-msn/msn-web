@@ -149,7 +149,7 @@ def settings():
             x for x in form.image_type.choices if x[0] != User.ImageType.discord
         ]
 
-    return app.render("user/settings", form=form, title="Paramètres")
+    return app.render("users/settings", form=form, title="Paramètres")
 
 
 class PasswordForm(FlaskForm):
@@ -182,7 +182,7 @@ def settings_password():
 
     if not form.validate_on_submit():
         return app.render(
-            "user/password", form=form, title="Mot de passe", page="password"
+            "users/password", form=form, title="Mot de passe", page="password"
         )
 
     with app.session() as s:

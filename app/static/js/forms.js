@@ -18,6 +18,4 @@ for (const el of document.querySelectorAll(".input .password")) {
         el.classList.add("hide");
         input.type = "password";
     });
-
-    console.log(`registed ${el}`);
 }

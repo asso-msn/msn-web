@@ -15,7 +15,7 @@ def register():
     form = RegisterForm()
     if not form.validate_on_submit():
         return app.render(
-            "user/register", form=form, page="login", title="Inscription"
+            "users/register", form=form, page="login", title="Inscription"
         )
     service.register(form.login.data, form.password.data)
     return app.redirect("index")
