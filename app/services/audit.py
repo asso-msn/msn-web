@@ -17,7 +17,7 @@ def log(*args, level=logging.INFO, codeblock=None, **kwargs):
     if not config.AUDIT_WEBHOOK:
         return
 
-    webhook_msg = "\n".join(items)
+    webhook_msg = "\n".join(items).replace("`", "\\`")
     if codeblock:
         webhook_msg += f"\n```\n{codeblock}\n```"
     requests.post(config.AUDIT_WEBHOOK, json={"content": webhook_msg})
