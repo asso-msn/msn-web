@@ -73,6 +73,7 @@ img {
     border-radius: 4px;
     background: var(--color-light-blue);
     color: var(--color-blue);
+    display: flex;
 }
 
 .flash.error {
@@ -84,6 +85,8 @@ img {
     float: right;
     cursor: pointer;
     margin-left: 1em;
+    align-self: start;
+    width: 2em;
 }
 
 .emoji {
