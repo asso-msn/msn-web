@@ -29,7 +29,7 @@ def handle_exception(e):
     flask.flash(
         "Un crash est survenu."
         " Une alerte automatique a été envoyée à notre équipe."
-        f' Détails: "{e}"',
+        f' Détails techniques: "{repr(e)}"',
         "error",
     )
     return app.redirect("index")

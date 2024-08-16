@@ -12,6 +12,7 @@ from pathlib import Path
 import flask
 import werkzeug.utils
 from cachelib import SimpleCache
+from flask_apscheduler import APScheduler
 from flask_assets import Bundle, Environment
 from flask_login import LoginManager
 from flask_session import Session
@@ -20,10 +21,7 @@ from pydantic import BaseModel as Model
 ROOT_DIR = Path(__file__).parent.resolve()
 VAR_DIR = Path("var").resolve()
 
-from app import db  # noqa: E402
-from app.auto_import import auto_import  # noqa: E402
-
-from . import data  # noqa: E402
+from . import auto_import, data  # noqa: E402
 
 
 class App(flask.Flask):
@@ -72,6 +70,8 @@ class App(flask.Flask):
             "Tu dois te connecter pour accéder à cette page."
         )
 
+        self.scheduler = APScheduler(app=self)
+
         self.config["SESSION_TYPE"] = "cachelib"
         self.config["SESSION_CACHELIB"] = SimpleCache()
         Session(self)
@@ -81,8 +81,7 @@ class App(flask.Flask):
         if not secret_key_path.exists():
             secret_key_path.write_text(secrets.token_hex())
         self.config["SECRET_KEY"] = secret_key_path.read_text().strip()
-
-        db.create_all()
+        self.scheduler.start()
 
     def redirect(self, route, external=False, code=302):
         external = external or route.split(":")[0] in ("http", "https")
@@ -145,6 +144,9 @@ config = Config()
 
 app.config.from_object(config)
 
+for module in ("cli", "filters", "routes", "services", "tasks", "db"):
+    auto_import.auto_import(module)
 
-for module in ("cli", "filters", "routes", "services"):
-    auto_import(module)
+from app import db
+
+db.create_all()

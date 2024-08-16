@@ -5,6 +5,8 @@ from datetime import datetime
 import flask
 from flask_login import UserMixin
 
+from app.services import audit
+
 from . import Column, Id, Table, Timed, column
 
 
@@ -56,8 +58,11 @@ class User(Table, UserMixin, Id, Timed):
 
             api = discord.API(self.discord_access_token)
             user = api.get_user()
+            if self.image == user.avatar_url:
+                return False
+            audit.log("Discord avatar refreshed", user=self)
             self.image = user.avatar_url
-            return
+            return True
 
         if self.image_type == User.ImageType.gravatar:
             email = self.email.lower()
@@ -76,5 +81,8 @@ class User(Table, UserMixin, Id, Timed):
         from app.services import discord
 
         response = discord.refresh(self.discord_refresh_token)
+        if self.discord_access_token == response.access_token:
+            return False
         self.discord_access_token = response.access_token
         self.discord_refresh_token = response.refresh_token
+        return True

@@ -153,3 +153,31 @@ def get_db_user(access_token) -> User | None:
             or s.query(User).filter_by(email=user.email)
         ).first()
     return user
+
+
+def refresh_avatars(login=None):
+    refreshed_users = []
+    with app.session() as s:
+        query = s.query(User).filter_by(image_type=User.ImageType.discord)
+        if login:
+            query = query.filter_by(login=login)
+        for user in query:
+            if not user.refresh_avatar():
+                continue
+            s.commit()
+            refreshed_users.append(repr(user))
+    return refreshed_users
+
+
+def refresh_tokens(login=None):
+    refreshed_users = []
+    with app.session() as s:
+        query = s.query(User).filter(User.discord_id is not None)
+        if login:
+            query = query.filter_by(login=login)
+        for user in query:
+            if not user.refresh_discord_token():
+                continue
+            s.commit()
+            refreshed_users.append(repr(user))
+    return refreshed_users
