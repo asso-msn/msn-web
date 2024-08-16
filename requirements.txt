@@ -2,6 +2,7 @@ arrow
 cachelib
 Flask
 Flask-Assets
+Flask-APScheduler
 Flask-Login
 Flask-Session
 Flask-WTF
