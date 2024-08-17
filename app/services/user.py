@@ -30,10 +30,14 @@ def login(user: User) -> User:
     return user
 
 
-def check_login(login_: str, password: str) -> User:
+def get_by_login(login_: str) -> User:
     login_ = login_.strip().lower()
     with app.session() as s:
-        user = s.query(User).filter(sa.func.lower(User.login) == login_).first()
+        return s.query(User).filter(sa.func.lower(User.login) == login_).first()
+
+
+def check_login(login_: str, password: str) -> User:
+    user = get_by_login(login_)
     if user is None:
         return None
     if not werkzeug.security.check_password_hash(user.password, password):

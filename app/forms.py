@@ -2,8 +2,7 @@ from flask_login import current_user
 from wtforms import PasswordField, StringField, ValidationError
 from wtforms.validators import DataRequired, Length
 
-from app import db
-from app.db import User
+from app.services import user
 
 
 class LoginField(StringField):
@@ -85,9 +84,7 @@ class LoginTakenValidator:
         self.message = message
 
     def __call__(self, form, field):
-        with db.session() as session:
-            result = session.query(User).filter(User.id == field.data).first()
-        if result is not None:
-            if current_user and current_user.id == result.id:
+        if result := user.get_by_login(field.data):
+            if current_user.is_authenticated and current_user.id == result.id:
                 return
             raise ValidationError(self.message)
