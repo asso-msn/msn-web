@@ -77,17 +77,19 @@
             </p>
 
             <div id="actions">
-                {% if current_user.has_discord %}
-                <button class="discord input" type="button" name="{{ form.unlink_discord.id }}" id="{{ form.unlink_discord.id }}">
-                    {% include "components/icons/discord_white.html.j2" %}
-                    Dissocier Discord
-                </button>
-                {% else %}
-                <a href="{{ url_for('discord_link') }}" type="button" class="button discord input">
-                    {% include "components/icons/discord_white.html.j2" %}
-                    Associer Discord
-                </a>
-                {% endif %}
+                <div class="input">
+                    {% if current_user.has_discord %}
+                    <button class="discord" type="button" name="{{ form.unlink_discord.id }}" id="{{ form.unlink_discord.id }}">
+                        {% include "components/icons/discord_white.html.j2" %}
+                        Dissocier Discord
+                    </button>
+                    {% else %}
+                    <a href="{{ url_for('discord_link') }}" type="button" class="button discord">
+                        {% include "components/icons/discord_white.html.j2" %}
+                        Associer Discord
+                    </a>
+                    {% endif %}
+                </div>
 
                 {% with
                     input='logout', button_text='Se déconnecter', class='alert'

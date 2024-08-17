@@ -13,8 +13,7 @@
 }
 .page-login #actions .action,
 .page-password #actions .action,
-.page-link #actions .action,
-.page-users-settings #actions .action {
+.page-link #actions .action {
     display: inline-block;
     margin: 0.5em 1em;
 }
@@ -26,6 +25,10 @@
 
 .page-users-settings .input {
     margin: 1em 0;
+}
+
+.page-users-settings #actions .input {
+    margin: 0;
 }
 
 .pager-user-settings .action input {
