@@ -74,6 +74,7 @@ img {
     background: var(--color-light-blue);
     color: var(--color-blue);
     display: flex;
+    justify-content: space-between;
 }
 
 .flash.error {
