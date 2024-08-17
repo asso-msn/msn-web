@@ -63,4 +63,9 @@
     #events .hours {
         margin-bottom: 1.5em;
     }
+
+    #footer .nav {
+        flex-direction: column;
+        gap: 2em;
+    }
 }
