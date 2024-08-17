@@ -1,12 +1,10 @@
-from flask_wtf import FlaskForm
-
 from app import app
-from app.forms import DataRequired, LoginField, PasswordField
+from app.forms import DataRequired, Form, LoginField, PasswordField
 from app.services import audit
 from app.services import user as service
 
 
-class RegisterForm(FlaskForm):
+class RegisterForm(Form):
     login = LoginField()
     password = PasswordField(validators=[DataRequired()])
 

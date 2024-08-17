@@ -1,13 +1,12 @@
 import flask
-from flask_wtf import FlaskForm
 from wtforms import StringField
 
 from app import app
-from app.forms import AlnumPlusValidator, DataRequired, PasswordField
+from app.forms import AlnumPlusValidator, DataRequired, Form, PasswordField
 from app.services import user as service
 
 
-class LoginForm(FlaskForm):
+class LoginForm(Form):
     login = StringField(
         validators=[
             DataRequired(),

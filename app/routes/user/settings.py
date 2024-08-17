@@ -1,6 +1,5 @@
 import flask
 from flask_login import current_user
-from flask_wtf import FlaskForm
 from werkzeug.datastructures import FileStorage
 from wtforms import (
     BooleanField,
@@ -14,7 +13,7 @@ from wtforms import (
 
 from app import app
 from app.db import User
-from app.forms import Length, LoginField, PasswordField
+from app.forms import Form, Length, LoginField, PasswordField
 from app.services import audit, avatar
 from app.services import user as service
 
@@ -25,7 +24,7 @@ def translate_image_type(image_type):
     return image_type.capitalize().replace("_", " ")
 
 
-class EditProfileForm(FlaskForm):
+class EditProfileForm(Form):
     login = LoginField()
     display_name = StringField(validators=[Length(max=30)])
     email = EmailField()
@@ -75,12 +74,16 @@ def settings():
         return app.redirect("settings")
 
     if not form.validate_on_submit():
-        form.login.data = current_user.login
-        form.display_name.data = current_user.display_name
-        form.email.data = current_user.email
-        form.bio.data = current_user.bio
-        form.image_type.data = current_user.image_type
-        form.hide_in_list.data = current_user.hide_in_list
+        form.login.data = form.login.data or current_user.login
+        form.display_name.data = (
+            form.display_name.data or current_user.display_name
+        )
+        form.email.data = form.email.data or current_user.email
+        form.bio.data = form.bio.data or current_user.bio
+        form.image_type.data = form.image_type.data or current_user.image_type
+        form.hide_in_list.data = (
+            form.hide_in_list.data or current_user.hide_in_list
+        )
 
         if not current_user.email:
             form.image_type.choices = [
@@ -159,7 +162,7 @@ def settings():
     return app.redirect("settings")
 
 
-class PasswordForm(FlaskForm):
+class PasswordForm(Form):
     password = PasswordField()
     delete = SubmitField()
 

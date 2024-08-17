@@ -1,8 +1,23 @@
+import flask
 from flask_login import current_user
+from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField, ValidationError
 from wtforms.validators import DataRequired, Length
 
 from app.services import user
+
+
+class Form(FlaskForm):
+    class Meta:
+        locales = ["fr", "fr_FR"]
+
+    def validate(self, *args, **kwargs) -> bool:
+        result = super().validate(*args, **kwargs)
+        if not result:
+            flask.flash(
+                "Certains champs du formulaire comportent des erreurs", "error"
+            )
+        return result
 
 
 class LoginField(StringField):
@@ -63,8 +78,8 @@ class AlnumPlusValidator:
     def __init__(
         self,
         message=(
-            "Username must be alphanumeric and the only special characters"
-            " allowed are - and _"
+            "Ce champ n'accepte que les caractères alphanumériques (A-Z 0-9),"
+            " ainsi que les tirets (- et _)."
         ),
     ):
         self.message = message
@@ -80,7 +95,7 @@ class AlnumPlusValidator:
 
 
 class LoginTakenValidator:
-    def __init__(self, message="Login already taken"):
+    def __init__(self, message="Identifiant déjà pris"):
         self.message = message
 
     def __call__(self, form, field):

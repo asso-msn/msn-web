@@ -2,7 +2,6 @@ import secrets
 
 import flask
 from flask_login import current_user
-from flask_wtf import FlaskForm
 from wtforms import BooleanField, StringField
 
 from app import app
@@ -10,6 +9,7 @@ from app.db import User
 from app.forms import (
     AlnumPlusValidator,
     DataRequired,
+    Form,
     LoginTakenValidator,
     NotReservedNameValidator,
 )
@@ -51,7 +51,7 @@ def discord_callback():
     return app.redirect("index")
 
 
-class DiscordRegisterForm(FlaskForm):
+class DiscordRegisterForm(Form):
     login = StringField(
         validators=[
             DataRequired(),
@@ -108,7 +108,7 @@ def discord_register():
     return app.redirect("index")
 
 
-class DiscordLinkForm(FlaskForm):
+class DiscordLinkForm(Form):
     pass
 
 

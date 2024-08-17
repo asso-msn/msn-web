@@ -34,6 +34,12 @@ input {
     margin: 0.5em 0;
 }
 
+.input-errors {
+    color: var(--color-strong-red);
+    font-size: 0.8em;
+    margin: 0.5em 0;
+}
+
 .input .text-field {
     background: var(--input-background);
     border-radius: 8px;
