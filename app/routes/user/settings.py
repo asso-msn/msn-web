@@ -27,7 +27,7 @@ def translate_image_type(image_type):
 
 class EditProfileForm(FlaskForm):
     login = LoginField()
-    display_name = StringField(validators=[Length(max=32)])
+    display_name = StringField(validators=[Length(max=30)])
     email = EmailField()
     bio = TextAreaField(validators=[Length(max=1000)])
     image = FileField()

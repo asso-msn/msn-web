@@ -4,7 +4,7 @@
 <style>
 #users {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   grid-gap: 1em;
 }
 
@@ -26,6 +26,11 @@ a.user-card {
     height: 64px;
     border-radius: 8px;
     margin-right: 1em;
+}
+
+.user-card .infos {
+    min-width: 0;
+    word-wrap: break-word;
 }
 </style>
 
