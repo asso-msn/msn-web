@@ -3,9 +3,5 @@
         {{ label }}
     </label>
     {{ form[input] }}
-    <div class="input-errors">
-        {% if form[input].errors %}
-        {{ form[input].errors }}
-        {% endif %}
-    </div>
+    {% include "components/forms/errors.html.j2" %}
 </div>

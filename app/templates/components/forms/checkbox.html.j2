@@ -9,9 +9,5 @@
             <label class="label" for="{{ form[input].id }}">{{ label }}</label>
         </div>
     </div>
-    <div class="input-errors">
-        {% if form[input].errors %}
-        {{ form[input].errors }}
-        {% endif %}
-    </div>
+    {% include "components/forms/errors.html.j2" %}
 </div>
