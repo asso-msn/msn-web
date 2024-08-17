@@ -11,15 +11,20 @@ from pathlib import Path
 
 import flask
 import werkzeug.utils
-from cachelib import SimpleCache
 from flask_apscheduler import APScheduler
 from flask_assets import Bundle, Environment
 from flask_login import LoginManager
 from flask_session import Session
+from flask_sqlalchemy import SQLAlchemy
 from pydantic import BaseModel as Model
 
+from app.services.config import Config
+
+config = Config()
 ROOT_DIR = Path(__file__).parent.resolve()
 VAR_DIR = Path("var").resolve()
+
+from app import db  # noqa: E402
 
 from . import auto_import, data  # noqa: E402
 
@@ -72,16 +77,29 @@ class App(flask.Flask):
 
         self.scheduler = APScheduler(app=self)
 
-        self.config["SESSION_TYPE"] = "cachelib"
-        self.config["SESSION_CACHELIB"] = SimpleCache()
-        Session(self)
+        # Flask-SQLAlchemy is only used for the session backend. Codebase uses
+        # self-managed SQLAlchemy for the database.
+        self.config["SQLALCHEMY_DATABASE_URI"] = db.URI
+        FlaskSQLAlchemy = SQLAlchemy(self)
+
+        # self.config["SESSION_TYPE"] = "cachelib"
+        # self.config["SESSION_CACHELIB"] = FileSystemCache(
+        #     str(VAR_DIR / "flask_session"),
+        # )
+        self.config["SESSION_TYPE"] = "sqlalchemy"
+        self.config["SESSION_SQLALCHEMY"] = FlaskSQLAlchemy
+        self.config["SESSION_SERIALIZATION_FORMAT"] = "json"
+        self.cache = Session(self)
 
         VAR_DIR.mkdir(exist_ok=True)
+
         secret_key_path = VAR_DIR / "secret_key.txt"
         if not secret_key_path.exists():
             secret_key_path.write_text(secrets.token_hex())
         self.config["SECRET_KEY"] = secret_key_path.read_text().strip()
+
         self.scheduler.start()
+        db.create_all()
 
     def redirect(self, route, external=False, code=302):
         external = external or route.split(":")[0] in ("http", "https")
@@ -138,15 +156,7 @@ logging.basicConfig(
 
 app = App()
 
-from app.services.config import Config  # noqa: E402
-
-config = Config()
-
 app.config.from_object(config)
 
 for module in ("cli", "filters", "routes", "services", "tasks", "db"):
     auto_import.auto_import(module)
-
-from app import db
-
-db.create_all()

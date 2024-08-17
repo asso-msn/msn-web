@@ -5,6 +5,7 @@ Flask-Assets
 Flask-APScheduler
 Flask-Login
 Flask-Session
+Flask-SQLAlchemy
 Flask-WTF
 furl
 pyScss

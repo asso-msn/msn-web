@@ -11,8 +11,10 @@ from sqlalchemy.orm import mapped_column as column
 
 from app import VAR_DIR
 
+URI = f"sqlite:///{VAR_DIR / 'app.db'}"
+
 try:
-    engine = sa.create_engine(f"sqlite:///{VAR_DIR / 'app.db'}")
+    engine = sa.create_engine(URI)
 except ModuleNotFoundError as e:
     raise Exception(
         f"{e}"
