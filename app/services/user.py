@@ -1,6 +1,7 @@
 from datetime import UTC, datetime
 
 import flask_login
+import sqlalchemy as sa
 import werkzeug.security
 from flask_login import current_user
 
@@ -30,8 +31,9 @@ def login(user: User) -> User:
 
 
 def check_login(login_: str, password: str) -> User:
+    login_ = login_.strip().lower()
     with app.session() as s:
-        user = s.query(User).filter_by(login=login_).first()
+        user = s.query(User).filter(sa.func.lower(User.login) == login_).first()
     if user is None:
         return None
     if not werkzeug.security.check_password_hash(user.password, password):
