@@ -6,7 +6,7 @@ from app import config
 
 
 def log(*args, level=logging.INFO, codeblock=None, **kwargs):
-    items = [x if isinstance(x, str) else repr(x) for x in args]
+    items = [str(x) for x in args]
     for key, value in kwargs.items():
         items.append(f"{key}={repr(value)}")
     console_msg = " ".join(items)

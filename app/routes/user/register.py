@@ -19,5 +19,5 @@ def register():
             "users/register", form=form, page="login", title="Inscription"
         )
     user = service.register(form.login.data, form.password.data)
-    audit.log("User creation from ID / password", user)
+    audit.log("User creation from ID / password", user=user)
     return app.redirect("index")

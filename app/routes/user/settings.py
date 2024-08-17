@@ -70,7 +70,7 @@ def settings():
             if user.image_type == User.ImageType.discord:
                 user.reset_avatar()
             s.commit()
-            audit.log("Discord unlinked", user)
+            audit.log("Discord unlinked", user=user)
         flask.flash("Ton compte Discord a été retiré")
         return app.redirect("settings")
 
@@ -184,7 +184,7 @@ def settings_password():
                 user = s.query(User).get(current_user.id)
                 user.password = None
                 s.commit()
-                audit.log("Password deleted", user)
+                audit.log("Password deleted", user=user)
             flask.flash("Mot de passe supprimé")
             return app.redirect("settings")
 
@@ -197,6 +197,6 @@ def settings_password():
         user = s.query(User).get(current_user.id)
         service.set_password(user, form.password.data)
         s.commit()
-        audit.log("Password changed", user)
+        audit.log("Password changed", user=user)
     flask.flash("Mot de passe mis à jour")
     return app.redirect("settings")
