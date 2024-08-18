@@ -37,7 +37,14 @@ input {
 .input-errors {
     color: var(--color-strong-red);
     font-size: 0.8em;
+}
+
+.input-errors .input-error {
     margin: 0.5em 0;
+}
+
+.input-errors.active {
+    margin-bottom: 2em;
 }
 
 .input .text-field {

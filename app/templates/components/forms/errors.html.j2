@@ -1,5 +1,7 @@
-<div class="input-errors">
+<div class="input-errors {% if form[input].errors%}active{% endif %}">
     {% for error in form[input].errors %}
-    {{ error }}
+    <div class="input-error">
+        {{ error }}
+    </div>
     {% endfor %}
 </div>
