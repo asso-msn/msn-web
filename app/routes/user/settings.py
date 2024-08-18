@@ -18,8 +18,12 @@ from app.services import user as service
 
 
 def translate_image_type(image_type):
-    if image_type == User.ImageType.local:
-        return "Fichier"
+    translations = {
+        User.ImageType.empty: "Aucun avatar",
+        User.ImageType.local: "Fichier",
+    }
+    if image_type in translations:
+        return translations[image_type]
     return image_type.capitalize().replace("_", " ")
 
 
@@ -119,32 +123,39 @@ def settings():
             if changed_avatar_type:
                 need_avatar_refresh = True
 
-        if user.image_type == User.ImageType.local:
-            if not form.image.data:
-                user.image = None
-            else:
-                image: FileStorage = form.image.data
-                try:
-                    image = avatar.convert(image)
-                except ValueError:
-                    flask.flash("Format d'image non supporté", "error")
-                    return app.redirect("settings")
-                image_hash = avatar.save(image)
-                if (
-                    not changed_avatar_type
-                    and user.image
-                    and (
-                        s.query(User)
-                        .filter(
-                            User.image == user.image,
-                            User.id != user.id,
-                        )
-                        .count()
+        if user.image_type == User.ImageType.empty:
+            user.reset_avatar()
+
+        if (
+            user.image_type == User.ImageType.local
+            and not form.image.data
+            and not user.image
+        ):
+            user.reset_avatar()
+
+        if user.image_type == User.ImageType.local and form.image.data:
+            image: FileStorage = form.image.data
+            try:
+                image = avatar.convert(image)
+            except ValueError:
+                flask.flash("Format d'image non supporté", "error")
+                return app.redirect("settings")
+            image_hash = avatar.save(image)
+            if (
+                not changed_avatar_type
+                and user.image
+                and (
+                    s.query(User)
+                    .filter(
+                        User.image == user.image,
+                        User.id != user.id,
                     )
-                    == 0
-                ):
-                    avatar.delete(user.image)
-                user.image = image_hash
+                    .count()
+                )
+                == 0
+            ):
+                avatar.delete(user.image)
+            user.image = image_hash
 
         if (
             user.email != form.email.data

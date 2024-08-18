@@ -12,6 +12,7 @@ from . import Column, Id, Table, Timed, column
 
 class User(Table, UserMixin, Id, Timed):
     class ImageType(enum.StrEnum):
+        empty = enum.auto()
         local = enum.auto()
         gravatar = enum.auto()
         discord = enum.auto()
@@ -22,7 +23,7 @@ class User(Table, UserMixin, Id, Timed):
     display_name: Column[str | None]
     bio: Column[str | None]
     image: Column[str | None]
-    image_type: Column[ImageType] = column(default=ImageType.local)
+    image_type: Column[ImageType] = column(default=ImageType.empty)
     last_seen: Column[datetime | None]
 
     discord_id: Column[str | None]
@@ -48,7 +49,7 @@ class User(Table, UserMixin, Id, Timed):
 
     def reset_avatar(self):
         self.image = None
-        self.image_type = User.ImageType.local
+        self.image_type = User.ImageType.empty
 
     def refresh_avatar(self):
         from app import config
