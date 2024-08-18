@@ -4,15 +4,20 @@
     --color-dark-blue: #003566;
     --color-dark-purple: #BEB8DC;
     --color-gray: #4D4D4D;
+    --color-lighter-gray: #dcdcdc;
+    --color-light-gray: #b2b2b2;
     --color-green: #C2E0B2;
     --color-light-blue: #C8E4F0;
     --color-orange: #FBDCB9;
     --color-purple: #DFBED6;
     --color-red: #FBB9B9;
+    --color-strong-red: #f95151;
     --color-white: #ffffff;
     --color-yellow: #FFF8B8;
 
-    --color-discord: #7289da;
+    --color-discord-old: #7289da;
+    --color-discord-new: #5865F2;
+    --color-discord: var(--color-discord-new);
 
     --font-main: 'Poppins', sans-serif;
     --font-logo: 'Bungee', sans-serif;
@@ -56,6 +61,35 @@ img {
     object-fit: contain;
 }
 
+#flashes {
+    max-width: var(--size-page-width);
+    padding: 0 1em;
+    margin: 0 auto;
+}
+
+.flash {
+    padding: 1em;
+    margin: 1em 0;
+    border-radius: 4px;
+    background: var(--color-light-blue);
+    color: var(--color-blue);
+    display: flex;
+    justify-content: space-between;
+}
+
+.flash.error {
+    background: var(--color-red);
+    color: var(--color-black);
+}
+
+.flash .flash-close {
+    float: right;
+    cursor: pointer;
+    margin-left: 1em;
+    align-self: start;
+    width: 2em;
+}
+
 .emoji {
     width: 1em;
     height: 1em;
@@ -76,6 +110,20 @@ img {
     font-family: var(--font-logo);
 }
 
+.separator::before, .separator::after {
+    flex: 1;
+    content: '';
+    padding: 1px;
+    background-color: var(--color-light-gray);
+    margin: 5px;
+}
+
+.separator, hr {
+    display: flex;
+    align-items: center;
+    margin: 2em 0;
+}
+
 .material-icons {
     max-width: 1em;
     overflow: hidden;
@@ -85,34 +133,51 @@ img {
 }
 
 
-.badge, .button {
+.badge, .button, button {
     padding: .25em 1em;
     border-radius: 2.5em;
     background: var(--color-white);
     color: var(--color-black);
 }
 
-.button {
+.button, button {
     border: 1px solid var(--color-gray);
     cursor: pointer;
+    padding: 0.5em 1.5em;
+    display: inline-block;
+}
+
+.button .emoji {
+    position: relative;
+    top: -0.05em;
+    margin-right: 0.5em;
 }
 
 a.button, .button {
     color: var(--color-gray);
 }
 
-.button.discord {
-    border-color: var(--color-discord);
-    color: var(--color-discord);
+.button.discord, button.discord {
+    background: var(--color-discord);
+    color: var(--color-white);
+    border: none;
+}
+
+.button.alert,
+button.alert,
+button[type="submit"].alert,
+.button[type="submit"].alert,
+input[type="button"].alert {
+    background: var(--color-strong-red);
+    color: var(--color-white);
+    border: none;
 }
 
 .badge {
     font-size: .8em;
     margin: 1em 0;
-}
-
-.badge.event {
     color: var(--color-black);
+    background: var(--color-lighter-gray);
 }
 
 .badge.event-meetup {
@@ -125,6 +190,9 @@ a.button, .button {
 
 .badge.event-nightly {
     background: var(--color-dark-purple);
+}
+.badge.good {
+    background: var(--color-green);
 }
 
 .card {
@@ -187,6 +255,15 @@ a.button, .button {
     overflow-x: hidden;
 }
 
+.page .small {
+    font-size: 0.9em;
+}
+
+.page .buttons {
+    margin-top: 2.5em;
+    margin-bottom: 1.5em;
+}
+
 .pager {
     display: flex;
     justify-content: center;
@@ -244,6 +321,29 @@ a.button, .button {
 
 #navbar .items li {
     margin: 0 .5em;
+    flex-shrink: 0;
+}
+
+#navbar .login {
+    display: inline-block;
+    width: 1.8em;
+    height: 1.8em;
+    line-height: 1.2em;
+    padding: 0.2em;
+    text-align: center;
+    border-radius: 50%;
+    border: 1px solid var(--color-black);
+    position: relative;
+    top: -0.2em;
+}
+
+#navbar .avatar {
+    width: 2.5em;
+    height: 2.5em;
+    margin: -1em 0;
+    border-radius: 4px;
+    border: 1px solid var(--color-light-gray);
+    /* box-shadow: 0 0 6px var(--color-shadow); */
 }
 
 
@@ -307,6 +407,7 @@ a.button, .button {
     margin: 2em 0;
     width: 100%;
     justify-content: space-evenly;
+    gap: 1em;
 }
 
 #footer .title {
@@ -324,4 +425,8 @@ a.button, .button {
 
 #copyright {
     text-align: center;
+}
+
+#copyright a {
+    color: inherit;
 }

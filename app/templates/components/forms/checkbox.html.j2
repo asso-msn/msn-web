@@ -1,0 +1,13 @@
+<div class="input">
+    <div class="checkbox">
+        <div class="label-group">
+            {{ form[input] }}
+            <div class="checkbox-icon">
+                <label class="material-icons icon " for="{{ form[input].id }}">check_box_outline_blank</label>
+                <label class="material-icons icon active" for="{{ form[input].id }}">check_box</label>
+            </div>
+            <label class="label" for="{{ form[input].id }}">{{ label }}</label>
+        </div>
+    </div>
+    {% include "components/forms/errors.html.j2" %}
+</div>

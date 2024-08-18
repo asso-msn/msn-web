@@ -1,0 +1,32 @@
+{% extends "page.html.j2" %}
+
+{% block content %}
+
+<h1>
+    Je m'inscris via Discord
+</h1>
+
+<p class="small">
+    Je ne souhaite pas créer de compte :
+    <a href="{{ url_for('index')}}">retour à la page d'accueil</a>.
+</p>
+
+<form method="post">
+    {{ form.hidden_tag() }}
+
+    {% with input='login', label='Identifiant', icon='person' %}
+    {% include "components/forms/input.html.j2" %}
+    {% endwith %}
+
+    {% with
+        input='use_avatar',
+        label='Importer mon avatar depuis Discord'
+    %}
+    {% include "components/forms/checkbox.html.j2" %}
+    {% endwith %}
+
+    <div class="input">
+        <button type="submit">Créer mon compte</button>
+    </div>
+</form>
+{% endblock content %}

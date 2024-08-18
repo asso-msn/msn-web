@@ -1,0 +1,59 @@
+{% extends "page.html.j2" %}
+
+{% block style %}
+<style>
+#users {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-gap: 1em;
+}
+
+.user-card {
+    display: flex;
+    align-items: center;
+    padding: 1em;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+a.user-card {
+    color: inherit;
+}
+
+.user-card .avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
+    margin-right: 1em;
+}
+
+.user-card .infos {
+    min-width: 0;
+    word-wrap: break-word;
+    text-overflow: ellipsis;
+    overflow-y: hidden;
+    display: flex;
+}
+</style>
+
+{% endblock style %}
+
+{% block content %}
+<h1>{{ title }}</h1>
+
+<p>Utilisateurs inscrits ({{ pager.items_total }})</p>
+
+<div id="users">
+  {% for user in pager %}
+  <a class="user-card" href="{{ url_for('user', login=user.login)}}">
+    <img src="{{ user.avatar_url }}" alt="{{ user }} avatar" class="avatar">
+    <span class="infos">
+        <span class="name">{{ user }}</span>
+    </span>
+  </a>
+  {% endfor %}
+</div>
+
+{% include "components/pager.html.j2" %}
+{% endblock content %}

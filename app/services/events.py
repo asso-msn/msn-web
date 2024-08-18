@@ -5,8 +5,7 @@ from datetime import datetime
 
 import arrow
 
-from app import data
-from app.services.lang import LANG
+from app import config, data
 
 
 @dataclass
@@ -79,22 +78,26 @@ class Event:
 
     @property
     def relative_time(self):
-        return self.arrow and self.arrow.humanize(locale=LANG).capitalize()
+        return (
+            self.arrow and self.arrow.humanize(locale=config.LANG).capitalize()
+        )
 
     @property
     def day_name(self):
-        return self.arrow and self.arrow.format("dddd", locale=LANG)
+        return self.arrow and self.arrow.format("dddd", locale=config.LANG)
 
     @property
     def day_number(self):
         if len(self.dates) > 1:
-            return f"{self.arrow.format('D')} - {arrow.get(self.dates[-1]).format('D')}"
+            start = self.arrow.format("D")
+            end = arrow.get(self.dates[-1]).format("D")
+            return f"{start} - {end}"
 
         return self.arrow and self.arrow.format("D")
 
     @property
     def month(self):
-        return self.arrow and self.arrow.format("MMM", locale=LANG)
+        return self.arrow and self.arrow.format("MMM", locale=config.LANG)
 
     def load_template(self):
         template = self.templates.get(self.template)

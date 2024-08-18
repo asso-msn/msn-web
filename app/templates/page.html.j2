@@ -1,9 +1,15 @@
 {% extends "base.html.j2" %}
 
 {% block body %}
+    {% if page %}
+    <div class="page page-{{ page }}">
+    {% else %}
     <div class="page">
+    {% endif %}
+
     {% block content %}
     {{ content.html | safe }}
     {% endblock %}
+
     </div>
 {% endblock %}

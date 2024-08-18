@@ -1,0 +1,125 @@
+.page-login,
+.page-password,
+.page-link
+{
+    max-width: 500px;
+}
+
+
+.page-login #actions,
+.page-password #actions,
+.page-link #actions {
+    margin-top: 3em;
+}
+.page-login #actions .action,
+.page-password #actions .action,
+.page-link #actions .action {
+    display: inline-block;
+    margin: 0.5em 1em;
+}
+
+.page-users-settings .action {
+    font-size: 0.9em;
+    display: inline-block;
+}
+
+.page-users-settings .input {
+    margin: 1em 0;
+}
+
+.page-users-settings #actions .input {
+    margin: 0;
+}
+
+.pager-user-settings .action input {
+    margin: 0;
+}
+
+.page-password #actions {
+    margin-top: 1em;
+    font-size: 0.9em;
+}
+
+#profile-settings-sections > .column {
+    margin: 0 1em;
+}
+
+#profile-settings #save {
+    min-width: 40%;
+    margin: 1em auto;
+    display: inherit;
+}
+
+#profile-settings #bio {
+    height: 20em;
+}
+
+#profile-header {
+    display: flex;
+    align-items: start;
+    margin: 2em 0 3em;
+}
+
+#profile-header img {
+    width: 128px;
+    height: 128px;
+    border-radius: 12px;
+    margin-right: 1em;
+}
+
+#profile-header a {
+    color: inherit;
+    text-decoration: none;
+}
+
+#profile-header .name {
+    flex: 1;
+    overflow-y: hidden;
+}
+
+.page-link .actions {
+    margin-top: 2em;
+}
+
+
+.page-link #discord-profile {
+    display: flex;
+    align-items: center;
+    font-size: 0.9em;
+}
+
+.page-link #discord-profile .avatar {
+    border-radius: 50%;
+    width: 64px;
+    height: 64px;
+    margin-right: 1em;
+}
+
+.page-link #discord-profile .name {
+    font-size: 1.1em;
+}
+
+.page-login {
+    text-align: center;
+}
+
+.page-login .button,
+.page-login .input {
+    max-width: 300px;
+}
+
+.page-login form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.page-login .avatar {
+    height: 100px;
+}
+
+.page-link #actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

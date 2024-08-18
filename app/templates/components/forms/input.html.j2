@@ -1,0 +1,14 @@
+<div class="input">
+    <div class="text-field">
+        {% if icon %}
+        <label class="label-icon" for="{{ form[input].id }}">
+            <span class="material-icons">{{ icon }}</span>
+        </label>
+        {% endif %}
+        <div class="label-group">
+            <label for="{{ form[input].id }}">{{ label }}</label>
+            {{ form[input] }}
+        </div>
+    </div>
+    {% include "components/forms/errors.html.j2" %}
+</div>

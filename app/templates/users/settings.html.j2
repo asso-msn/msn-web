@@ -1,0 +1,152 @@
+{% extends "page.html.j2" %}
+
+{% block style %}
+<style>
+#actions {
+    display: flex;
+    gap: 1em;
+    margin-top: 1em;
+}
+</style>
+{% endblock style %}
+
+{% block content %}
+
+{% with user=current_user%}
+{% include "components/profile_header.html.j2" %}
+{% endwith %}
+
+<h1>Paramètres</h1>
+
+<form method="post" id="profile-settings" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+
+    <div class="columns" id="profile-settings-sections">
+        <div class="column">
+            <h2>Mon profil</h2>
+
+            {% with input='display_name', label='Nom d\'affichage' %}
+            {% include "components/forms/input.html.j2" %}
+            {% endwith %}
+
+            {% with input='image_type', label='Service d\'avatar '%}
+            {% include "components/forms/select.html.j2" %}
+            {% endwith %}
+
+            {% with input='image', label='Avatar', id='image-input' %}
+            {% include "components/forms/file.html.j2" %}
+            {% endwith %}
+
+            {% with
+                input='bio',
+                label='Description',
+                placeholder='Parle de qui tu es ici...'
+            %}
+            {% include "components/forms/textarea.html.j2" %}
+            {% endwith %}
+        </div>
+        <div class="column">
+            <h2>Mon compte</h2>
+
+            {% with input='login', label='Identifiant' %}
+            {% include "components/forms/input.html.j2" %}
+            {% endwith %}
+
+            {% with input='email', label='Email' %}
+            {% include "components/forms/input.html.j2" %}
+            {% endwith %}
+
+            <div class="action input">
+                <a href="{{ url_for('settings_password') }}" class="button">
+                    Changer de mot de passe
+                </a>
+            </div>
+
+            <p>
+                Authentification via mot de passe :
+                {% with condition=current_user.password %}
+                {% include "components/boolean_badge.html.j2" %}
+                {% endwith %}
+            </p>
+
+            <p>
+                Lié à Discord :
+                {% with condition=current_user.has_discord %}
+                {% include "components/boolean_badge.html.j2" %}
+                {% endwith %}
+            </p>
+
+            <div id="actions">
+                <div class="input">
+                    {% if current_user.has_discord %}
+                    <button class="discord" type="button" name="{{ form.unlink_discord.id }}" id="{{ form.unlink_discord.id }}">
+                        {% include "components/icons/discord_white.html.j2" %}
+                        Dissocier Discord
+                    </button>
+                    {% else %}
+                    <a href="{{ url_for('discord_link') }}" type="button" class="button discord">
+                        {% include "components/icons/discord_white.html.j2" %}
+                        Associer Discord
+                    </a>
+                    {% endif %}
+                </div>
+
+                {% with
+                    input='logout', button_text='Se déconnecter', class='alert'
+                %}
+                {% include "components/forms/button.html.j2" %}
+                {% endwith %}
+            </div>
+
+            <div class="separator">
+                Confidentialité
+            </div>
+
+            {% with input='hide_in_list', label='Me cacher de la liste de
+            membres' %}
+            {% include "components/forms/checkbox.html.j2" %}
+            {% endwith %}
+        </div>
+    </div>
+
+    {% with input='save', button_text='Sauvegarder' %}
+    {% include "components/forms/submit.html.j2" %}
+    {% endwith %}
+</form>
+
+{% endblock content %}
+
+{% block scripts %}
+<script>
+    const image_type = document.getElementById('image_type');
+    const uploader = document.getElementById('image-input');
+
+    function updateUploaderDisplay() {
+        if (image_type.value != 'local') {
+            uploader.style.display = 'none';
+        } else {
+            uploader.style.display = 'block';
+        }
+    }
+    image_type.addEventListener('change', updateUploaderDisplay);
+    updateUploaderDisplay();
+
+    const unlink_discord = document.getElementById('{{ form.unlink_discord.id }}');
+    const logout = document.getElementById('{{ form.logout.id }}');
+    const form = document.getElementById('profile-settings');
+
+    function makeActionButton(button) {
+        button.addEventListener('click', () => {
+            const input = document.createElement('input');
+            input.name = button.name;
+            input.value = '1';
+            input.type = 'hidden';
+            form.appendChild(input);
+            form.submit();
+        });
+    }
+    if (unlink_discord)
+        makeActionButton(unlink_discord);
+    makeActionButton(logout);
+</script>
+{% endblock %}

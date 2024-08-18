@@ -1,0 +1,36 @@
+{% extends "page.html.j2" %}
+
+{% block content %}
+<h1>Je me connecte</h1>
+
+<p class="small">
+    Pas encore de compte ?
+    <a href="{{ url_for('register') }}">Inscris-toi</a>.
+</p>
+
+<p class="buttons">
+    {% include "components/buttons/discord.html.j2" %}
+</p>
+
+<div class="separator">
+    ou
+</div>
+
+<form method="post">
+    {{ form.hidden_tag() }}
+
+    {% with input='login', label='Identifiant', icon='person' %}
+    {% include "components/forms/input.html.j2" %}
+    {% endwith %}
+
+
+    {% with input='password', label='Mot de passe', icon='lock' %}
+    {% include "components/forms/password.html.j2" %}
+    {% endwith %}
+
+
+    {% with button_text='Se connecter' %}
+    {% include "components/forms/submit.html.j2" %}
+    {% endwith %}
+</form>
+{% endblock content %}

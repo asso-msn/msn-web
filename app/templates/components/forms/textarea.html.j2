@@ -1,0 +1,15 @@
+<div class="input">
+    <div class="text-field">
+        <div class="label-group">
+            <label for="{{ form[input].id }}">
+                {{ label }}
+            </label>
+            {% if placeholder is not undefined %}
+            {{ form[input](placeholder=placeholder) }}
+            {% else %}
+            {{ form[input] }}
+            {% endif %}
+        </div>
+    </div>
+    {% include "components/forms/errors.html.j2" %}
+</div>

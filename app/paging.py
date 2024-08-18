@@ -15,7 +15,10 @@ class Pager:
         per_page: int = 10,
     ):
         self.iterable = iterable
-        self.items_total = total or len(iterable)
+        if total is not None:
+            self.items_total = total
+        else:
+            self.items_total = len(iterable)
         self.per_page = per_page
         self.current = page
         self.pages_total = (self.items_total // self.per_page) + bool(

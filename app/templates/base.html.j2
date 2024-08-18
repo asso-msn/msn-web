@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
         {% block title %}
-        {% set title = title or request.endpoint | title %}
+        {% set title = title or request.endpoint | title | replace('_', ' ') %}
         {{ title }} - Make Some Noise
         {% endblock %}
     </title>
@@ -18,6 +18,9 @@
     {% assets "css" %}
     <link href="{{ ASSET_URL }}" rel="stylesheet">
     {% endassets %}
+
+    {% block style %}
+    {% endblock style %}
 </head>
 
 <body>
@@ -30,9 +33,34 @@
             <ul class="items">
                 <li><a href="{{ url_for('about') }}">L'association</a></li>
                 <li><a href="{{ url_for('events') }}">Évènements</a></li>
+                <li>
+                    {% if not current_user.is_authenticated %}
+                    <a href="{{ url_for('login') }}" class="login">
+                        {% include "components/icons/user_black.html.j2" %}
+                    </a>
+                    {% else %}
+                    <a href="{{ url_for('settings') }}">
+                        <img class="avatar" src="{{ current_user.avatar_url }}">
+                    </a>
+                    {% endif %}
+                </li>
             </ul>
         </div>
     </nav>
+
+
+    <div id="flashes">
+        {% for category, message in get_flashed_messages(with_categories=true) %}
+        <div class="flash {{ category }}">
+            <span class="content">
+                {{ message | e }}
+            </span>
+            <span class="flash-close">
+                <span class="material-icons icon">close</span>
+            </span>
+        </div>
+        {% endfor %}
+    </div>
 
 {% block body %}{% endblock %}
 
@@ -55,6 +83,10 @@
                 <section>
                     <a class="title" href="{{ url_for('events')}}">Évènements</a>
                 </section>
+                <section>
+                    <div class="title">Communauté</div>
+                    <a href="{{ url_for('users') }}">Membres</a>
+                </section>
             </nav>
             <div class="socials">
                 <a href="{{ data.links.discord }}">
@@ -74,9 +106,17 @@
     </footer>
 
     <p id="copyright">
-        MIT Licensed - MAKE SOME NOISE
+        <a href="https://github.com/asso-msn/msn-web/blob/main/LICENSE">MIT Licensed</a>
+        -
+        MAKE SOME NOISE
     </p>
 
+    {% assets "js" %}
+    <script src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+
+    {% block scripts %}
+    {% endblock scripts %}
 </body>
 
 </html>

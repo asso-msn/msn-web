@@ -1,0 +1,11 @@
+<div class="input">
+    <input
+        type="{{ type or 'button' }}"
+        {% if input is not undefined %}
+        name="{{ form[input].id }}"
+        id="{{ form[input].id }}"
+        {% endif %}
+        class="button {{ class or '' }}"
+        value="{{ button_text or 'Valider' }}"
+    />
+</div>
