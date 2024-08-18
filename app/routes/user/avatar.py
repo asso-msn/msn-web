@@ -10,4 +10,5 @@ def avatar(hash: str):
     Should be registered as a static file route in the web server.
     Serves from `VAR_DIR/avatars/`.
     """
-    return flask.send_file(service.get_avatar_path(hash), "image/webp")
+    path = service.get_avatar_path(hash)
+    return flask.send_file(path, "image/webp")

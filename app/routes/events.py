@@ -12,5 +12,8 @@ def events():
     else:
         future_events = service.get_future_events()
     return app.render(
-        "events", future_events=future_events, past_events_pager=pager
+        "events",
+        future_events=future_events,
+        past_events_pager=pager,
+        title="Évènements",
     )
