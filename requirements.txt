@@ -1,4 +1,6 @@
+alembic
 arrow
+black
 cachelib
 Flask
 Flask-Assets
@@ -7,6 +9,8 @@ Flask-Login
 Flask-Session
 Flask-SQLAlchemy
 Flask-WTF
+Flake8
+Flake8-pyproject
 furl
 pyScss
 playwright

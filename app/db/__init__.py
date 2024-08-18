@@ -1,7 +1,9 @@
 from datetime import UTC, datetime
 
+import alembic.command
 import humps
 import sqlalchemy as sa
+from alembic.config import Config
 from sqlalchemy import orm
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped as Column
@@ -46,6 +48,8 @@ class Table(DeclarativeBase):
 
 def create_all():
     Table.metadata.create_all(engine)
+    alembic_cfg = Config("alembic.ini")
+    alembic.command.stamp(alembic_cfg, "head")
 
 
 @mixin

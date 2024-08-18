@@ -20,6 +20,6 @@ def auto_import(path: str | Path):
         _import_file(path)
         return
     for file in path.rglob("*.py"):
-        if file.stem == "__init__":
+        if file.stem in ("__init__", "env"):
             continue
         _import_file(file)

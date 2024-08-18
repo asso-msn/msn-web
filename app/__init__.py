@@ -99,7 +99,8 @@ class App(flask.Flask):
         self.config["SECRET_KEY"] = secret_key_path.read_text().strip()
 
         self.scheduler.start()
-        db.create_all()
+        if self.debug:
+            db.create_all()
 
     def redirect(self, route, external=False, code=302):
         external = external or route.split(":")[0] in ("http", "https")

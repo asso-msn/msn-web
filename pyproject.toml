@@ -1,0 +1,6 @@
+[tool.black]
+line-length = 80
+
+[tool.flake8]
+exclude = '.git,__pycache__,.venv'
+max-line-length = 80
