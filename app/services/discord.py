@@ -6,6 +6,7 @@ from requests import Session
 
 from app import app, config
 from app.db import User
+from app.services import audit
 
 BASE_URL = "https://discord.com"
 API_URL = f"{BASE_URL}/api/v10"
@@ -162,7 +163,7 @@ def refresh_avatars(login=None):
         if login:
             query = query.filter_by(login=login)
         for user in query:
-            if not user.refresh_avatar():
+            if not set_avatar(user):
                 continue
             s.commit()
             refreshed_users.append(repr(user))
@@ -176,8 +177,29 @@ def refresh_tokens(login=None):
         if login:
             query = query.filter_by(login=login)
         for user in query:
-            if not user.refresh_discord_token():
+            if not refresh_token(user):
                 continue
             s.commit()
             refreshed_users.append(repr(user))
     return refreshed_users
+
+
+def set_avatar(user: User) -> bool:
+    """Fetches the user's current Discord"""
+    api = API(user.discord_access_token)
+    image = api.get_user().avatar_url
+    if user.image == image:
+        return False
+    user.image = image
+    user.image_type = User.ImageType.discord
+    audit.log("Discord avatar set", user=user)
+    return True
+
+
+def refresh_token(user: User) -> bool:
+    response = refresh(user.discord_refresh_token)
+    if user.discord_access_token == response.access_token:
+        return False
+    user.discord_access_token = response.access_token
+    user.discord_refresh_token = response.refresh_token
+    return True

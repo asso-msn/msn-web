@@ -1,11 +1,8 @@
 import enum
-import hashlib
 from datetime import datetime
 
 import flask
 from flask_login import UserMixin
-
-from app.services import audit
 
 from . import Column, Id, Table, Timed, column
 
@@ -47,43 +44,6 @@ class User(Table, UserMixin, Id, Timed):
         size = config.GRAVATAR_AVATAR_SIZE
         return self.image or f"https://www.gravatar.com/avatar/?s={size}&d=mp"
 
-    def reset_avatar(self):
-        self.image = None
-        self.image_type = User.ImageType.empty
-
-    def refresh_avatar(self):
-        from app import config
-
-        if self.image_type == User.ImageType.discord:
-            from app.services import discord
-
-            api = discord.API(self.discord_access_token)
-            user = api.get_user()
-            if self.image == user.avatar_url:
-                return False
-            audit.log("Discord avatar refreshed", user=self)
-            self.image = user.avatar_url
-            return True
-
-        if self.image_type == User.ImageType.gravatar:
-            email = self.email.lower()
-            email_hash = hashlib.sha256(email.encode()).hexdigest()
-            size = config.GRAVATAR_AVATAR_SIZE
-            self.image = (
-                f"https://www.gravatar.com/avatar/{email_hash}?s={size}&d=mp"
-            )
-            return
-
     @property
     def has_discord(self) -> bool:
         return bool(self.discord_id)
-
-    def refresh_discord_token(self):
-        from app.services import discord
-
-        response = discord.refresh(self.discord_refresh_token)
-        if self.discord_access_token == response.access_token:
-            return False
-        self.discord_access_token = response.access_token
-        self.discord_refresh_token = response.refresh_token
-        return True

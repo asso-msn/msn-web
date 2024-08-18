@@ -1,6 +1,5 @@
 import flask
 from flask_login import current_user
-from werkzeug.datastructures import FileStorage
 from wtforms import (
     BooleanField,
     EmailField,
@@ -70,7 +69,7 @@ def settings():
             user.discord_access_token = None
             user.discord_refresh_token = None
             if user.image_type == User.ImageType.discord:
-                user.reset_avatar()
+                avatar.reset(user)
             s.commit()
             audit.log("Discord unlinked", user=user)
         flask.flash("Ton compte Discord a été retiré")
@@ -105,70 +104,27 @@ def settings():
         return app.render("users/settings", form=form, title="Paramètres")
 
     with app.session() as s:
-        need_avatar_refresh = False
-        changed_avatar_type = False
+        modified = {}
         user = s.query(User).get(current_user.id)
 
-        user.login = form.login.data
-        user.display_name = form.display_name.data
-        user.bio = form.bio.data
-        user.hide_in_list = form.hide_in_list.data
+        for field in ("login", "email", "display_name", "bio", "hide_in_list"):
+            if getattr(user, field) == getattr(form, field).data:
+                continue
+            setattr(user, field, getattr(form, field).data)
+            modified[field] = True
 
-        if user.image_type != form.image_type.data:
-            user.image_type = form.image_type.data
-            changed_avatar_type = True
+        try:
+            if avatar.update(user, form.image_type.data, form.image.data):
+                modified["avatar"] = True
+        except avatar.UnsupportedImageFormat:
+            flask.flash("Format d'image non supporté", "error")
+            return app.redirect("settings")
 
-        if user.image_type != User.ImageType.local:
-            del form.image
-            if changed_avatar_type:
-                need_avatar_refresh = True
+        if modified:
+            s.commit()
+            flask.flash("Profil mis à jour")
+            audit.log("Profile updated", user=user, modified=modified.keys())
 
-        if user.image_type == User.ImageType.empty:
-            user.reset_avatar()
-
-        if (
-            user.image_type == User.ImageType.local
-            and not form.image.data
-            and not user.image
-        ):
-            user.reset_avatar()
-
-        if user.image_type == User.ImageType.local and form.image.data:
-            image: FileStorage = form.image.data
-            try:
-                image = avatar.convert(image)
-            except ValueError:
-                flask.flash("Format d'image non supporté", "error")
-                return app.redirect("settings")
-            image_hash = avatar.save(image)
-            if (
-                not changed_avatar_type
-                and user.image
-                and (
-                    s.query(User)
-                    .filter(
-                        User.image == user.image,
-                        User.id != user.id,
-                    )
-                    .count()
-                )
-                == 0
-            ):
-                avatar.delete(user.image)
-            user.image = image_hash
-
-        if (
-            user.email != form.email.data
-            and user.image_type == User.ImageType.gravatar
-        ):
-            need_avatar_refresh = True
-        user.email = form.email.data
-
-        if need_avatar_refresh:
-            user.refresh_avatar()
-
-        s.commit()
-        flask.flash("Profil mis à jour")
     return app.redirect("settings")
 
 

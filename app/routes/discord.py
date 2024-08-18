@@ -13,7 +13,7 @@ from app.forms import (
     LoginTakenValidator,
     NotReservedNameValidator,
 )
-from app.services import audit
+from app.services import audit, avatar
 from app.services import discord as service
 from app.services import user as user_service
 
@@ -94,13 +94,12 @@ def discord_register():
             discord_access_token=access_token,
             discord_refresh_token=refresh_token,
         )
-        if form.use_avatar.data:
-            user.image_type = User.ImageType.discord
-        user.refresh_avatar()
         s.add(user)
         s.commit()
         audit.log("User creation from Discord", user=user)
         user_service.login(user)
+        if form.use_avatar.data:
+            avatar.update(user, User.ImageType.discord)
 
     if next := flask.session.pop("next", None):
         return app.redirect(next)
