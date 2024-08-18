@@ -72,6 +72,11 @@
     text-decoration: none;
 }
 
+#profile-header .name {
+    flex: 1;
+    overflow-y: hidden;
+}
+
 .page-link .actions {
     margin-top: 2em;
 }
