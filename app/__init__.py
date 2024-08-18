@@ -77,6 +77,8 @@ class App(flask.Flask):
 
         self.scheduler = APScheduler(app=self)
 
+        VAR_DIR.mkdir(exist_ok=True)
+
         # Flask-SQLAlchemy is only used for the session backend. Codebase uses
         # self-managed SQLAlchemy for the database.
         self.config["SQLALCHEMY_DATABASE_URI"] = db.URI
@@ -90,8 +92,6 @@ class App(flask.Flask):
         self.config["SESSION_SQLALCHEMY"] = FlaskSQLAlchemy
         self.config["SESSION_SERIALIZATION_FORMAT"] = "json"
         self.cache = Session(self)
-
-        VAR_DIR.mkdir(exist_ok=True)
 
         secret_key_path = VAR_DIR / "secret_key.txt"
         if not secret_key_path.exists():
