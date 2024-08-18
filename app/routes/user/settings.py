@@ -6,14 +6,13 @@ from wtforms import (
     EmailField,
     FileField,
     SelectField,
-    StringField,
     SubmitField,
     TextAreaField,
 )
 
 from app import app
 from app.db import User
-from app.forms import Form, Length, LoginField, PasswordField
+from app.forms import DisplayNameField, Form, Length, LoginField, PasswordField
 from app.services import audit, avatar
 from app.services import user as service
 
@@ -26,7 +25,7 @@ def translate_image_type(image_type):
 
 class EditProfileForm(Form):
     login = LoginField()
-    display_name = StringField(validators=[Length(max=30)])
+    display_name = DisplayNameField()
     email = EmailField()
     bio = TextAreaField(validators=[Length(max=1000)])
     image = FileField()

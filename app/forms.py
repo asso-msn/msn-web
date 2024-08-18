@@ -22,6 +22,7 @@ class Form(FlaskForm):
 
 class LoginField(StringField):
     def __init__(self, **kwargs):
+        validators = kwargs.pop("validators", [])
         super().__init__(
             validators=[
                 AlnumPlusValidator(),
@@ -29,6 +30,20 @@ class LoginField(StringField):
                 Length(max=30),
                 LoginTakenValidator(),
                 NotReservedNameValidator(),
+                *validators,
+            ],
+            **kwargs,
+        )
+
+
+class DisplayNameField(StringField):
+    def __init__(self, **kwargs):
+        validators = kwargs.pop("validators", [])
+        super().__init__(
+            validators=[
+                Length(max=30),
+                NotReservedNameValidator(),
+                *validators,
             ],
             **kwargs,
         )
@@ -37,9 +52,11 @@ class LoginField(StringField):
 class PasswordField(PasswordField):
     def __init__(self, **kwargs):
         validators = kwargs.pop("validators", [])
-        validators.append(Length(min=4))
         super().__init__(
-            validators=validators,
+            validators=[
+                Length(min=4),
+                *validators,
+            ],
             **kwargs,
         )
 
