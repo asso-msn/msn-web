@@ -1,8 +1,12 @@
 import functools
 from pathlib import Path
 
+import ruamel.yaml
 import sssimp.generators.data
 from sssimp.generators.markdown import markdown_to_html
+
+yaml = ruamel.yaml.YAML()
+yaml.indent(mapping=2, sequence=4, offset=2)
 
 
 def resolve(path: str):
