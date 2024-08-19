@@ -80,8 +80,12 @@ def refresh(refresh_token: str) -> AccessTokenResponse:
 
 
 class API:
-    def __init__(self, access_token: str):
+    def __init__(self, access_token: str, bot=None):
         self.access_token = access_token
+        if bot is None:
+            bot = "." in access_token
+        auth_type = "Bot" if bot else "Bearer"
+        self._authorization_header = f"{auth_type} {access_token}"
 
     def request(self, method, url: str, **kwargs):
         api = kwargs.pop("api", True)
@@ -91,7 +95,7 @@ class API:
             method,
             url,
             data=kwargs,
-            headers={"Authorization": f"Bearer {self.access_token}"},
+            headers={"Authorization": self._authorization_header},
         )
         response.raise_for_status()
         return response.json()
@@ -137,12 +141,34 @@ class API:
                 f"/{self.avatar}.webp?size={config.DISCORD_AVATAR_SIZE}"
             )
 
+    class Role(Model):
+        id: str
+        name: str
+        position: int
+        color: int
+
+    class Server(Model):
+        id: str
+        name: str
+        roles: list["API.Role"]
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.roles.sort(key=lambda role: role.position, reverse=True)
+
     def get_user(self) -> "API.User":
         data = self.get("/users/@me")
         return self.User(**data)
 
     def get_oauth(self):
         return self.get("/oauth2/@me")
+
+    def get_server(self, guild_id: str = config.DISCORD_SERVER_ID):
+        data = self.get(f"/guilds/{guild_id}")
+        return self.Server(**data)
+
+    def get_bot(self):
+        return self.get("/oauth2/applications/@me")
 
 
 def get_db_user(access_token) -> User | None:

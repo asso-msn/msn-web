@@ -1,0 +1,54 @@
+Arcade:
+  console: false
+
+Mobile:
+  console: false
+  igdb: ["android", "ios", "mobile", "windows-mobile", "winphone"]
+
+PC:
+  console: false
+  igdb: ["win", "mac", "linux", "browser"]
+
+VR:
+  console: false
+  igdb: [
+    "meta-quest-2",
+    "meta-quest-3",
+    "oculus-quest",
+    "oculus-rift",
+    "oculus-vr",
+    "psvr",
+    "psvr2",
+    "steam-vr",
+    "windows-mixed-reality",
+  ]
+
+DC: {}
+
+PS1:
+  igdb: ["ps"]
+PS2: {}
+PSP: {}
+PS3: {}
+PS Vita: {}
+PS4:
+  igdb: ["ps4--1"]
+PS5: {}
+
+GB: {}
+GBC: {}
+GBA: {}
+DS:
+  igdb: ["nds", "nintendo-dsi"]
+Wii: {}
+Wii U:
+  igdb: ["wiiu"]
+3DS:
+  igdb: ["3ds", "new-nintendo-3ds"]
+Switch: {}
+
+Xbox: {}
+Xbox 360: {}
+Xbox One: {}
+Xbox Series:
+  igdb: ["series-x-s"]

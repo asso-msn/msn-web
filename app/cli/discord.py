@@ -6,7 +6,6 @@ from app.services import discord as service
 
 @app.cli.group()
 def discord():
-    """Discord commands"""
     pass
 
 

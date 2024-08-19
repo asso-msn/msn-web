@@ -10,6 +10,10 @@ class Config:
     SERVER_NAME: str
     DISCORD_CLIENT_ID: str
     DISCORD_CLIENT_SECRET: str
+    DISCORD_BOT_TOKEN: str
+    DISCORD_SERVER_ID: str
+    TWITCH_CLIENT_ID: str
+    TWITCH_CLIENT_SECRET: str
     AUDIT_WEBHOOK: str = None
     ARROW_LANG: str = "fr"
     AVATAR_SIZE: int = 256

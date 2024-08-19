@@ -1,0 +1,8 @@
+name: osu!
+igdb:
+  - osu
+  - osu-stream
+  - osu-droid
+platforms:
+  - Mobile
+  - PC
