@@ -6,7 +6,6 @@ if sys.version_info < (3, 11):
 import logging
 import os
 import secrets
-from logging import Formatter
 from pathlib import Path
 
 import flask
@@ -136,7 +135,7 @@ class App(flask.Flask):
 format = "[%(levelname)s] %(name)s - %(pathname)s:%(lineno)s: %(message)s"
 
 
-class CustomFormatter(Formatter):
+class CustomFormatter(logging.Formatter):
     def format(self, record):
         # Replace the pathname with a path relative to the current working
         # directory
@@ -146,18 +145,28 @@ class CustomFormatter(Formatter):
         return super().format(record)
 
 
+class CustomFilter(logging.Filter):
+    def filter(self, record):
+        return record.name == "root"
+
+
 handler = logging.StreamHandler()
 handler.setFormatter(CustomFormatter(format))
 
-logging.basicConfig(
-    level=logging.DEBUG,
-    handlers=[handler],
-)
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+logger.addHandler(handler)
+logger.addFilter(CustomFilter())
 
+logging.getLogger("apscheduler").setLevel(logging.WARNING)
+logging.getLogger("urllib3").setLevel(logging.WARNING)
 
 app = App()
 
 app.config.from_object(config)
+
+if not app.debug:
+    logger.setLevel(logging.INFO)
 
 for module in ("cli", "filters", "routes", "services", "tasks", "db"):
     auto_import.auto_import(module)
