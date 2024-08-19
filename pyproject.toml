@@ -3,4 +3,5 @@ line-length = 80
 
 [tool.flake8]
 exclude = '.git,__pycache__,.venv'
+ignore = 'E203,W503,E701'
 max-line-length = 80
