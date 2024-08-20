@@ -87,6 +87,7 @@ class API:
         class Category(Enum):
             MAIN_GAME = 0
             DLC = 1
+            EXPANDED = 10
             PORT = 11
             FORK = 12
             ...
@@ -127,6 +128,7 @@ class API:
             f'search "{query}"',
             "where category = ("
             f"      {self.Game.Category.MAIN_GAME},"
+            f"      {self.Game.Category.EXPANDED},"
             f"      {self.Game.Category.PORT},"
             f"      {self.Game.Category.FORK}"
             ")",
