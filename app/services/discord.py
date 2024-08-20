@@ -81,6 +81,9 @@ def refresh(refresh_token: str) -> AccessTokenResponse:
 
 class API:
     def __init__(self, access_token: str, bot=None):
+        if not access_token:
+            raise ValueError("Missing Discord access_token")
+
         self.access_token = access_token
         if bot is None:
             bot = "." in access_token
@@ -164,6 +167,9 @@ class API:
         return self.get("/oauth2/@me")
 
     def get_server(self, guild_id: str = config.DISCORD_SERVER_ID):
+        if not guild_id:
+            raise ValueError("Missing Discord server_id")
+
         data = self.get(f"/guilds/{guild_id}")
         return self.Server(**data)
 

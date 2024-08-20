@@ -7,18 +7,18 @@ import yaml
 
 @dataclass
 class Config:
-    SERVER_NAME: str
+    DISCORD_BOT_TOKEN: str
     DISCORD_CLIENT_ID: str
     DISCORD_CLIENT_SECRET: str
-    DISCORD_BOT_TOKEN: str
-    DISCORD_SERVER_ID: str
-    TWITCH_CLIENT_ID: str
-    TWITCH_CLIENT_SECRET: str
-    AUDIT_WEBHOOK: str = None
+    SERVER_NAME: str = "localhost:5000"
     ARROW_LANG: str = "fr"
+    AUDIT_WEBHOOK: str = None
     AVATAR_SIZE: int = 256
     DISCORD_AVATAR_SIZE: int = AVATAR_SIZE
+    DISCORD_SERVER_ID: str = None
     GRAVATAR_AVATAR_SIZE: int = AVATAR_SIZE
+    TWITCH_CLIENT_ID: str = None
+    TWITCH_CLIENT_SECRET: str = None
 
     @property
     def LANG(self):
@@ -47,3 +47,11 @@ class Config:
             else:
                 value = field.type(value)
             setattr(self, key, value)
+
+        missing = [
+            field.name
+            for field in fields(self)
+            if not hasattr(self, field.name)
+        ]
+        if missing:
+            raise ValueError(f"Missing config: {missing}")

@@ -29,6 +29,9 @@ class API:
         if self._auth_token:
             return self._auth_token
 
+        if not self.client_id or not self.client_secret:
+            raise Exception("Missing Twitch client_id or client_secret")
+
         response = requests.post(
             TWITCH_AUTH_URL,
             {
@@ -37,6 +40,7 @@ class API:
                 "grant_type": "client_credentials",
             },
         )
+        response.raise_for_status()
         self._auth_token = response.json()["access_token"]
         return self.auth_token
 
