@@ -2,4 +2,5 @@ name: Groove Coaster
 platforms:
   - Arcade
   - Mobile
+  - PC
   - Switch
