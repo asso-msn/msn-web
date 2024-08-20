@@ -100,6 +100,7 @@ def discord_register():
         user_service.login(user)
         if form.use_avatar.data:
             avatar.update(user, User.ImageType.discord)
+            s.commit()
 
     if next := flask.session.pop("next", None):
         return app.redirect(next)
