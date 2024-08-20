@@ -10,7 +10,7 @@ def seed():
 
 
 @seed.command()
-def files():
+def roles():
     """Create game data files using existing Discord roles"""
     path = data.resolve("games")
     path.mkdir(exist_ok=True)
