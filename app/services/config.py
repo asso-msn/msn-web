@@ -7,16 +7,16 @@ import yaml
 
 @dataclass
 class Config:
-    DISCORD_BOT_TOKEN: str
     DISCORD_CLIENT_ID: str
     DISCORD_CLIENT_SECRET: str
-    SERVER_NAME: str = "localhost:5000"
     ARROW_LANG: str = "fr"
     AUDIT_WEBHOOK: str = None
     AVATAR_SIZE: int = 256
     DISCORD_AVATAR_SIZE: int = AVATAR_SIZE
+    DISCORD_BOT_TOKEN: str = None
     DISCORD_SERVER_ID: str = None
     GRAVATAR_AVATAR_SIZE: int = AVATAR_SIZE
+    SERVER_NAME: str = "localhost:5000"
     TWITCH_CLIENT_ID: str = None
     TWITCH_CLIENT_SECRET: str = None
 
