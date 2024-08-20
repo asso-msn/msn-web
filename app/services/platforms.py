@@ -10,7 +10,7 @@ class Platform:
     _igdb: list[str] = None
 
     @property
-    def igdbs(self):
+    def igdb(self):
         if not self._igdb:
             return [self.name.lower().replace(" ", "")]
         return self._igdb
