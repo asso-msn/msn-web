@@ -44,7 +44,7 @@ def files():
         with open(path / f"{filename}.yml", "w") as f:
             f.write(f"name: {name}\n")
 
-    print("Created", len(created), "games")
+    print("Created", len(created), "games:", *created)
 
 
 @seed.command("platforms")
