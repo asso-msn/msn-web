@@ -1,5 +1,6 @@
 name: Guitar Hero
 platforms:
+  - Arcade
   - DS
   - Mobile
   - PC

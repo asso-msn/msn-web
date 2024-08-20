@@ -1,6 +1,7 @@
 name: Project Diva
 platforms:
   - Arcade
+  - PC
   - PS Vita
   - PS3
   - PS4
