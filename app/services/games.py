@@ -22,6 +22,7 @@ class Game:
     publisher: str = None
     platforms: list[str] = None
     description: str = None
+    popular: bool = False
 
     def __str__(self):
         return self.name
@@ -50,6 +51,14 @@ def get(slug: str) -> Game:
         **{key: value for key, value in game_data.items() if key in fields},
         slug=slug,
     )
+
+
+def get_by_name(name: str) -> Game:
+    from app import app
+
+    for game in get_all():
+        if game.name == name:
+            return game
 
 
 def get_all(sort=None) -> list[Game]:

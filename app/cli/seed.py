@@ -9,9 +9,9 @@ def seed():
     pass
 
 
-@seed.command()
-def roles():
-    """Create game data files using existing Discord roles"""
+@seed.command("roles")
+def roles_():
+    """Create game data files and populate db using existing Discord roles"""
     path = data.resolve("games")
     path.mkdir(exist_ok=True)
     api = discord.API(config.DISCORD_BOT_TOKEN)
@@ -101,3 +101,43 @@ def platforms_(game_to_update):
             data.yaml.dump(doc, f)
 
     print("Updated platforms for", len(modified), "games:", *modified)
+
+
+@seed.command()
+@click.argument("limit", default=10)
+def popular(limit):
+    api = discord.API(config.DISCORD_BOT_TOKEN)
+    members = api.get_members()
+    roles_by_id = {role.id: role.name for role in api.get_server().roles}
+    roles_count = {}
+    for member in members:
+        for role_id in member["roles"]:
+            role_name = roles_by_id.get(role_id)
+            roles_count.setdefault(role_name, 0)
+            roles_count[role_name] += 1
+
+    top_roles = []
+    for role, _ in sorted(
+        roles_count.items(), key=lambda x: x[1], reverse=True
+    ):
+        if limit == 0:
+            break
+        game = games.get_by_name(role)
+        if not game:
+            continue
+        top_roles.append(game)
+        limit -= 1
+
+    updated = 0
+    for game in games.get_all():
+        with game.path.open() as f:
+            doc = data.yaml.load(f)
+        is_popular = game in top_roles
+        if doc.get("popular") == is_popular:
+            continue
+        doc["popular"] = is_popular
+        with game.path.open("w") as f:
+            data.yaml.dump(doc, f)
+        print("Updated", game.name, "popularity to", is_popular)
+        updated += 1
+    print("Updated", updated, "games")

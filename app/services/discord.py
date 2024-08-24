@@ -90,14 +90,15 @@ class API:
         auth_type = "Bot" if bot else "Bearer"
         self._authorization_header = f"{auth_type} {access_token}"
 
-    def request(self, method, url: str, **kwargs):
+    def request(self, method, url: str, data=None, **kwargs):
         api = kwargs.pop("api", True)
         base = API_URL if api else BASE_URL
         url = base + url
         response = requests.request(
             method,
             url,
-            data=kwargs,
+            params=kwargs,
+            json=data,
             headers={"Authorization": self._authorization_header},
         )
         response.raise_for_status()
@@ -172,6 +173,22 @@ class API:
 
         data = self.get(f"/guilds/{guild_id}")
         return self.Server(**data)
+
+    def get_members(self, guild_id: str = config.DISCORD_SERVER_ID):
+        if not guild_id:
+            raise ValueError("Missing Discord server_id")
+
+        results = []
+        after = None
+        while True:
+            response = self.get(
+                f"/guilds/{guild_id}/members", limit=1000, after=after
+            )
+            if not response:
+                break
+            results.extend(response)
+            after = response[-1]["user"]["id"]
+        return results
 
     def get_bot(self):
         return self.get("/oauth2/applications/@me")
