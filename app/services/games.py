@@ -35,7 +35,9 @@ class Game:
         from app import app
 
         with app.session() as s:
-            return s.query(GameTable).filter(GameTable.slug == self.id).first()
+            return (
+                s.query(GameTable).filter(GameTable.slug == self.slug).first()
+            )
 
 
 def get(slug: str) -> Game:
