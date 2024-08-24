@@ -65,4 +65,7 @@ class Timed:
     )
 
 
+from sqlalchemy.orm import relationship as relation  # noqa: E402 F401
+
+from .game import Game  # noqa: E402 F401
 from .user import User  # noqa: E402 F401

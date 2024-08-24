@@ -170,3 +170,9 @@ if not app.debug:
 
 for module in ("cli", "filters", "routes", "services", "tasks", "db"):
     auto_import.auto_import(module)
+
+
+def _populate():
+    from app.services import games
+
+    games.populate()

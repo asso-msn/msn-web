@@ -1,10 +1,16 @@
+from __future__ import annotations
+
 import enum
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 import flask
 from flask_login import UserMixin
 
-from . import Column, Id, Table, Timed, column
+from . import Column, Id, Table, Timed, column, relation
+
+if TYPE_CHECKING:
+    from .relationships.user_game import UserGame
 
 
 class User(Table, UserMixin, Id, Timed):
@@ -29,6 +35,10 @@ class User(Table, UserMixin, Id, Timed):
 
     hide_in_list: Column[bool] = column(default=False)
 
+    games: Column[list[UserGame]] = relation(
+        "UserGame", back_populates="user", cascade="all, delete-orphan"
+    )
+
     def __repr__(self):
         return f"{self.__class__.__name__}(login={self.login}, id={self.id})"
 
@@ -47,3 +57,11 @@ class User(Table, UserMixin, Id, Timed):
     @property
     def has_discord(self) -> bool:
         return bool(self.discord_id)
+
+    def plays(self, game_id: str) -> bool:
+        return any(game.game.slug == game_id for game in self.games)
+
+    def favorited(self, game_id: str) -> bool:
+        return any(
+            game.game.slug == game_id and game.favorite for game in self.games
+        )

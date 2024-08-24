@@ -44,6 +44,12 @@
             %}
             {% include "components/forms/textarea.html.j2" %}
             {% endwith %}
+
+            <div class="action input">
+                <a href="{{ url_for('games_picker') }}" class="button">
+                    Ma liste de jeux
+                </a>
+            </div>
         </div>
         <div class="column">
             <h2>Mon compte</h2>

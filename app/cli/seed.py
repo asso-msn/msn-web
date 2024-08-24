@@ -26,7 +26,7 @@ def roles():
         print("Found events section, cutting off following roles")
         role_names = role_names[: role_names.index("=== Events ===")]
 
-    game_names = [x.name for x in games.get_games().values()]
+    game_names = [x.name for x in games.get_all()]
     for name in role_names:
         if name.startswith("-[[ ") and name.endswith(" ]]-"):
             print("Skipping section", name)
@@ -55,9 +55,9 @@ def platforms_(game_to_update):
     modified = set()
 
     if game_to_update:
-        games_ = [games.get_game(game_to_update)]
+        games_ = [games.get(game_to_update)]
     else:
-        games_ = games.get_games().values()
+        games_ = games.get_all()
 
     for game in games_:
         print("Looking up platforms for", game.name)

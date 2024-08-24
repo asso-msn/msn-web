@@ -1,4 +1,5 @@
 from app import app, db
+from app.services import games
 
 
 @app.cli.group("db")
@@ -9,3 +10,8 @@ def group():
 @group.command()
 def create():
     db.create_all()
+
+
+@group.command()
+def populate():
+    games.populate()
