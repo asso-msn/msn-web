@@ -12,6 +12,9 @@ from app.services import audit
 
 @app.errorhandler(Exception)
 def handle_exception(e):
+    if app.debug:
+        raise e
+
     if isinstance(e, HTTPException):
         return e
 
