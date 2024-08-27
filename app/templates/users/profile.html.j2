@@ -1,5 +1,22 @@
 {% extends "page.html.j2" %}
 
+{% block style %}
+<style>
+.games {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+}
+
+.games .badge {
+    margin: 0;
+}
+.badge.favorited {
+    background-color: var(--color-strong-yellow);
+}
+</style>
+{% endblock style %}
+
 {% block content %}
 {% include "components/profile_header.html.j2" %}
 
@@ -12,6 +29,20 @@
     Dernière visite {{ user.last_seen | humanize }}.
 </p>
 {% endif %}
+
+<h2>Jeux</h2>
+<div class="games">
+    {% for game in user.games %}
+    <div class="
+        badge
+        {% if user.favorited(game.game.slug) %}
+        favorited
+        {% endif %}
+    ">
+        {{ game.game.data.name }}
+    </div>
+    {% endfor %}
+</div>
 
 {% if user.bio %}
 <div class="separator">Description</div>

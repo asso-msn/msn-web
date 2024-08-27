@@ -61,7 +61,7 @@ class User(Table, UserMixin, Id, Timed):
     def plays(self, game_id: str) -> bool:
         return any(game.game.slug == game_id for game in self.games)
 
-    def favorited(self, game_id: str) -> bool:
+    def favorited(self, slug: str) -> bool:
         return any(
-            game.game.slug == game_id and game.favorite for game in self.games
+            game.game.slug == slug and game.favorite for game in self.games
         )
