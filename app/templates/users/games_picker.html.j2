@@ -118,38 +118,38 @@
 
 {% block scripts %}
 <script>
-for (let game of document.querySelectorAll('.game')) {
-    for (let picker of game.querySelectorAll('.picker-button')) {
-        const slug = picker.dataset.slug;
-        const action = picker.dataset.action;
-        const method = {
-            favorite: 'PATCH',
-            unfavorite: 'PATCH',
-            add: 'POST',
-            delete: 'DELETE'
-        }[action];
-        const url = `/api/settings/games/${slug}`;
-        const data = {};
+for (let picker of document.querySelectorAll('.picker-button')) {
+    const slug = picker.dataset.slug;
+    const action = picker.dataset.action;
+    const method = {
+        favorite: 'PATCH',
+        unfavorite: 'PATCH',
+        add: 'POST',
+        delete: 'DELETE'
+    }[action];
+    const url = `/api/settings/games/${slug}`;
+    const data = {};
 
-        if (['favorite', 'unfavorite'].includes(action))
-            data.favorite = !picker.classList.contains('unfavorite');
+    if (['favorite', 'unfavorite'].includes(action))
+        data.favorite = !picker.classList.contains('unfavorite');
 
-        picker.addEventListener('click', async () => {
-            const response = await fetch(url, {
-                method,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}'
-                },
-                body: JSON.stringify(data)
-            });
+    picker.addEventListener('click', async () => {
+        const response = await fetch(url, {
+            method,
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify(data)
+        });
 
-            if (!response.ok) {
-                console.error(response);
-                flash('Erreur lors de la mise à jour de vos jeux', 'error');
-                return;
-            }
+        if (!response.ok) {
+            console.error(response);
+            flash('Erreur lors de la mise à jour de vos jeux', 'error');
+            return;
+        }
 
+        for (let game of document.querySelectorAll(`.game[data-slug="${slug}"]`)) {
             if (action == 'favorite') {
                 game.classList.add('favorited');
             } else if (action == 'unfavorite') {
@@ -157,12 +157,13 @@ for (let game of document.querySelectorAll('.game')) {
             } else if (action == 'add') {
                 game.classList.add('plays');
             } else if (action == 'delete') {
+                game.classList.remove('favorite');
                 game.classList.remove('plays');
             }
+        }
 
-            console.log(`Action ${action} on ${slug} successful`);
-        });
-    }
+        console.log(`Action ${action} on ${slug} successful`);
+    });
 }
 </script>
 {% endblock scripts %}
