@@ -32,14 +32,14 @@
 
 <h2>Jeux</h2>
 <div class="games">
-    {% for game in user.games %}
+    {% for game in user.get_games() %}
     <div class="
         badge
-        {% if user.favorited(game.game.slug) %}
+        {% if user.favorited(game.slug) %}
         favorited
         {% endif %}
     ">
-        {{ game.game.data.name }}
+        {{ game.data.name }}
     </div>
     {% endfor %}
 </div>

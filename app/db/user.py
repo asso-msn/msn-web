@@ -65,3 +65,8 @@ class User(Table, UserMixin, Id, Timed):
         return any(
             game.game.slug == slug and game.favorite for game in self.games
         )
+
+    def get_games(self):
+        result = [game.game for game in self.games]
+        result.sort(key=lambda x: x.data["name"].lower())
+        return result
