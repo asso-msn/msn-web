@@ -53,9 +53,7 @@ def get(slug: str) -> Game:
     )
 
 
-def get_by_name(name: str) -> Game:
-    from app import app
-
+def get_by_name(name: str) -> Game | None:
     for game in get_all():
         if game.name == name:
             return game
@@ -75,6 +73,10 @@ def get_all(sort=None) -> list[Game]:
 
         result.sort(key=sort_key)
     return result
+
+
+def get_popular(limit=10, sort=None) -> list[Game]:
+    return [game for game in get_all(sort=sort) if game.popular][:limit]
 
 
 def populate():

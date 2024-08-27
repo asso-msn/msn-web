@@ -31,7 +31,7 @@
     border-radius: 0.5em;
 }
 
-.game.active .name {
+.game.plays .name {
     background: none;
 }
 
@@ -71,6 +71,29 @@
     top: 0.15em;
 }
 
+.page h1, .page h2 {
+    text-align: center;
+}
+
+.game.plays .picker-button[data-action="add"] {
+    display: none;
+}
+.game:not(.plays) .picker-button[data-action="delete"] {
+    display: none;
+}
+.game.favorited .picker-button[data-action="favorite"] {
+    display: none;
+}
+.game:not(.favorited) .picker-button[data-action="unfavorite"],
+.game:not(.plays) .picker-button[data-action="favorite"]
+{
+    display: none;
+}
+
+.picker-button {
+    cursor: pointer;
+}
+
 </style>
 
 {% endblock style %}
@@ -79,47 +102,67 @@
 
 <h1>Ma liste de jeux</h1>
 
-{% for game in games %}
-{% if user.plays(game.slug) %}
-<div class="game active">
-{% else %}
-<div class="game">
-{% endif %}
-    <div class="name">
-        {{ game }}
+<h2>Jeux populaires</h2>
 
-        {% if user.plays(game.slug) %}
-        {% if user.favorited(game.slug) %}
-        <a class="unfavorite">
-            <span class="material-icons">
-                star
-            </span>
-        </a>
-        {% else %}
-        <a class="favorite">
-            <span class="material-icons">
-                star_border
-            </span>
-        </a>
-        {% endif %}
-        {% endif %}
-    </div>
-    <div class="actions">
-        {% if not user.plays(game.slug) %}
-        <a class="button confirm">
-            <span class="material-icons">
-                add
-            </span>
-        </a>
-        {% else %}
-        <a class="button alert">
-            <span class="material-icons">
-                delete
-            </span>
-        </a>
-        {% endif %}
-    </div>
-</div>
+{% for game in popular_games %}
+{% include "components/game_picker_entry.html.j2" %}
+{% endfor %}
+
+<h2>Tous les jeux</h2>
+
+{% for game in games %}
+{% include "components/game_picker_entry.html.j2" %}
 {% endfor %}
 
 {% endblock content %}
+
+{% block scripts %}
+<script>
+for (let game of document.querySelectorAll('.game')) {
+    for (let picker of game.querySelectorAll('.picker-button')) {
+        const slug = picker.dataset.slug;
+        const action = picker.dataset.action;
+        const method = {
+            favorite: 'PATCH',
+            unfavorite: 'PATCH',
+            add: 'POST',
+            delete: 'DELETE'
+        }[action];
+        const url = `/api/settings/games/${slug}`;
+        const data = {};
+
+        if (['favorite', 'unfavorite'].includes(action))
+            data.favorite = !picker.classList.contains('unfavorite');
+
+        picker.addEventListener('click', async () => {
+            const response = await fetch(url, {
+                method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (!response.ok) {
+                console.error(response);
+                flash('Erreur lors de la mise à jour de vos jeux', 'error');
+                return;
+            }
+
+            if (action == 'favorite') {
+                game.classList.add('favorited');
+            } else if (action == 'unfavorite') {
+                game.classList.remove('favorited');
+            } else if (action == 'add') {
+                game.classList.add('plays');
+            } else if (action == 'delete') {
+                game.classList.remove('plays');
+            }
+
+            console.log(`Action ${action} on ${slug} successful`);
+        });
+    }
+}
+</script>
+{% endblock scripts %}

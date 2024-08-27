@@ -1,0 +1,38 @@
+<div
+    class="
+        game
+        {% if user.plays(game.slug)%}
+        plays
+        {% endif %}
+        {% if user.favorited(game.slug) %}
+        favorited
+        {% endif %}
+    "
+>
+    <div class="name">
+        {{ game }}
+
+        <a class="unfavorite picker-button" data-action="unfavorite" data-slug="{{ game.slug }}">
+            <span class="material-icons">
+                star
+            </span>
+        </a>
+        <a class="favorite picker-button" data-action="favorite" data-slug="{{ game.slug }}">
+            <span class="material-icons">
+                star_border
+            </span>
+        </a>
+    </div>
+    <div class="actions">
+        <a class="button confirm picker-button" data-action="add" data-slug="{{ game.slug }}">
+            <span class="material-icons">
+                add
+            </span>
+        </a>
+        <a class="button alert picker-button" data-action="delete" data-slug="{{ game.slug }}">
+            <span class="material-icons">
+                delete
+            </span>
+        </a>
+    </div>
+</div>

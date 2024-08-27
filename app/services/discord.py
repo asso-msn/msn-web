@@ -1,3 +1,4 @@
+import typing as t
 import urllib
 
 import requests
@@ -7,6 +8,7 @@ from requests import Session
 from app import app, config
 from app.db import User
 from app.services import audit
+from app.services.games import Game
 
 BASE_URL = "https://discord.com"
 API_URL = f"{BASE_URL}/api/v10"
@@ -102,6 +104,8 @@ class API:
             headers={"Authorization": self._authorization_header},
         )
         response.raise_for_status()
+        if not response.text:
+            return
         return response.json()
 
     def get(self, url: str, **kwargs):
@@ -109,6 +113,12 @@ class API:
 
     def post(self, url: str, **kwargs):
         return self.request("POST", url, **kwargs)
+
+    def put(self, url: str, **kwargs):
+        return self.request("PUT", url, **kwargs)
+
+    def delete(self, url: str, **kwargs):
+        return self.request("DELETE", url, **kwargs)
 
     class User(Model):
         id: str
@@ -151,6 +161,9 @@ class API:
         position: int
         color: int
 
+        def __str__(self):
+            return self.name
+
     class Server(Model):
         id: str
         name: str
@@ -159,6 +172,11 @@ class API:
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
             self.roles.sort(key=lambda role: role.position, reverse=True)
+
+        def get_role(self, name: str) -> t.Optional["API.Role"]:
+            for role in self.roles:
+                if role.name == name:
+                    return role
 
     def get_user(self) -> "API.User":
         data = self.get("/users/@me")
@@ -192,6 +210,16 @@ class API:
 
     def get_bot(self):
         return self.get("/oauth2/applications/@me")
+
+    def add_role(self, server_id, user_id, role_id):
+        return self.put(
+            f"/guilds/{server_id}/members/{user_id}/roles/{role_id}"
+        )
+
+    def remove_role(self, server_id, user_id, role_id):
+        return self.delete(
+            f"/guilds/{server_id}/members/{user_id}/roles/{role_id}"
+        )
 
 
 def get_db_user(access_token) -> User | None:
@@ -252,3 +280,33 @@ def refresh_token(user: User) -> bool:
     user.discord_access_token = response.access_token
     user.discord_refresh_token = response.refresh_token
     return True
+
+
+def _update_game_role(user: User, game: Game, action: str):
+    if not user.has_discord:
+        return
+
+    # Do not crash if Discord game role update fails
+    try:
+        api = API(config.DISCORD_BOT_TOKEN)
+        server = api.get_server()
+        role = server.get_role(game.name)
+        if not role:
+            return
+        user_id = user.discord_id
+        role_id = role.id
+        if action == "add":
+            api.add_role(server.id, user_id, role_id)
+        elif action == "remove":
+            api.remove_role(server.id, user_id, role_id)
+        audit.log(f"Discord game role {role} {action}ed for {user}")
+    except Exception as e:
+        audit.log(f"Discord game {action} error", user=user, game=game, error=e)
+
+
+def add_game(user: User, game: Game):
+    _update_game_role(user, game, "add")
+
+
+def remove_game(user: User, game: Game):
+    _update_game_role(user, game, "remove")
