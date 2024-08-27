@@ -101,6 +101,7 @@ def discord_register():
         if form.use_avatar.data:
             avatar.update(user, User.ImageType.discord)
             s.commit()
+        service.import_games_lists(user.login)
 
     if next := flask.session.pop("next", None):
         return app.redirect(next)

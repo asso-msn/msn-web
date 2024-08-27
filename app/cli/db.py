@@ -10,8 +10,4 @@ def group():
 @group.command()
 def create():
     db.create_all()
-
-
-@group.command()
-def populate():
     games.populate()

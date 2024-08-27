@@ -312,7 +312,7 @@ def remove_game(user: User, game: Game):
     _update_game_role(user, game, "remove")
 
 
-def import_games_lists():
+def import_games_lists(login=None):
     refreshed_users = []
     api = API(config.DISCORD_BOT_TOKEN)
     server = api.get_server()
@@ -325,7 +325,10 @@ def import_games_lists():
         if game := games.get_by_name(role_name):
             game_roles[role_id] = game
     with app.session() as s:
-        for user in s.query(User).filter(User.discord_id):
+        query = s.query(User).filter(User.discord_id)
+        if login:
+            query = query.filter_by(login=login)
+        for user in query:
             if not (member := members_by_id.get(user.discord_id)):
                 continue
             changed = False
