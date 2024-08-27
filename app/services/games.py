@@ -2,8 +2,10 @@ import dataclasses
 import logging
 from dataclasses import dataclass
 
-from app import data
+from app import data, db
 from app.db import Game as GameTable
+from app.db import User, UserGame
+from app.services import audit
 
 
 @dataclass
@@ -88,3 +90,57 @@ def populate():
                 s.add(GameTable(slug=game.slug))
                 logging.info(f"Populating DB with game {game}")
         s.commit()
+
+
+def add_to_list(slug: str, user: User, discord=True) -> bool:
+    from app import app
+    from app.services import discord as discord_service
+
+    game = get(slug)
+    with app.session() as s:
+        action = db.greate(
+            s,
+            UserGame,
+            filter={"user_id": user.id, "game_id": game.db.id},
+        )
+        if action.created:
+            s.commit()
+            audit.log(f"Game {game} added to {user}")
+            if discord:
+                discord_service.add_game(user, game)
+    return action.created
+
+
+def remove_from_list(slug: str, user: User, discord=True) -> bool:
+    from app import app
+    from app.services import discord as discord_service
+
+    game = get(slug)
+    with app.session() as s:
+        query = s.query(UserGame).filter_by(user_id=user.id, game_id=game.db.id)
+        exists = bool(query.first())
+        if exists:
+            query.delete()
+            s.commit()
+            audit.log(f"Game {game} removed to {user}")
+            if discord:
+                discord_service.remove_game(user, game)
+    return exists
+
+
+def set_favorite(slug: str, user: User, favorite: bool) -> bool:
+    from app import app
+
+    game = get(slug)
+    with app.session() as s:
+        instance = (
+            s.query(UserGame)
+            .filter_by(user_id=user.id, game_id=game.db.id)
+            .first()
+        )
+        different = instance.favorite != favorite
+        if different:
+            instance.favorite = favorite
+            s.commit()
+            audit.log(f"Game {game} favorite set to {favorite} for {user}")
+    return different

@@ -29,3 +29,13 @@ def avatar(login):
         print("No change.")
         return
     print("Refreshed avatar for:", users)
+
+
+@discord.command()
+def games():
+    """Import Discord members game roles to games lists"""
+    users = service.import_games_lists()
+    if not users:
+        print("No change.")
+        return
+    print("Refreshed games for:", users)

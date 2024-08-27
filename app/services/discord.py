@@ -7,7 +7,7 @@ from requests import Session
 
 from app import app, config
 from app.db import User
-from app.services import audit
+from app.services import audit, games
 from app.services.games import Game
 
 BASE_URL = "https://discord.com"
@@ -310,3 +310,37 @@ def add_game(user: User, game: Game):
 
 def remove_game(user: User, game: Game):
     _update_game_role(user, game, "remove")
+
+
+def import_games_lists():
+    refreshed_users = []
+    api = API(config.DISCORD_BOT_TOKEN)
+    server = api.get_server()
+    members_by_id = {
+        member["user"]["id"]: member for member in api.get_members(server.id)
+    }
+    roles_by_id = {role.id: role.name for role in server.roles}
+    game_roles = {}
+    for role_id, role_name in roles_by_id.items():
+        if game := games.get_by_name(role_name):
+            game_roles[role_id] = game
+    with app.session() as s:
+        for user in s.query(User).filter(User.discord_id):
+            if not (member := members_by_id.get(user.discord_id)):
+                continue
+            changed = False
+            for role_id, game in game_roles.items():
+                if role_id in member["roles"]:
+                    changed = (
+                        games.add_to_list(game.slug, user, discord=False)
+                        or changed
+                    )
+                else:
+                    changed = (
+                        games.remove_from_list(game.slug, user, discord=False)
+                        or changed
+                    )
+            if changed:
+                refreshed_users.append(repr(user))
+
+    return refreshed_users
