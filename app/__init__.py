@@ -2,7 +2,7 @@ import sys
 
 if sys.version_info < (3, 11):
     raise RuntimeError("Python 3.11+ is required")
-
+import dataclasses
 import logging
 import os
 import secrets
@@ -129,6 +129,9 @@ class App(flask.Flask):
         if isinstance(rv, Model):
             rv = rv.model_dump()
 
+        if dataclasses.is_dataclass(rv):
+            rv = dataclasses.asdict(rv)
+
         return super().make_response(rv)
 
 
@@ -160,6 +163,8 @@ logger.addFilter(CustomFilter())
 
 logging.getLogger("apscheduler").setLevel(logging.WARNING)
 logging.getLogger("urllib3").setLevel(logging.WARNING)
+# TODO: Implement named logger in sssimp
+# logging.getLogger("sssimp").setLevel(logging.WARNING)
 
 app = App()
 
