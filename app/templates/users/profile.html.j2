@@ -46,9 +46,9 @@
 
 {% if user.bio %}
 <div class="separator">Description</div>
-<p>
+<div>
     {{ user.bio | e | markdown }}
-</p>
+</div>
 {% endif %}
 
 {% endblock content %}
