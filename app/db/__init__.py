@@ -1,3 +1,5 @@
+import typing as t
+from dataclasses import dataclass
 from datetime import UTC, datetime
 
 import alembic.command
@@ -65,7 +67,25 @@ class Timed:
     )
 
 
+@dataclass
+class GetOrCreate:
+    instance: t.Any
+    created: bool
+
+
+def greate(session, model, filter=None, defaults=None) -> GetOrCreate:
+    """Get or create"""
+    instance = session.query(model).filter_by(**filter).first()
+    if instance:
+        return GetOrCreate(instance, False)
+    params = {**(filter or {}), **(defaults or {})}
+    instance = model(**params)
+    session.add(instance)
+    return GetOrCreate(instance, True)
+
+
 from sqlalchemy.orm import relationship as relation  # noqa: E402 F401
 
 from .game import Game  # noqa: E402 F401
+from .relationships.user_game import UserGame  # noqa: E402 F401
 from .user import User  # noqa: E402 F401
