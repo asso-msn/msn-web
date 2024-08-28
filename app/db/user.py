@@ -66,7 +66,9 @@ class User(Table, UserMixin, Id, Timed):
             game.game.slug == slug and game.favorite for game in self.games
         )
 
-    def get_games(self):
+    def get_games(self, fav_first=False):
         result = [game.game for game in self.games]
         result.sort(key=lambda x: x.data["name"].lower())
+        if fav_first:
+            result.sort(key=lambda x: not self.favorited(x.slug))
         return result
