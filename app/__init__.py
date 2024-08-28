@@ -90,6 +90,7 @@ class App(flask.Flask):
         # self.config["SESSION_CACHELIB"] = FileSystemCache(
         #     str(VAR_DIR / "flask_session"),
         # )
+        self.config["SESSION_USE_SIGNER"] = True
         self.config["SESSION_TYPE"] = "sqlalchemy"
         self.config["SESSION_SQLALCHEMY"] = FlaskSQLAlchemy
         self.config["SESSION_SERIALIZATION_FORMAT"] = "json"
