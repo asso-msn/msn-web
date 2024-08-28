@@ -17,7 +17,7 @@ class Game:
 
     slug: str
     name: str
-    image: str
+    image: str = None
     igdb: list[str] = None
     colors: Colors = None
     start: int = None
