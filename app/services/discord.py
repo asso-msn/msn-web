@@ -221,6 +221,9 @@ class API:
             f"/guilds/{server_id}/members/{user_id}/roles/{role_id}"
         )
 
+    def create_role(self, server_id, name: str):
+        return self.post(f"/guilds/{server_id}/roles", data={"name": name})
+
 
 def get_db_user(access_token) -> User | None:
     api = API(access_token)
