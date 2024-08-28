@@ -18,7 +18,7 @@ class Config:
     DISCORD_SERVER_ID: str = None
     GRAVATAR_AVATAR_SIZE: int = AVATAR_SIZE
     SERVER_NAME: str = "localhost:5000"
-    ASSETS_URL: str = "https://asso-msn.fr/assets"
+    CLOUD_ASSETS_URL: str = "https://asso-msn.fr/assets"
     TWITCH_CLIENT_ID: str = None
     TWITCH_CLIENT_SECRET: str = None
 

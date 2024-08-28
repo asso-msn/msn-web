@@ -34,7 +34,7 @@ class Game:
     @property
     def image_url(self):
 
-        return f"{config.ASSETS_URL}/games/{self.image}"
+        return f"{config.CLOUD_ASSETS_URL}/games/{self.image}"
 
     @property
     def path(self):
