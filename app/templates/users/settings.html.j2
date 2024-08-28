@@ -12,9 +12,7 @@
 
 {% block content %}
 
-{% with user=current_user%}
 {% include "components/profile_header.html.j2" %}
-{% endwith %}
 
 <h1>Paramètres</h1>
 
@@ -44,12 +42,6 @@
             %}
             {% include "components/forms/textarea.html.j2" %}
             {% endwith %}
-
-            <div class="action input">
-                <a href="{{ url_for('games_picker') }}" class="button">
-                    Ma liste de jeux
-                </a>
-            </div>
         </div>
         <div class="column">
             <h2>Mon compte</h2>

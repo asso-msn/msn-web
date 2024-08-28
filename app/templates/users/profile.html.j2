@@ -1,66 +1,8 @@
 {% extends "page.html.j2" %}
 
-{% block style %}
-<style>
-.games {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.25em 1em;
-    align-items: baseline;
-}
-
-.games.limited .game:nth-child(n+11) {
-    display: none;
-}
-
-.games .favorite-icon {
-    color: var(--color-strong-yellow);
-}
-
-.games #show-more .hidden {
-    display: none;
-}
-
-</style>
-{% endblock style %}
-
 {% block content %}
 {% include "components/profile_header.html.j2" %}
 
-<p>
-    Membre depuis {{ user.created_at | humanize }}.
-</p>
-
-{% if user.last_seen %}
-<p>
-    Dernière visite {{ user.last_seen | humanize }}.
-</p>
-{% endif %}
-
-<h2>Jeux</h2>
-<div class="games limited">
-    {% with games = user.get_games(fav_first=True) %}
-    {% for game in games %}
-    <div class="
-        game
-        {% if user.favorited(game.slug) %}
-        favorited
-        {% endif %}
-    ">
-        #{{ game.slug }}
-        {% if user.favorited(game.slug) %}
-        <span class="favorite-icon material-icons">star</span>
-        {% endif %}
-    </div>
-    {% endfor %}
-    {% if games | length > 10 %}
-    <div id="show-more">
-        <a data-action="expand">Voir plus ({{ games | length - 10 }})...</a>
-        <a data-action="shrink" class="hidden">Voir moins...</a>
-    </div>
-    {% endif %}
-    {% endwith %}
-</div>
 
 {% if user.bio %}
 <div class="separator">Description</div>
@@ -73,24 +15,5 @@
 
 {% block scripts %}
 <script>
-    const showMore = document.querySelector('#show-more');
-    const games = document.querySelector('.games');
-
-    if (showMore && games) {
-        const expand = showMore.querySelector('[data-action="expand"]');
-        const shrink = showMore.querySelector('[data-action="shrink"]');
-
-        expand.addEventListener('click', () => {
-            games.classList.remove('limited');
-            expand.classList.add('hidden');
-            shrink.classList.remove('hidden');
-        });
-
-        shrink.addEventListener('click', () => {
-            games.classList.add('limited');
-            expand.classList.remove('hidden');
-            shrink.classList.add('hidden');
-        });
-    }
 </script>
 {% endblock scripts %}

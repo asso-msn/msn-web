@@ -41,6 +41,7 @@
     #navbar .logo-text {
         font-size: 1.25em;
     }
+
     #navbar .text {
         display: none;
     }
@@ -62,7 +63,8 @@
         margin-right: 0.33em;
     }
 
-    #events .day-name, #events .hours {
+    #events .day-name,
+    #events .hours {
         font-size: 1.25em;
     }
 
@@ -78,6 +80,17 @@
     .page-users-settings #actions {
         display: flex;
         flex-direction: row;
+    }
+
+    #profile-header header {
+        flex-direction: column;
+        align-items: start;
+        gap: 1em;
+    }
+
+    #profile-header img {
+        width: 96px;
+        height: 96px;
     }
 }
 

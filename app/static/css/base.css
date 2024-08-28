@@ -70,6 +70,25 @@ img {
     object-fit: contain;
 }
 
+table {
+    border-radius: 4px;
+    border: 1px solid var(--color-light-gray);
+    border-spacing: 0;
+    padding: 4px;
+}
+
+table tr {
+    border-bottom: 1px solid var(--color-light-gray);
+}
+
+table td {
+    padding: 0.25em 0.5em;
+}
+
+table tr:nth-child(2n-1) {
+    background: var(--color-very-light-gray);
+}
+
 #flashes {
     max-width: var(--size-page-width);
     padding: 0 1em;
