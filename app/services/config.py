@@ -1,3 +1,4 @@
+import dataclasses
 import os
 from dataclasses import dataclass, fields
 from pathlib import Path
@@ -17,6 +18,7 @@ class Config:
     DISCORD_SERVER_ID: str = None
     GRAVATAR_AVATAR_SIZE: int = AVATAR_SIZE
     SERVER_NAME: str = "localhost:5000"
+    ASSETS_URL: str = "https://asso-msn.fr/assets"
     TWITCH_CLIENT_ID: str = None
     TWITCH_CLIENT_SECRET: str = None
 
@@ -41,9 +43,9 @@ class Config:
             key = field.name
             value = os.environ.get(key) or data.get(key)
             if not value:
-                continue
+                value = getattr(self, key, None)
             if field.type == bool:
-                value = value.lower() in ("true", "yes", "1")
+                value = value.lower() in ("true", "yes", "1", True)
             else:
                 value = field.type(value)
             setattr(self, key, value)

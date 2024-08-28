@@ -13,8 +13,8 @@
     :root {
         --font-logo: 'Bungee';
         --font-main: 'Poppins';
-        --color-main: {{ series.colors.main }};
-        --color-accent: {{ series.colors.accent }};
+        --color-main: {{ game.colors.main }};
+        --color-accent: {{ game.colors.accent }};
     }
 
     * {
@@ -209,29 +209,29 @@
 <body>
 
 <header>
-    <h1>{{ series.name }}</h1>
+    <h1>{{ game.name }}</h1>
     <div id="subtext" class="full-bar">
         <span id="dates">
-            <span>{{ series.start }}</span>
+            <span>{{ game.start }}</span>
             <span> - </span>
-            <span>{{ series.end | default("Aujourd'hui") }}</span>
+            <span>{{ game.end or "Aujourd'hui" }}</span>
         </span>
-        <span id="publisher">{{ series.publisher }}</span>
+        <span id="publisher">{{ game.publisher }}</span>
     </div>
 </header>
 
 <div id="intro" class="container">
     <div id="platforms">
-        {% for platform in series.platforms %}
+        {% for platform in game.platforms %}
         <span class="item">{{ platform }}</span>
         {% endfor %}
     </div>
 
     <div class="columns">
         <div id="description">
-            <p>{{ series.description[lang] | markdown }}</p>
+            <p>{{ game.description | markdown }}</p>
         </div>
-        <img id="image" src="https://asso-msn.fr/assets/games/{{ series.image }}">
+        <img id="image" src="{{ game.image_url }}">
     </div>
 </div>
 
@@ -247,7 +247,7 @@
             <div id="games">
                 <h3>Jeux</h3>
                 <div class="items">
-                    {% for game in series.games %}
+                    {% for game in game.poster.games %}
                     <div class="item">
                         <div class="columns">
                             <div class="icon">
@@ -257,10 +257,10 @@
                                 <h4>
                                     {{ game.name }}
                                     {% if game.subtext %}
-                                    <span class="subtext">({{ game.subtext[lang] }})</span>
+                                    <span class="subtext">({{ game.subtext }})</span>
                                     {% endif %}
                                 </h4>
-                                <p>{{ game.description[lang] | markdown }}</p>
+                                <p>{{ game.description | markdown }}</p>
                             </div>
                         </div>
                     </div>
@@ -271,19 +271,19 @@
             <div id="controllers">
                 <h3>Manettes</h3>
                 <div class="items">
-                    {% for controller in series.controllers %}
+                    {% for controller in game.poster.controllers %}
                     <div class="item">
                         <img src="https://asso-msn.fr/assets/controllers/{{ controller.image }}">
                         <h4 class="name">{{ controller.name }} {{ controller.price }}</h4>
-                        <div class="description">{{ controller.description[lang] | markdown }}</div>
+                        <div class="description">{{ controller.description | markdown }}</div>
                     </div>
                     {% endfor %}
                     <div class="item notes">
-                        {% for extra in series.controllers_notes.extras %}
-                        <p>{{ extra[lang] }}</p>
+                        {% for extra in game.poster.controllers_notes.extras %}
+                        <p>{{ extra }}</p>
                         {% endfor %}
                         <h4>Frais de port :</h4>
-                        {% for region, price in series.controllers_notes.shipping.items() %}
+                        {% for region, price in game.poster.controllers_notes.shipping.items() %}
                         <p>{{ region }} <strong>{{ price }}</strong></p>
                         {% endfor %}
                         <p class="customs-warning">⚠ Attention douane ⚠</p>

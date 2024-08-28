@@ -1,7 +1,7 @@
 import playwright.sync_api
 
 
-def from_html(html: str, dest: str):
+def save_html(html: str, dest: str):
     with playwright.sync_api.sync_playwright() as p:
         browser = p.chromium.launch()
         page = browser.new_page()

@@ -2,7 +2,7 @@ import dataclasses
 import logging
 from dataclasses import dataclass
 
-from app import data, db
+from app import config, data, db
 from app.db import Game as GameTable
 from app.db import User, UserGame
 from app.services import audit
@@ -17,6 +17,7 @@ class Game:
 
     slug: str
     name: str
+    image: str
     igdb: list[str] = None
     colors: Colors = None
     start: int = None
@@ -25,9 +26,15 @@ class Game:
     platforms: list[str] = None
     description: str = None
     popular: bool = False
+    poster: dict = None
 
     def __str__(self):
         return self.name
+
+    @property
+    def image_url(self):
+
+        return f"{config.ASSETS_URL}/games/{self.image}"
 
     @property
     def path(self):
@@ -43,11 +50,14 @@ class Game:
             )
 
 
-def get(slug: str) -> Game:
+def get(slug: str) -> Game | None:
     from app import app
 
     fields = [x.name for x in dataclasses.fields(Game)]
     game_data = app.data.get("games", {}).get(slug)
+
+    if not game_data:
+        return None
 
     return Game(
         **{key: value for key, value in game_data.items() if key in fields},
@@ -75,6 +85,12 @@ def get_all(sort=None) -> list[Game]:
 
         result.sort(key=sort_key)
     return result
+
+
+def get_slugs() -> list[str]:
+    from app import app
+
+    return app.data.get("games", {}).keys()
 
 
 def get_popular(limit=10, sort=None) -> list[Game]:
