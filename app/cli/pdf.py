@@ -24,6 +24,6 @@ def poster(slug):
         )
     OUTPUT_DIR.mkdir(exist_ok=True)
     dest = OUTPUT_DIR / f"{slug}.pdf"
-    html = app.render("game_info_poster", game=game)
+    html = app.render("pdf/game_info_poster", game=game)
     pdf.save_html(html, dest)
     click.echo(f"Generated game info poster at `{dest}`.")
