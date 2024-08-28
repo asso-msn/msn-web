@@ -102,8 +102,6 @@ class App(flask.Flask):
         self.config["SECRET_KEY"] = secret_key_path.read_text().strip()
 
         self.scheduler.start()
-        if self.debug:
-            db.create_all()
 
     def redirect(self, route, external=False, code=302):
         external = external or route.split(":")[0] in ("http", "https")
@@ -177,11 +175,16 @@ app.config.from_object(config)
 if not app.debug:
     logger.setLevel(logging.INFO)
 
+
+def setup():
+    from app.services import games
+
+    db.create_all()
+    games.populate()
+
+
 for module in ("cli", "filters", "routes", "services", "tasks", "db"):
     auto_import.auto_import(module)
 
-
-def _populate():
-    from app.services import games
-
-    games.populate()
+if app.debug:
+    setup()

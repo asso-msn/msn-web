@@ -1,0 +1,16 @@
+{% extends "page.html.j2" %}
+
+{% block content %}
+
+{% for game in games %}
+<div class="game">
+    <div class="game-header">
+        <div class="game-title">{{ game }}</div>
+        {% if game.image %}
+        <img class="game-image" src="{{ game.image_url }}">
+        {% endif %}
+    </div>
+</div>
+{% endfor %}
+
+{% endblock content %}
