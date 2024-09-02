@@ -2,3 +2,8 @@ name: Etterna
 platforms:
   - PC
 popular: false
+description_short: |
+  Etterna est une version modifée de StepMania se focalisant sur le jeu au
+  clavier.
+# https://github.com/etternagame/etterna/blob/9a0b9fb94ea0c1f4d24b707bd00fad24d94d22ec/.changelog/Release_0-01.md
+start: 2016 # 08-26

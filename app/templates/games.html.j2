@@ -249,6 +249,7 @@
             </div>
         </div>
         {% endif %}
+        {% if game.platforms %}
         <div class="game-platforms">
         {% for platform in game.platforms_short %}
             <div class="game-platform {{ platform | lower }}" title="{{ platform }}">
@@ -256,6 +257,7 @@
             </div>
         {% endfor %}
         </div>
+        {% endif %}
         <div class="game-bar">
             <div class="members">
                 {{ game.db.users | length }}

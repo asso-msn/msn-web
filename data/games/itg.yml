@@ -1,9 +1,15 @@
 name: In The Groove
+igdb:
+  - in-the-groove
 platforms:
   - Arcade
   - PC
   - PS2
-  - PS4
-  - Switch
-  - Xbox One
 popular: false
+start: 2004 # 09-24
+end: 2006 # 09-24
+description_short: |
+  Réutilisant le gameplay de Dance Dance Revolution, ITG proposait une
+  difficulté plus élevée et des compositions originales. Après son arrêt, la
+  communauté a continué de créer du contenu en s'inspirant du style original du
+  jeu.
