@@ -1,6 +1,8 @@
-name: Nostalgia
+name: NOSTALGIA
 igdb:
   - nostalgia--1
 platforms:
   - Arcade
 popular: false
+publisher: KONAMI
+start: 2017

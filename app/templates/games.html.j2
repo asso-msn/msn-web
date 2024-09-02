@@ -8,6 +8,7 @@
     gap: 40px;
     justify-content: center;
     margin: 1em auto 3em;
+    align-items: flex-start;
 }
 
 .games-list.small {
@@ -197,7 +198,7 @@
         </div>
         <div class="game-content">
             <div class="game-description">
-                {{ (game.description_short or game.description) | markdown }}
+                {{ (game.description or game.description_short) | markdown }}
             </div>
         </div>
         <div class="game-bar">
@@ -237,6 +238,13 @@
             </div>
             {% endif %}
         </div>
+        {% if game.description_short %}
+        <div class="game-content">
+            <div class="game-description">
+                {{ game.description_short | markdown }}
+            </div>
+        </div>
+        {% endif %}
         <div class="game-bar">
             <div class="stats">
                 <div class="members">

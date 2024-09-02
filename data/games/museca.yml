@@ -2,3 +2,6 @@ name: MUSECA
 platforms:
   - Arcade
 popular: false
+publisher: KONAMI
+start: 2015
+end: 2018 # 07-31

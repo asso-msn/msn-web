@@ -229,7 +229,14 @@
 
     <div class="columns">
         <div id="description">
-            <p>{{ game.description | markdown }}</p>
+            <p>
+                {{ (
+                    game.poster.description
+                    or game.description
+                    or game.description_short
+                    ) | markdown
+                }}
+            </p>
         </div>
         <img id="image" src="{{ game.image_url }}">
     </div>
