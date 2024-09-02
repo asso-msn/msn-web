@@ -48,7 +48,8 @@ a:visited {
     color: initial;
 }
 
-a, a:visited {
+a,
+a:visited {
     color: var(--color-blue);
 }
 
@@ -110,7 +111,8 @@ img {
     font-family: var(--font-logo);
 }
 
-.separator::before, .separator::after {
+.separator::before,
+.separator::after {
     flex: 1;
     content: '';
     padding: 1px;
@@ -118,7 +120,8 @@ img {
     margin: 5px;
 }
 
-.separator, hr {
+.separator,
+hr {
     display: flex;
     align-items: center;
     margin: 2em 0;
@@ -133,14 +136,17 @@ img {
 }
 
 
-.badge, .button, button {
+.badge,
+.button,
+button {
     padding: .25em 1em;
     border-radius: 2.5em;
     background: var(--color-white);
     color: var(--color-black);
 }
 
-.button, button {
+.button,
+button {
     border: 1px solid var(--color-gray);
     cursor: pointer;
     padding: 0.5em 1.5em;
@@ -153,11 +159,13 @@ img {
     margin-right: 0.5em;
 }
 
-a.button, .button {
+a.button,
+.button {
     color: var(--color-gray);
 }
 
-.button.discord, button.discord {
+.button.discord,
+button.discord {
     background: var(--color-discord);
     color: var(--color-white);
     border: none;
@@ -191,6 +199,7 @@ input[type="button"].alert {
 .badge.event-nightly {
     background: var(--color-dark-purple);
 }
+
 .badge.good {
     background: var(--color-green);
 }
@@ -211,6 +220,7 @@ input[type="button"].alert {
     object-fit: cover;
     z-index: -1;
     padding-bottom: 1em;
+    max-width: none;
 }
 
 .card .relative-time {
@@ -226,7 +236,7 @@ input[type="button"].alert {
     justify-content: space-between;
 }
 
-.columns > * {
+.columns>* {
     flex: 1;
 }
 
@@ -235,7 +245,7 @@ input[type="button"].alert {
     flex-wrap: wrap;
 }
 
-.gallery > * {
+.gallery>* {
     flex: 1;
 }
 
@@ -271,7 +281,7 @@ input[type="button"].alert {
     font-size: 1.25em;
 }
 
-.pager > * {
+.pager>* {
     margin: 0 .3em;
 }
 
@@ -419,7 +429,7 @@ input[type="button"].alert {
     margin: 1em 0;
 }
 
-#footer .socials > * {
+#footer .socials>* {
     margin: 0 .25em;
 }
 
