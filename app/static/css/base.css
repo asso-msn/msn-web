@@ -154,7 +154,8 @@ hr {
     margin: 2em 0;
 }
 
-.material-icons {
+.material-icons,
+.icon {
     max-width: 1em;
     overflow: hidden;
     font-size: 1.25em;

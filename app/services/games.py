@@ -24,9 +24,12 @@ class Game:
     end: int = None
     publisher: str = None
     platforms: list[str] = None
+    description_short: str = None
     description: str = None
     popular: bool = False
-    poster: dict = None
+
+    def __post_init__(self):
+        self._db = None
 
     def __str__(self):
         return self.name
@@ -37,17 +40,51 @@ class Game:
         return f"{config.CLOUD_ASSETS_URL}/games/{self.image}"
 
     @property
+    def page(self) -> bool:
+        from app import app
+
+        return self.slug in app.data.get("games_pages", [])
+
+    @property
+    def poster(self):
+        from app import app
+
+        return app.data["games_posters"].get(self.slug)
+
+    @property
+    def platforms_short(self):
+        from app import app
+
+        if not self.platforms:
+            return []
+
+        platforms = app.data.get("platforms", {})
+        return sorted(
+            set(
+                "Console" if value.get("console", True) else key
+                for key, value in platforms.items()
+                if key in self.platforms
+            )
+        )
+
+    @property
     def path(self):
         return data.resolve(f"games/{self.slug}.yml")
 
     @property
     def db(self):
+        if self._db is None:
+            self.load_db()
+        return self._db
+
+    def load_db(self, *args):
         from app import app
 
         with app.session() as s:
-            return (
-                s.query(GameTable).filter(GameTable.slug == self.slug).first()
-            )
+            self._db = s.query(GameTable).filter(GameTable.slug == self.slug)
+            if args:
+                self._db = self._db.options(*args)
+            self._db = self._db.first()
 
 
 def get(slug: str) -> Game | None:

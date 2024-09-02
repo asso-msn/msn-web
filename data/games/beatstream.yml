@@ -1,4 +1,7 @@
 name: BeatStream
+publisher: KONAMI
+start: 2014
+end: 2017
 platforms:
   - Arcade
 popular: false

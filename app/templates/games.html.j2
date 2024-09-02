@@ -1,16 +1,261 @@
 {% extends "page.html.j2" %}
 
+{% block style %}
+<style>
+.games-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: center;
+    margin: 1em auto 3em;
+}
+
+.games-list.small {
+    gap: 20px;
+}
+.game {
+    width: calc(var(--size-page-width) / 2  - 40px);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.games-list.small .game {
+    width: calc(var(--size-page-width) / 3 - 25px);
+}
+
+.game-image {
+    height: 300px;
+    width: 100%;
+    object-fit: cover;
+}
+
+.game-platforms {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    gap: 6px;
+    padding: 0 10px;
+}
+
+.game-platforms.image {
+    position: relative;
+    top: -25px;
+    margin-bottom: -35px;
+}
+
+{#
+.game-platform {
+    border-radius: 50%;
+    background: white;
+    color: black;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    text-align: center;
+    line-height: 40px;
+}
+#}
+
+.game-platform {
+    border-radius: 5px;
+    padding: 0.2em 0.5em;
+    color: black;
+    font-size: 0.8em;
+}
+
+.game-platform.arcade {
+    background: var(--color-red);
+}
+
+.game-platform.console {
+    background: var(--color-green);
+}
+
+.game-platform.pc {
+    background: var(--color-light-blue);
+}
+
+.game-platform.mobile {
+    background: var(--color-yellow);
+}
+
+.game-platform.vr {
+    background: var(--color-gray);
+    color: white;
+}
+
+.game-header {
+    padding: 0.5em 1em;
+    text-align: center;
+}
+
+.game-title {
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+.games-list.small .game-title {
+    font-weight: normal;
+    font-size: 1.1em;
+}
+
+.games-list.small .game-header {
+    flex: 1;
+}
+.game-publisher {
+    font-size: 0.75em;
+    font-weight: normal;
+    font-style: italic;
+}
+
+.games-list.small .game-publisher {
+    font-size: 1em;
+}
+
+.game-content {
+    padding: 0.5em 1em;
+    flex: 1;
+}
+
+.game-description p:first-child {
+    margin-top: 0;
+}
+
+.games-list.small .links {
+    display: flex;
+    justify-content: end;
+    padding: 0.5em 1em;
+    font-size: 0.8em;
+}
+
+.game-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5em 1em;
+}
+
+.games-list.small .stats {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+.game-bar .members {
+    padding: 0 0.5em;
+    width: 50px;
+}
+@media screen and (max-width: 700px) {
+    .game-image {
+        height: 200px;
+    }
+}
+
+.page-games h2 {
+    text-align: center;
+}
+
+</style>
+{% endblock style %}
+
 {% block content %}
 
-{% for game in games %}
-<div class="game">
-    <div class="game-header">
-        <div class="game-title">{{ game }}</div>
+<h2>Jeux mis en avant</h2>
+
+<div class="games-list">
+    {% for game in games if game.slug in config.GAMES_SHOWCASE %}
+    <div class="game" data-slug="{{ game.slug }}">
         {% if game.image %}
         <img class="game-image" src="{{ game.image_url }}">
         {% endif %}
+        <div class="game-platforms {% if game.image %}image{% endif %}">
+        {% for platform in game.platforms_short %}
+            <div class="game-platform {{ platform | lower }}" title="{{ platform }}">
+                {{ platform }}
+            </div>
+        {% endfor %}
+        </div>
+        <div class="game-header">
+            <div class="game-title">
+                {{ game }}
+            </div>
+            {% if game.publisher %}
+            <div class="game-publisher">{{ game.publisher }}</div>
+            {% endif %}
+            {% if game.start %}
+            <div class="game-dates">
+                {{ game.start }} - {{ game.end or "Aujourd'hui" }}
+            </div>
+            {% endif %}
+        </div>
+        <div class="game-content">
+            <div class="game-description">
+                {{ (game.description_short or game.description) | markdown }}
+            </div>
+        </div>
+        <div class="game-bar">
+            <div class="members">
+                {{ game.db.users | length }}
+                <span class="material-icons">group</span>
+            </div>
+            <div class="links">
+                {% if game.page %}
+                <a href="{{ url_for('game', slug=game.slug) }}" class="button small">Détails</a>
+                {% endif %}
+            </div>
+        </div>
     </div>
+    {% endfor %}
 </div>
-{% endfor %}
+
+<h2>Plus de jeux</h2>
+
+<div class="games-list small">
+    {% for game in games if game.slug not in config.GAMES_SHOWCASE %}
+    <div class="game">
+        <div class="game-header">
+            <div class="game-title">
+                {{ game }}
+            </div>
+            {% if game.publisher or game.start %}
+            <div class="small">
+                {% if game.publisher %}
+                <span class="game-publisher">
+                    {{ game.publisher }}
+                </span>
+                {% endif %}
+                {% if game.start %}
+                ({{ game.start }} - {{ game.end or "Aujourd'hui" }})
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+        <div class="game-bar">
+            <div class="stats">
+                <div class="members">
+                    {{ game.db.users | length }}
+                    <span class="material-icons">group</span>
+                </div>
+                {% if game.page %}
+                <div class="links">
+                    <a href="{{ game.page }}" class="button small">Détails</a>
+                </div>
+                {% endif %}
+            </div>
+            <div class="game-platforms">
+            {% for platform in game.platforms_short %}
+                <div class="game-platform {{ platform | lower }}" title="{{ platform }}">
+                    {{ platform }}
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
 
 {% endblock content %}

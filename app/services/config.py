@@ -1,4 +1,4 @@
-import os
+import dataclasses
 from dataclasses import dataclass, fields
 from pathlib import Path
 
@@ -20,39 +20,26 @@ class Config:
     CLOUD_ASSETS_URL: str = "https://asso-msn.fr/assets"
     TWITCH_CLIENT_ID: str = None
     TWITCH_CLIENT_SECRET: str = None
+    GAMES_SHOWCASE: list = dataclasses.field(
+        default_factory=lambda: ["2dx", "ddr", "sdvx", "taiko", "popn", "gc"]
+    )
 
     @property
     def LANG(self):
         return self.ARROW_LANG
 
-    def __init__(self, path="config.yml"):
+    @classmethod
+    def load(cls, path="config.yml"):
         path = Path(path)  # 🐶
         if not path.exists():
             with path.open("w") as f:
                 yaml.safe_dump(
                     {
-                        field.name: getattr(self, field.name, "REPLACE_ME")
-                        for field in fields(self)
+                        field.name: getattr(cls, field.name, "REPLACE_ME")
+                        for field in fields(cls)
                     },
                     f,
                 )
         with path.open() as f:
             data = yaml.safe_load(f)
-        for field in fields(self):
-            key = field.name
-            value = os.environ.get(key) or data.get(key)
-            if not value:
-                value = getattr(self, key, None)
-            if field.type == bool:
-                value = value.lower() in ("true", "yes", "1", True)
-            else:
-                value = field.type(value)
-            setattr(self, key, value)
-
-        missing = [
-            field.name
-            for field in fields(self)
-            if not hasattr(self, field.name)
-        ]
-        if missing:
-            raise ValueError(f"Missing config: {missing}")
+        return cls(**data)

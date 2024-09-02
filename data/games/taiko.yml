@@ -8,6 +8,7 @@ platforms:
   - PS Vita
   - PS2
   - PS4
+  - PS5
   - PSP
   - Switch
   - Wii
@@ -15,3 +16,5 @@ platforms:
   - Xbox One
   - Xbox Series
 popular: true
+publisher: BANDAI NAMCO
+image: taiko_nijiiro_emma.jpg

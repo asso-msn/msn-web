@@ -8,6 +8,8 @@ from app import app, config
 
 @app.add_template_filter
 def markdown(value: str):
+    if not value:
+        return ""
     return filters.markdown(value)
 
 

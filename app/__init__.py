@@ -19,7 +19,7 @@ from pydantic import BaseModel as Model
 
 from app.services.config import Config
 
-config = Config()
+config = Config.load()
 ROOT_DIR = Path(__file__).parent.resolve()
 VAR_DIR = Path("var").resolve()
 
