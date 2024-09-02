@@ -5,3 +5,5 @@ platforms:
 popular: false
 publisher: KONAMI
 start: 2010
+# MBR:J:A:A:2019121100 is the last update, game is on unofficial hiatus
+end: 2019
