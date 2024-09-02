@@ -249,25 +249,23 @@
             </div>
         </div>
         {% endif %}
+        <div class="game-platforms">
+        {% for platform in game.platforms_short %}
+            <div class="game-platform {{ platform | lower }}" title="{{ platform }}">
+                {{ platform }}
+            </div>
+        {% endfor %}
+        </div>
         <div class="game-bar">
-            <div class="stats">
-                <div class="members">
-                    {{ game.db.users | length }}
-                    <span class="material-icons">group</span>
-                </div>
-                {% if game.page %}
-                <div class="links">
-                    <a href="{{ game.page }}" class="button small">Détails</a>
-                </div>
-                {% endif %}
+            <div class="members">
+                {{ game.db.users | length }}
+                <span class="material-icons">group</span>
             </div>
-            <div class="game-platforms">
-            {% for platform in game.platforms_short %}
-                <div class="game-platform {{ platform | lower }}" title="{{ platform }}">
-                    {{ platform }}
-                </div>
-            {% endfor %}
+            {% if game.page %}
+            <div class="links">
+                <a href="{{ game.page }}" class="button small">Détails</a>
             </div>
+            {% endif %}
         </div>
     </div>
     {% endfor %}
