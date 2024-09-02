@@ -42,15 +42,12 @@
                 </a>
             </p>
             <div class="actions">
-                {% if event.signup %}
-                <a href="{{ event.signup }}" class="button main">S'inscrire</a>
-                {% endif %}
-                {% if event.discord %}
-                <a href="{{ event.discord }}" class="button discord">
-                    {% include "components/icons/discord_white.html.j2" %}
-                    Voir sur Discord
-                </a>
-                {% endif %}
+                {% for name, url in event.links.items() %}
+                <a
+                    href="{{ url }}"
+                    class="button {{ name | slugify }}"
+                >{{ name }}</a>
+                {% endfor %}
             </div>
         </div>
     </div>

@@ -22,3 +22,8 @@ def humanize(value: datetime):
 @app.add_template_filter
 def arrow(value: datetime):
     return Arrow.fromdatetime(value)
+
+
+@app.add_template_filter
+def slugify(value: str):
+    return value.replace(" ", "-").lower()
