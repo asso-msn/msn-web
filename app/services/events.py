@@ -32,8 +32,7 @@ class Event:
     location: str = None
     description: str = None
     games: list[str] = dataclasses.field(default_factory=list)
-    signup: str = None
-    discord: str = None
+    links: dict[str, str] = dataclasses.field(default_factory=dict)
 
     templates = data.load("events_templates")
 
