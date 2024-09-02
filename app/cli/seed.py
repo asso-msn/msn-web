@@ -48,14 +48,14 @@ def roles_():
 
 
 @seed.command("platforms")
-@click.argument("game_to_update", required=False)
-def platforms_(game_to_update):
+@click.argument("slug", required=False)
+def platforms_(slug):
     """Update platforms for games using IGDB data"""
     api = igdb.API()
     modified = set()
 
-    if game_to_update:
-        games_ = [games.get(game_to_update)]
+    if slug:
+        games_ = [games.get(slug)]
     else:
         games_ = games.get_all()
 
@@ -101,6 +101,56 @@ def platforms_(game_to_update):
             data.yaml.dump(doc, f)
 
     print("Updated platforms for", len(modified), "games:", *modified)
+
+
+@seed.command()
+@click.argument("slug", required=False)
+def dates(slug):
+    """Update release dates for games using IGDB data"""
+    api = igdb.API()
+    modified = set()
+
+    if slug:
+        games_ = [games.get(slug)]
+    else:
+        games_ = games.get_all()
+
+    for game in games_:
+        print("Looking up release dates for", game.name)
+        igdb_dates = []
+
+        if game.igdb:
+            igdb_games = [api.get_game(slug) for slug in game.igdb]
+        else:
+            igdb_games = api.get_games(game.name)
+
+        for igdb_game in igdb_games:
+            if igdb_game.first_release_date:
+                igdb_dates.append(igdb_game.first_release_date)
+
+        if not igdb_dates:
+            print("No release dates found on IGDB for", game.name)
+            continue
+
+        igdb_dates.sort()
+        igdb_date = igdb_dates[0]
+        igdb_date = igdb_date.year
+
+        with game.path.open() as f:
+            doc = data.yaml.load(f)
+        current_date = doc.get("start")
+
+        if current_date and current_date <= igdb_date:
+            print("No changes for", game.name)
+            continue
+
+        modified.add(game.name)
+        doc["start"] = igdb_date
+        print("Writing data file back for", game.name, "with date", igdb_date)
+        with game.path.open("w") as f:
+            data.yaml.dump(doc, f)
+
+    print("Updated release dates for", len(modified), "games:", *modified)
 
 
 @seed.command()
