@@ -206,10 +206,17 @@
             </div>
         </div>
         <div class="game-bar">
+            {% if game.db.users | length %}
             <a class="members" href="{{ url_for('users')}}?game={{ game.slug }}">
                 {{ game.db.users | length }}
                 <span class="material-icons">group</span>
             </a>
+            {% else %}
+            <div class="members">
+                0
+                <span class="material-icons">group</span>
+            </div>
+            {% endif %}
             <div class="links">
                 {% if game.page %}
                 <a href="{{ url_for('game', slug=game.slug) }}" class="button small">Détails</a>
@@ -259,10 +266,17 @@
         </div>
         {% endif %}
         <div class="game-bar">
+            {% if game.db.users | length %}
             <a class="members" href="{{ url_for('users')}}?game={{ game.slug }}">
                 {{ game.db.users | length }}
                 <span class="material-icons">group</span>
             </a>
+            {% else %}
+            <div class="members">
+                0
+                <span class="material-icons">group</span>
+            </div>
+            {% endif %}
             {% if game.page %}
             <div class="links">
                 <a href="{{ game.page }}" class="button small">Détails</a>
