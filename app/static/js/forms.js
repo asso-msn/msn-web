@@ -19,3 +19,8 @@ for (const el of document.querySelectorAll(".input .password")) {
         input.type = "password";
     });
 }
+
+for (const el of document.querySelectorAll("select option")) {
+    if (el.value === "" && el.text.trim().replace(/-/g, "").length === 0)
+        el.disabled = true;
+}

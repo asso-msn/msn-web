@@ -6,6 +6,7 @@ import dataclasses
 import logging
 import os
 import secrets
+import urllib.parse
 from pathlib import Path
 
 import flask
@@ -47,6 +48,18 @@ class App(flask.Flask):
                 "data": self.data,
                 "hier": hier.get(),
             }
+
+        @self.before_request
+        def _():
+            without_empty = {
+                key: value for key, value in flask.request.args.items() if value
+            }
+            if without_empty != dict(flask.request.args):
+                return self.redirect(
+                    flask.request.path
+                    + "?"
+                    + urllib.parse.urlencode(without_empty)
+                )
 
         self.jinja_env.lstrip_blocks = True
         self.jinja_env.trim_blocks = True

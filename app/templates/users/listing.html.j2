@@ -35,6 +35,23 @@ a.user-card {
     overflow-y: hidden;
     display: flex;
 }
+
+form {
+    display: flex;
+    column-gap: 2em;
+    margin-bottom: 2em;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+form .input .text-field {
+  padding: 0.25em;
+}
+.input .select-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
 </style>
 
 {% endblock style %}
@@ -42,7 +59,19 @@ a.user-card {
 {% block content %}
 <h1>{{ title }}</h1>
 
-<p>Utilisateurs inscrits ({{ pager.items_total }})</p>
+<p>Résultats : {{ pager.items_total }}</p>
+
+<form action="." method="get">
+  {% with input='name', label='Nom' %}
+  {% include "components/forms/input.html.j2" %}
+  {% endwith %}
+
+  {% with input='game', label='Jeu' %}
+  {% include "components/forms/select.html.j2" %}
+  {% endwith %}
+
+  <button type="submit">Rechercher</button>
+</form>
 
 <div id="users">
   {% for user in pager %}
