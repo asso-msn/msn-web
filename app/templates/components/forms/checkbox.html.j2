@@ -1,13 +1,23 @@
 <div class="input">
     <div class="checkbox">
         <div class="label-group">
+            {% if input %}
             {{ form[input] }}
+            {% else %}
+            <input type="checkbox" id="{{ id }}" name="{{ name or id }}"
+                value="{{ value }}" {% if checked %}checked>{% endif %}
+            {% endif %}
             <div class="checkbox-icon">
-                <label class="material-icons icon " for="{{ form[input].id }}">check_box_outline_blank</label>
-                <label class="material-icons icon active" for="{{ form[input].id }}">check_box</label>
+                <label class="material-icons icon "
+                    for="{{ id or form[input].id }}">check_box_outline_blank</label>
+                <label class="material-icons icon active"
+                    for="{{ id or form[input].id }}">check_box</label>
             </div>
-            <label class="label" for="{{ form[input].id }}">{{ label }}</label>
+            <label class="label" for="{{ id or form[input].id }}">{{ label
+                }}</label>
         </div>
     </div>
+    {% if form %}
     {% include "components/forms/errors.html.j2" %}
+    {% endif %}
 </div>

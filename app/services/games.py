@@ -23,7 +23,7 @@ class Game:
     start: int = None
     end: int = None
     publisher: str = None
-    platforms: list[str] = None
+    platforms: list[str] = dataclasses.field(default_factory=list)
     description_short: str = None
     description: str = None
     popular: bool = False

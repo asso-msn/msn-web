@@ -116,7 +116,7 @@
 
 {% endblock content %}
 
-{% block scripts %}
+{% block script %}
 <script>
 for (let picker of document.querySelectorAll('.picker-button')) {
     const slug = picker.dataset.slug;
@@ -166,4 +166,4 @@ for (let picker of document.querySelectorAll('.picker-button')) {
     });
 }
 </script>
-{% endblock scripts %}
+{% endblock script %}

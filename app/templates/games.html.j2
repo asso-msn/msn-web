@@ -167,6 +167,9 @@
     text-align: center;
 }
 
+#full-list.arcade-only .game:not(.arcade) {
+    display: none;
+}
 </style>
 {% endblock style %}
 
@@ -229,9 +232,21 @@
 
 <h2>Plus de jeux</h2>
 
-<div class="games-list small">
+<p>
+    {% with id='show-arcade', label='Arcade uniquement', checked=true %}
+    {% include "components/forms/checkbox.html.j2" %}
+    {% endwith %}
+</p>
+
+<div class="games-list small arcade-only" id="full-list">
     {% for game in games if game.slug not in config.GAMES_SHOWCASE %}
-    <div class="game">
+    <div
+        class="
+            game
+            {% if 'Arcade' in game.platforms %}
+            arcade
+            {% endif %}
+    ">
         <div class="game-header">
             <div class="game-title">
                 {{ game }}
@@ -288,3 +303,24 @@
 </div>
 
 {% endblock content %}
+
+{% block script %}
+<script>
+{
+    const toggle = document.getElementById('show-arcade');
+    const list = document.getElementById('full-list');
+
+    if (toggle && list) {
+        function updateList() {
+            list.classList.toggle('arcade-only', toggle.checked);
+        }
+
+        toggle.addEventListener('change', () => {
+            updateList();
+        });
+
+        updateList();
+    }
+}
+</script>
+{% endblock script %}
