@@ -1,2 +1,13 @@
 name: EZ2
 popular: false
+igdb:
+  - ez2dj
+  - ez2ac
+  - ez2dancer
+  - ez2on
+  - ez2on-reboot
+  - ez2on-reboot-r
+start: 1999
+platforms:
+  - Arcade
+  - PC
