@@ -11,7 +11,7 @@ def games():
     games_ = service.get_all("name")
     for game in games_:
         game.load_db(sa_orm.joinedload(Game.users))
-    return app.render("games", games=games_)
+    return app.render("games", games=games_, title="Les jeux")
 
 
 @app.route("/games/<slug>/")
