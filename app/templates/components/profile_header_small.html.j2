@@ -1,0 +1,14 @@
+<div id="profile-header">
+    <header>
+        <div class="content">
+            <a href="{{ url_for('user', login=user.login) }}">
+                <img class="avatar" src="{{ user.avatar_url }}">
+            </a>
+            <h2 class="name">
+                <a href="{{ url_for('user', login=user.login) }}">
+                    {{ user }}
+                </a>
+            </h2>
+        </div>
+    </header>
+</div>
