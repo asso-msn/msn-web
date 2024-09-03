@@ -104,6 +104,7 @@
     border: none;
     font-size: 1.5em;
     padding: 0;
+    margin: 0 0.5em;
 }
 
 #navbar-pane {
@@ -156,7 +157,7 @@
 
 @media (max-width: 500px) {
     #navbar-pane {
-        width: 100%;
+        width: calc(100% - 100px);
     }
 }
 
@@ -173,4 +174,8 @@
 
 .show-pane #navbar-overlay {
     display: block;
+}
+
+.show-pane {
+    overflow: hidden;
 }
