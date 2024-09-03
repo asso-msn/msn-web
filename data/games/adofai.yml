@@ -5,3 +5,7 @@ platforms:
   - Switch
 popular: false
 start: 2019
+description_short: |
+  ADOFAI est un jeu extrêmement simple à comprendre, mais qui devient rapidement
+  impardonnable. Il suffit d'appuyer sur **n'importe quelle touche** pour
+  avancer au rythme de la musique.
