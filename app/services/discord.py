@@ -185,28 +185,40 @@ class API:
     def get_oauth(self):
         return self.get("/oauth2/@me")
 
-    def get_server(self, guild_id: str = config.DISCORD_SERVER_ID):
-        if not guild_id:
+    def get_server(
+        self, server_id: str = config.DISCORD_SERVER_ID
+    ) -> "API.Server":
+        if not server_id:
             raise ValueError("Missing Discord server_id")
 
-        data = self.get(f"/guilds/{guild_id}")
+        data = self.get(f"/guilds/{server_id}")
         return self.Server(**data)
 
-    def get_members(self, guild_id: str = config.DISCORD_SERVER_ID):
-        if not guild_id:
+    def get_members(self, server_id: str = config.DISCORD_SERVER_ID):
+        if not server_id:
             raise ValueError("Missing Discord server_id")
 
         results = []
         after = None
         while True:
             response = self.get(
-                f"/guilds/{guild_id}/members", limit=1000, after=after
+                f"/guilds/{server_id}/members", limit=1000, after=after
             )
             if not response:
                 break
             results.extend(response)
             after = response[-1]["user"]["id"]
         return results
+
+    def get_member(
+        self, user_id, server_id=config.DISCORD_SERVER_ID
+    ) -> dict | None:
+        try:
+            return self.get(f"/guilds/{server_id}/members/{user_id}")
+        except requests.HTTPError as e:
+            if e.response.status_code == 404:
+                return None
+            raise e
 
     def get_bot(self):
         return self.get("/oauth2/applications/@me")
@@ -293,6 +305,13 @@ def _update_game_role(user: User, game: Game, action: str):
     try:
         api = API(config.DISCORD_BOT_TOKEN)
         server = api.get_server()
+        if not api.get_member(user.discord_id):
+            audit.log(
+                f"Discord account of {user} not found in server",
+                discord_id=user.discord_id,
+                server=server,
+            )
+            return
         role = server.get_role(game.name)
         if not role:
             return
@@ -350,3 +369,8 @@ def import_games_lists(login=None):
                 refreshed_users.append(repr(user))
 
     return refreshed_users
+
+
+if __name__ == "__main__":
+    api = API(config.DISCORD_BOT_TOKEN)
+    print(api.get_member(90203398963466241))
