@@ -5,3 +5,6 @@ end: 2017
 platforms:
   - Arcade
 popular: false
+description_short: |
+  BeatStream est un jeu tactile demandant de taper, couper, ou glisser sur les
+  notes à l'écran arrivant **de l'extérieur vers le centre**.
