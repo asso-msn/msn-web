@@ -24,6 +24,7 @@ ROOT_DIR = Path(__file__).parent.resolve()
 VAR_DIR = Path("var").resolve()
 
 from app import db  # noqa: E402
+from app.services import hier  # noqa: E402
 
 from . import auto_import, data  # noqa: E402
 
@@ -44,6 +45,7 @@ class App(flask.Flask):
             return {
                 "app": self,
                 "data": self.data,
+                "hier": hier.get(),
             }
 
         self.jinja_env.lstrip_blocks = True
@@ -54,6 +56,7 @@ class App(flask.Flask):
             "css",
             Bundle(
                 "css/base.css",
+                "css/navbar.css",
                 "css/events.css",
                 "css/forms.css",
                 "css/user.css",
@@ -64,7 +67,11 @@ class App(flask.Flask):
         self.assets.register(
             "js",
             Bundle(
-                "js/flash.js", "js/forms.js", "js/user.js", output="script.js"
+                "js/navbar.js",
+                "js/flash.js",
+                "js/forms.js",
+                "js/user.js",
+                output="script.js",
             ),
         )
 
