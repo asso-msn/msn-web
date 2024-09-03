@@ -206,10 +206,10 @@
             </div>
         </div>
         <div class="game-bar">
-            <div class="members">
+            <a class="members" href="{{ url_for('users')}}?game={{ game.slug }}">
                 {{ game.db.users | length }}
                 <span class="material-icons">group</span>
-            </div>
+            </a>
             <div class="links">
                 {% if game.page %}
                 <a href="{{ url_for('game', slug=game.slug) }}" class="button small">Détails</a>
@@ -259,10 +259,10 @@
         </div>
         {% endif %}
         <div class="game-bar">
-            <div class="members">
+            <a class="members" href="{{ url_for('users')}}?game={{ game.slug }}">
                 {{ game.db.users | length }}
                 <span class="material-icons">group</span>
-            </div>
+            </a>
             {% if game.page %}
             <div class="links">
                 <a href="{{ game.page }}" class="button small">Détails</a>
