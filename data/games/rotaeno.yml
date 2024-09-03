@@ -3,3 +3,6 @@ platforms:
   - Mobile
 popular: false
 start: 2022
+description_short: |
+  Utilisant le **gyroscope**, Rotaeno donne au joueur des airs de pilote en
+  faisant **tourner son téléphone** afin de taper les notes.
