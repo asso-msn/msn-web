@@ -11,4 +11,6 @@ def avatar(hash: str):
     Serves from `VAR_DIR/avatars/`.
     """
     path = service.get_avatar_path(hash)
+    if not path.exists():
+        return flask.redirect(service.DEFAULT)
     return flask.send_file(path, "image/webp")

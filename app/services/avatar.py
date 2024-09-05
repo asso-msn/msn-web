@@ -17,6 +17,9 @@ except ImportError as e:
 
 AVATARS_DIR = VAR_DIR / "avatars"
 
+GRAVATAR_SIZE = config.GRAVATAR_AVATAR_SIZE
+DEFAULT = f"https://www.gravatar.com/avatar/?s={GRAVATAR_SIZE}&d=mp"
+
 
 class UnsupportedImageFormat(Exception):
     pass
