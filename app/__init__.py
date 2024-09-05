@@ -201,6 +201,8 @@ def setup():
 
     db.create_all()
     games.populate()
+    for job in app.scheduler.get_jobs():
+        app.scheduler.run_job(job.id)
 
 
 for module in ("cli", "filters", "routes", "services", "tasks", "db"):
