@@ -47,7 +47,6 @@ class User(Table, UserMixin, Id, Timed):
 
     @property
     def avatar_url(self) -> str:
-        from app import config
         from app.services import avatar
 
         if self.image and self.image_type == User.ImageType.local:

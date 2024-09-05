@@ -2,7 +2,7 @@ import logging
 
 import requests
 
-from app import config, logger
+from app import config
 
 
 def _send(content):
