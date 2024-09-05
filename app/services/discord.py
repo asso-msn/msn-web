@@ -269,7 +269,7 @@ def refresh_avatars(login=None):
 def refresh_tokens(login=None):
     refreshed_users = []
     with app.session() as s:
-        query = s.query(User).filter(User.discord_id is not None)
+        query = s.query(User).filter(User.discord_id)
         if login:
             query = query.filter_by(login=login)
         for user in query:
