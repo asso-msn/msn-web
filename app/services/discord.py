@@ -295,9 +295,14 @@ def refresh_tokens(login=None):
 def set_avatar(user: User) -> bool:
     """Fetches the user's current Discord"""
     api = API(user.discord_access_token)
-    image = api.get_user().avatar_url
-    if user.image == image:
+    try:
+        image = api.get_user().avatar_url
+    except Exception as e:
+        audit.log("Discord avatar fetch error", user=user, error=e)
+        invalidate_user(user)
         return False
+    if user.image == image:
+        return True
     user.image = image
     user.image_type = User.ImageType.discord
     audit.log("Discord avatar set", user=user)

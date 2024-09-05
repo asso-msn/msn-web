@@ -130,7 +130,8 @@ def update(user: User, type: User.ImageType, image: FileStorage = None) -> bool:
         set_gravatar(user)
 
     if type == User.ImageType.discord and type != previous_type:
-        discord.set_avatar(user)
+        if not discord.set_avatar(user):
+            reset(user)
 
     if type == User.ImageType.empty or not user.image:
         reset(user)
