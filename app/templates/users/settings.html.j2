@@ -80,7 +80,7 @@
 
             <div id="actions">
                 <div class="input">
-                    {% if current_user.has_discord %}
+                    {% if current_user.discord_id %}
                     <button class="discord" type="button" name="{{ form.unlink_discord.id }}" id="{{ form.unlink_discord.id }}">
                         {% include "components/icons/discord_white.html.j2" %}
                         Dissocier Discord
