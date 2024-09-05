@@ -1,0 +1,33 @@
+name: Taiko no Tatsujin
+platforms:
+  - 3DS
+  - Arcade
+  - DS
+  - Mobile
+  - PC
+  - PS Vita
+  - PS2
+  - PS4
+  - PS5
+  - PSP
+  - Switch
+  - Wii
+  - Wii U
+  - Xbox One
+  - Xbox Series
+popular: true
+publisher: BANDAI NAMCO
+image: taiko_nijiiro_emma.jpg
+start: 2001
+description: |
+  Très simple à comprendre, Taiko se joue en tapant un **tambour japonais avec
+  des baguettes**. Riche en couleurs et en musiques, il est instantanément
+  reconnaissable grâce à ses personnages et son ambiance inspirée du folklore
+  et des festivals japonais.
+
+  Malgré sa simplicité, le jeu peut également se montrer très difficile, avec
+  des chansons à la **vitesse effrénée** et des **enchaînements complexes**.
+description_short: |
+  Taiko se joue avec **deux baguettes** sur un tambour. C'est un jeu très coloré
+  et accessible, mais qui dans ses niveaux les plus élevés peut se montrer très
+  exigeant.

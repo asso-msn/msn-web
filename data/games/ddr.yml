@@ -1,0 +1,29 @@
+name: Dance Dance Revolution
+platforms:
+  - Arcade
+  - DC
+  - GBC
+  - Mobile
+  - PC
+  - PS1
+  - PS2
+  - PS3
+  - Wii
+  - Xbox
+  - Xbox 360
+popular: true
+start: 1998
+publisher: KONAMI
+image: ddr_world_loli_kami.jpg
+description: |
+  DDR a marqué à jamais la scène des jeux vidéo avec son gameplay iconique
+  utilisant des **flèches au sol** sur lesquelles le joueur doit danser.
+
+  Atteignant des **difficultés extrêmes**, c'est un jeu riche en histoire et
+  propice à la compétition. Le jeu propose également un catalogue mélangeant à
+  la fois musique originales et licences populaires.
+
+  *Ai yai yai, I'm your little butterfly!*
+description_short: |
+  DDR se joue à l'aide de **4 flèches** disposés sur un tapis au sol. C'est le
+  précurseur du genre des jeux de danse.

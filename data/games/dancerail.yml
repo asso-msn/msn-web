@@ -1,0 +1,8 @@
+name: DanceRail
+platforms:
+  - Mobile
+  - PC
+popular: false
+# Hard to find if games before DRR were released, but DRR 1.0 was released in
+# 2017, and that aligns with the copyright notice in the game.
+start: 2017

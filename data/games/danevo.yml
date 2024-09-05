@@ -1,0 +1,14 @@
+name: DanceEvolution
+igdb:
+  - dancemasters
+platforms:
+  - Arcade
+  - Xbox 360
+popular: false
+publisher: KONAMI
+start: 2010 # 03-27
+end: 2016 # 08-31
+description_short: |
+  DanEvo est un jeu de danse utilisant une caméra Kinect qui demande au joueur
+  de **suivre une chorégraphie en temps réel**. Les mouvements sont indiqués par
+  des danseurs à l'écran, similaire à Just Dance ou Dance Central.

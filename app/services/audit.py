@@ -21,7 +21,10 @@ def log(*args, level=logging.INFO, codeblock=None, **kwargs):
     if not config.AUDIT_WEBHOOK:
         return
 
-    webhook_msg = "\n".join(items).replace("`", "\\`")
+    webhook_msg = "\n".join(items)
+    webhook_msg = webhook_msg.replace("`", "\\`")
+    webhook_msg = webhook_msg.replace("_", "\\_")
+
     if codeblock:
         webhook_msg_codeblock = f"{webhook_msg}\n```\n{codeblock}\n```"
     else:
@@ -35,6 +38,6 @@ def log(*args, level=logging.INFO, codeblock=None, **kwargs):
     ]
     for i in range(0, len(codeblock), 1900):
         content = codeblock[i : i + 1900]
-        chunks.append(f"```\n{content}\n```")
+        chunks.append(f"```\n{content.strip()}\n```")
     for chunk in chunks:
         _send(chunk)

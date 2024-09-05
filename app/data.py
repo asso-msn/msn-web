@@ -1,8 +1,15 @@
 import functools
 from pathlib import Path
 
+import ruamel.yaml
 import sssimp.generators.data
 from sssimp.generators.markdown import markdown_to_html
+
+# ruaeml.yaml is a YAML parser that preserves comments and formatting.
+# Use this one instead of pyyaml when you need to write YAML files that may also
+# be edited by humans.
+yaml = ruamel.yaml.YAML()
+yaml.indent(mapping=2, sequence=4, offset=2)
 
 
 def resolve(path: str):

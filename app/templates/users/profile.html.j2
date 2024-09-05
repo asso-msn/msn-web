@@ -3,21 +3,12 @@
 {% block content %}
 {% include "components/profile_header.html.j2" %}
 
-<p>
-    Membre depuis {{ user.created_at | humanize }}.
-</p>
-
-{% if user.last_seen %}
-<p>
-    Dernière visite {{ user.last_seen | humanize }}.
-</p>
-{% endif %}
 
 {% if user.bio %}
 <div class="separator">Description</div>
-<p>
+<div>
     {{ user.bio | e | markdown }}
-</p>
+</div>
 {% endif %}
 
 {% endblock content %}

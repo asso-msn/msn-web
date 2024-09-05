@@ -27,7 +27,6 @@ def convert(image: FileStorage) -> BytesIO:
     Creates a streamable BytesIO object of a WebP from an image file provided
     by a form upload.
     """
-
     if Image is None:
         raise ImportError(
             "Wand is not installed. See documentation:"
@@ -49,13 +48,11 @@ def convert(image: FileStorage) -> BytesIO:
 
 def get_avatar_path(hash: str) -> Path:
     """Avatar hash to real path"""
-
     return AVATARS_DIR / f"{hash}.webp"
 
 
 def get_avatar_hash(image: BytesIO) -> str:
     """Get hash from a streamable BytesIO object"""
-
     result = hashlib.md5(image.read()).hexdigest()
     image.seek(0)
     return result
@@ -83,7 +80,6 @@ def set_gravatar(user: User):
 
 def save(image: BytesIO) -> str:
     """Saves streamable BytesIO object to disk"""
-
     AVATARS_DIR.mkdir(exist_ok=True)
     hash = get_avatar_hash(image)
     path = get_avatar_path(hash)
@@ -100,7 +96,6 @@ def save(image: BytesIO) -> str:
 
 def delete(hash: str):
     """Deletes avatar from disk from its hash"""
-
     path = get_avatar_path(hash)
     if path.exists():
         path.unlink()
@@ -109,7 +104,6 @@ def delete(hash: str):
 
 def delete_if_unused(hash: str):
     """Deletes avatar from disk if it's not used by any user"""
-
     with app.session() as s:
         if not s.query(User).filter_by(image=hash).count():
             delete(hash)
@@ -118,7 +112,6 @@ def delete_if_unused(hash: str):
 
 def update(user: User, type: User.ImageType, image: FileStorage = None) -> bool:
     """Update user avatar"""
-
     previous_image = user.image
     previous_type = user.image_type
 

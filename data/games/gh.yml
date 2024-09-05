@@ -1,0 +1,21 @@
+name: Guitar Hero
+platforms:
+  - Arcade
+  - DS
+  - Mobile
+  - PC
+  - PS2
+  - PS3
+  - PS4
+  - Wii
+  - Wii U
+  - Xbox 360
+  - Xbox One
+popular: false
+start: 2005
+end: 2015
+description_short: |
+  Tout comme KONAMI l'a fait 7 ans plus tôt avec GuitarFreaks, GH permet de se
+  donner des airs de joueur de rock en utilisant une **guitare dédiée**. Le jeu
+  a marqué des générations entières principalement grâce à son **catalogue de
+  musiques rock populaires**.

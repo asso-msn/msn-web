@@ -30,23 +30,82 @@
                 <img class="logo" src="{{ url_for('static', filename='logo-black.svg') }}">
                 <span class="text">Make Some Noise</span>
             </a>
-            <ul class="items">
-                <li><a href="{{ url_for('about') }}">L'association</a></li>
-                <li><a href="{{ url_for('events') }}">Évènements</a></li>
-                <li>
-                    {% if not current_user.is_authenticated %}
+            <div id="navbar-full">
+                {% for entry in hier %}
+                <section>
+                    {% if entry.url %}
+                    <a class="title" href="{{ entry.url }}">{{ entry }}</a>
+                    {% else %}
+                    <div class="title">{{ entry }}</div>
+                    {% endif %}
+                    {% if entry.children %}
+                    <span class="material-icons dropdown-toggle">arrow_drop_down</span>
+                    <div class="dropdown">
+                        {% for child in entry.children %}
+                        <a href="{{ child.url }}">{{ child }}</a>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </section>
+                {% endfor %}
+                <section class="user-section">
+                {% if not current_user.is_authenticated %}
                     <a href="{{ url_for('login') }}" class="login">
                         {% include "components/icons/user_black.html.j2" %}
                     </a>
                     {% else %}
-                    <a href="{{ url_for('settings') }}">
-                        <img class="avatar" src="{{ current_user.avatar_url }}">
-                    </a>
+                    <img src="{{ current_user.avatar_url }}" class="avatar">
+                    <span class="material-icons dropdown-toggle">arrow_drop_down</span>
+                    <div class="dropdown">
+                        <a href="{{ url_for('user', login=current_user.login )}}" class="user">
+                            {{ current_user }}
+                        </a>
+                        <a href="{{ url_for('settings')}}">
+                            <span class="material-icons">settings</span>
+                            Paramètres
+                        </a>
+                    </div>
                     {% endif %}
-                </li>
-            </ul>
+                </section>
+            </div>
+            <div id="navbar-small">
+                <button id="navbar-toggle" class="material-icons">menu</button>
+            </div>
         </div>
     </nav>
+
+    <div id="navbar-pane">
+        {% for entry in hier %}
+        <section>
+            {% if entry.url %}
+            <a class="title" href="{{ entry.url }}">{{ entry }}</a>
+            {% else %}
+            <div class="title">{{ entry }}</div>
+            {% endif %}
+            {% for child in entry.children %}
+            <a href="{{ child.url }}">{{ child }}</a>
+            {% endfor %}
+        </section>
+        {% endfor %}
+        <section>
+            {% if not current_user.is_authenticated %}
+            <a href="{{ url_for('login')}}">Connexion</a>
+            <a href="{{ url_for('register')}}">Inscription</a>
+            {% else %}
+            <div class="title">Mon profil</div>
+            <a href="{{ url_for('user', login=current_user.login )}}" class="user">
+                {{ current_user }}
+                <img src="{{ current_user.avatar_url }}" class="avatar">
+            </a>
+            <a href="{{ url_for('settings')}}">
+                <span class="material-icons">settings</span>
+                Paramètres
+            </a>
+            {% endif %}
+        </section>
+    </div>
+
+    <div id="navbar-overlay"></div>
 
 
     <div id="flashes">
@@ -77,16 +136,18 @@
                 <span class="text">Make Some Noise</span>
             </a>
             <nav class="nav page">
+                {% for entry in hier %}
                 <section>
-                    <a class="title" href="{{ url_for('about')}}">L'association</a>
+                    {% if entry.url %}
+                    <a class="title" href="{{ entry.url }}">{{ entry }}</a>
+                    {% else %}
+                    <div class="title">{{ entry }}</div>
+                    {% endif %}
+                    {% for child in entry.children %}
+                    <a href="{{ child.url }}">{{ child }}</a>
+                    {% endfor %}
                 </section>
-                <section>
-                    <a class="title" href="{{ url_for('events')}}">Évènements</a>
-                </section>
-                <section>
-                    <div class="title">Communauté</div>
-                    <a href="{{ url_for('users') }}">Membres</a>
-                </section>
+                {% endfor %}
             </nav>
             <div class="socials">
                 <a href="{{ data.links.discord }}">
@@ -115,8 +176,8 @@
     <script src="{{ ASSET_URL }}"></script>
     {% endassets %}
 
-    {% block scripts %}
-    {% endblock scripts %}
+    {% block script %}
+    {% endblock script %}
 </body>
 
 </html>

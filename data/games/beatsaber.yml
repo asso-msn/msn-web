@@ -1,0 +1,10 @@
+name: Beat Saber
+platforms:
+  - Arcade
+  - VR
+popular: false
+start: 2018
+description_short: |
+  Connu pour être l'argument principal d'acheter la **VR** pour beaucoup de
+  joueurs, Beat Saber est un jeu de rythme où le joueur doit **couper des
+  cubes** au rythme de la musique à l'aide de **sabres laser**.

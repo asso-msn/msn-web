@@ -12,9 +12,7 @@
 
 {% block content %}
 
-{% with user=current_user%}
-{% include "components/profile_header.html.j2" %}
-{% endwith %}
+{% include "components/profile_header_small.html.j2" %}
 
 <h1>Paramètres</h1>
 
@@ -116,7 +114,7 @@
 
 {% endblock content %}
 
-{% block scripts %}
+{% block script %}
 <script>
     const image_type = document.getElementById('image_type');
     const uploader = document.getElementById('image-input');
@@ -149,4 +147,4 @@
         makeActionButton(unlink_discord);
     makeActionButton(logout);
 </script>
-{% endblock %}
+{% endblock script %}

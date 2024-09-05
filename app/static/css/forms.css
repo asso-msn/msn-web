@@ -2,12 +2,14 @@
     --input-background: #f4f4f4;
 }
 
-input, textarea {
+input,
+textarea {
     border: none;
     background: none;
 }
 
-textarea:focus, input:focus{
+textarea:focus,
+input:focus {
     outline: none;
 }
 
@@ -22,7 +24,8 @@ input:not([type="password"]):autofill {
     box-shadow: 0 0 0px 1000px var(--input-background) inset;
 }
 
-button, input {
+button,
+input {
     font-size: 1em;
 }
 
@@ -97,12 +100,13 @@ input {
     top: 0;
 }
 
-.input .checkbox input:checked ~ .checkbox-icon .icon.active,
-.input .checkbox input:not(:checked) ~ .checkbox-icon .icon:not(.active) {
+.input .checkbox input:checked~.checkbox-icon .icon.active,
+.input .checkbox input:not(:checked)~.checkbox-icon .icon:not(.active) {
     display: flex;
 }
-.input .checkbox input:not(:checked) ~ .checkbox-icon .icon.active,
-.input .checkbox input:checked ~ .checkbox-icon .icon:not(.active) {
+
+.input .checkbox input:not(:checked)~.checkbox-icon .icon.active,
+.input .checkbox input:checked~.checkbox-icon .icon:not(.active) {
     display: none;
 }
 
@@ -145,12 +149,21 @@ input {
 .input .password.show .show {
     display: none;
 }
+
 .input .password.show .hide {
     display: inline-block;
 }
+
 .input .password.hide .show {
     display: inline-block;
 }
+
 .input .password.hide .hide {
     display: none;
+}
+
+.select-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
 }

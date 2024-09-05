@@ -2,11 +2,11 @@ import sys
 
 if sys.version_info < (3, 11):
     raise RuntimeError("Python 3.11+ is required")
-
+import dataclasses
 import logging
 import os
 import secrets
-from logging import Formatter
+import urllib.parse
 from pathlib import Path
 
 import flask
@@ -20,11 +20,12 @@ from pydantic import BaseModel as Model
 
 from app.services.config import Config
 
-config = Config()
+config = Config.load()
 ROOT_DIR = Path(__file__).parent.resolve()
 VAR_DIR = Path("var").resolve()
 
 from app import db  # noqa: E402
+from app.services import hier  # noqa: E402
 
 from . import auto_import, data  # noqa: E402
 
@@ -45,7 +46,20 @@ class App(flask.Flask):
             return {
                 "app": self,
                 "data": self.data,
+                "hier": hier.get(),
             }
+
+        @self.before_request
+        def _():
+            without_empty = {
+                key: value for key, value in flask.request.args.items() if value
+            }
+            if without_empty != dict(flask.request.args):
+                return self.redirect(
+                    flask.request.path
+                    + "?"
+                    + urllib.parse.urlencode(without_empty)
+                )
 
         self.jinja_env.lstrip_blocks = True
         self.jinja_env.trim_blocks = True
@@ -55,6 +69,7 @@ class App(flask.Flask):
             "css",
             Bundle(
                 "css/base.css",
+                "css/navbar.css",
                 "css/events.css",
                 "css/forms.css",
                 "css/user.css",
@@ -63,7 +78,14 @@ class App(flask.Flask):
             ),
         )
         self.assets.register(
-            "js", Bundle("js/flash.js", "js/forms.js", output="script.js")
+            "js",
+            Bundle(
+                "js/navbar.js",
+                "js/flash.js",
+                "js/forms.js",
+                "js/user.js",
+                output="script.js",
+            ),
         )
 
         # OAuth dance does not work with SameSite=Srict
@@ -88,6 +110,7 @@ class App(flask.Flask):
         # self.config["SESSION_CACHELIB"] = FileSystemCache(
         #     str(VAR_DIR / "flask_session"),
         # )
+        self.config["SESSION_USE_SIGNER"] = True
         self.config["SESSION_TYPE"] = "sqlalchemy"
         self.config["SESSION_SQLALCHEMY"] = FlaskSQLAlchemy
         self.config["SESSION_SERIALIZATION_FORMAT"] = "json"
@@ -99,8 +122,6 @@ class App(flask.Flask):
         self.config["SECRET_KEY"] = secret_key_path.read_text().strip()
 
         self.scheduler.start()
-        if self.debug:
-            db.create_all()
 
     def redirect(self, route, external=False, code=302):
         external = external or route.split(":")[0] in ("http", "https")
@@ -130,13 +151,16 @@ class App(flask.Flask):
         if isinstance(rv, Model):
             rv = rv.model_dump()
 
+        if dataclasses.is_dataclass(rv):
+            rv = dataclasses.asdict(rv)
+
         return super().make_response(rv)
 
 
 format = "[%(levelname)s] %(name)s - %(pathname)s:%(lineno)s: %(message)s"
 
 
-class CustomFormatter(Formatter):
+class CustomFormatter(logging.Formatter):
     def format(self, record):
         # Replace the pathname with a path relative to the current working
         # directory
@@ -146,18 +170,43 @@ class CustomFormatter(Formatter):
         return super().format(record)
 
 
+class CustomFilter(logging.Filter):
+    def filter(self, record):
+        return record.name == "root"
+
+
 handler = logging.StreamHandler()
 handler.setFormatter(CustomFormatter(format))
 
-logging.basicConfig(
-    level=logging.DEBUG,
-    handlers=[handler],
-)
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+logger.addHandler(handler)
+logger.addFilter(CustomFilter())
 
+logging.getLogger("apscheduler").setLevel(logging.WARNING)
+logging.getLogger("urllib3").setLevel(logging.WARNING)
+# TODO: Implement named logger in sssimp
+# logging.getLogger("sssimp").setLevel(logging.WARNING)
 
 app = App()
 
 app.config.from_object(config)
 
+if not app.debug:
+    logger.setLevel(logging.INFO)
+
+
+def setup():
+    from app.services import games
+
+    db.create_all()
+    games.populate()
+    for job in app.scheduler.get_jobs():
+        app.scheduler.run_job(job.id)
+
+
 for module in ("cli", "filters", "routes", "services", "tasks", "db"):
     auto_import.auto_import(module)
+
+if app.debug:
+    setup()

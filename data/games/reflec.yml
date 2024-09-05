@@ -1,0 +1,14 @@
+name: REFLEC BEAT
+platforms:
+  - Arcade
+  - Mobile
+popular: false
+publisher: KONAMI
+start: 2010
+# MBR:J:A:A:2019121100 is the last update, game is on unofficial hiatus
+end: 2019
+description_short: |
+  Ressemblant à une partie de Pong déchaînée, Reflec fait s'affronter **2
+  joueurs se renvoyant des balles** défilant sur un écran tactile. Le jeu
+  devient rapidement complexe lorsqu'il faut suivre de nombreuses notes à la
+  fois.

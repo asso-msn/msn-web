@@ -1,3 +1,12 @@
+function cleanUrlParams() {
+    const url = new URL(location.href);
+    for (const key of url.searchParams.keys()) {
+        if (url.searchParams.get(key) === "")
+            url.searchParams.delete(key);
+    }
+    history.replaceState({}, "", url);
+}
+
 for (const el of document.querySelectorAll(".input .password")) {
     const show = el.querySelector(".show");
     const hide = el.querySelector(".hide");
@@ -18,4 +27,9 @@ for (const el of document.querySelectorAll(".input .password")) {
         el.classList.add("hide");
         input.type = "password";
     });
+}
+
+for (const el of document.querySelectorAll("select option")) {
+    if (el.value === "" && el.text.trim().replace(/-/g, "").length === 0)
+        el.disabled = true;
 }

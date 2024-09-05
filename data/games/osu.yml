@@ -1,0 +1,14 @@
+name: osu!
+igdb:
+  - osu
+  - osu-stream
+  - osu-droid
+platforms:
+  - Mobile
+  - PC
+popular: true
+start: 2007 # 09-16
+description_short: |
+  osu! propose des modes de jeu basées sur le gameplay de Elite Beat Agents,
+  Taiko no Tatsujin, et EZ2Catch, et repose sur le contenu créé par la
+  communauté.

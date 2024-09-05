@@ -18,6 +18,7 @@ pydantic
 pyhumps
 pyyaml
 requests
+ruamel.yaml
 sqlalchemy
 sssimp
 Wand

@@ -5,7 +5,31 @@
     }
 }
 
+@media screen and (max-width: 900px) {
+    #navbar .logo-text {
+        font-size: 1.25em;
+    }
+
+    #navbar-full {
+        font-size: 0.85em;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    #navbar .logo-text {
+        font-size: 1.1em;
+    }
+}
+
 @media screen and (max-width: 700px) {
+    #navbar-small {
+        display: initial;
+    }
+
+    #navbar-full {
+        display: none;
+    }
+
     .card {
         padding: 0.5em;
         margin: 0.5em;
@@ -38,13 +62,6 @@
         display: none;
     }
 
-    #navbar .logo-text {
-        font-size: 1.25em;
-    }
-    #navbar .text {
-        display: none;
-    }
-
     #events .content {
         flex-direction: column;
     }
@@ -62,7 +79,8 @@
         margin-right: 0.33em;
     }
 
-    #events .day-name, #events .hours {
+    #events .day-name,
+    #events .hours {
         font-size: 1.25em;
     }
 
@@ -78,6 +96,17 @@
     .page-users-settings #actions {
         display: flex;
         flex-direction: row;
+    }
+
+    #profile-header header {
+        flex-direction: column;
+        align-items: start;
+        gap: 1em;
+    }
+
+    #profile-header img {
+        width: 96px;
+        height: 96px;
     }
 }
 

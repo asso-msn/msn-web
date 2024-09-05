@@ -101,7 +101,11 @@ def settings():
                 if x[0] != User.ImageType.discord
             ]
 
-        return app.render("users/settings", form=form, title="Paramètres")
+        with app.session() as s:
+            user = s.query(User).get(current_user.id)
+            return app.render(
+                "users/settings", form=form, title="Paramètres", user=user
+            )
 
     with app.session() as s:
         modified = {}

@@ -1,7 +1,6 @@
 .page-login,
 .page-password,
-.page-link
-{
+.page-link {
     max-width: 500px;
 }
 
@@ -11,6 +10,7 @@
 .page-link #actions {
     margin-top: 3em;
 }
+
 .page-login #actions .action,
 .page-password #actions .action,
 .page-link #actions .action {
@@ -40,7 +40,7 @@
     font-size: 0.9em;
 }
 
-#profile-settings-sections > .column {
+#profile-settings-sections>.column {
     margin: 0 1em;
 }
 
@@ -55,19 +55,27 @@
 }
 
 #profile-header {
-    display: flex;
-    align-items: start;
     margin: 2em 0 3em;
 }
 
-#profile-header img {
-    width: 128px;
-    height: 128px;
-    border-radius: 12px;
-    margin-right: 1em;
+#profile-header header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2em;
 }
 
-#profile-header a {
+#profile-header header .content {
+    display: flex;
+    align-items: start;
+}
+
+#profile-header .stats .action {
+    display: block;
+    margin: 0.5em 0;
+}
+
+#profile-header header .content a {
     color: inherit;
     text-decoration: none;
 }
@@ -75,6 +83,33 @@
 #profile-header .name {
     flex: 1;
     overflow-y: hidden;
+}
+
+.user-games {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25em 1em;
+    align-items: baseline;
+}
+
+.user-games.limited .game:nth-child(n+11) {
+    display: none;
+}
+
+.user-games .favorite-icon {
+    color: var(--color-strong-yellow);
+}
+
+.user-games .show-more .hidden {
+    display: none;
+}
+
+#profile-header img {
+    width: 128px;
+    height: 128px;
+    border-radius: 12px;
+    margin-right: 1em;
+    flex-shrink: 0;
 }
 
 .page-link .actions {
