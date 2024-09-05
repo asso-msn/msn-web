@@ -255,7 +255,11 @@ def refresh_avatars(login=None):
         if login:
             query = query.filter_by(login=login)
         for user in query:
-            if not set_avatar(user):
+            try:
+                if not set_avatar(user):
+                    continue
+            except Exception as e:
+                audit.log("Discord avatar refresh error", user=user, error=e)
                 continue
             s.commit()
             refreshed_users.append(repr(user))
@@ -269,7 +273,11 @@ def refresh_tokens(login=None):
         if login:
             query = query.filter_by(login=login)
         for user in query:
-            if not refresh_token(user):
+            try:
+                if not refresh_token(user):
+                    continue
+            except Exception as e:
+                audit.log("Discord token refresh error", user=user, error=e)
                 continue
             s.commit()
             refreshed_users.append(repr(user))
