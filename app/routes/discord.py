@@ -43,7 +43,12 @@ def discord_callback():
         if current_user.is_authenticated:
             return app.redirect("discord_link_confirm")
         return app.redirect("discord_register")
-    user_service.login(user)
+    with app.session() as s:
+        user = s.query(User).get(user.id)
+        user.discord_access_token = token.access_token
+        user.discord_refresh_token = token.refresh_token
+        s.commit()
+        user_service.login(user)
 
     if next := flask.session.pop("next", None):
         return app.redirect(next)

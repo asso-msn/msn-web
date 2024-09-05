@@ -251,7 +251,9 @@ def get_db_user(access_token) -> User | None:
 def refresh_avatars(login=None):
     refreshed_users = []
     with app.session() as s:
-        query = s.query(User).filter_by(image_type=User.ImageType.discord)
+        query = s.query(User).filter_by(
+            image_type=User.ImageType.discord and User.discord_access_token
+        )
         if login:
             query = query.filter_by(login=login)
         for user in query:
@@ -260,6 +262,8 @@ def refresh_avatars(login=None):
                     continue
             except Exception as e:
                 audit.log("Discord avatar refresh error", user=user, error=e)
+                invalidate_user(user)
+                s.commit()
                 continue
             s.commit()
             refreshed_users.append(repr(user))
@@ -269,7 +273,9 @@ def refresh_avatars(login=None):
 def refresh_tokens(login=None):
     refreshed_users = []
     with app.session() as s:
-        query = s.query(User).filter(User.discord_id)
+        query = s.query(User).filter(
+            User.discord_id and User.discord_refresh_token
+        )
         if login:
             query = query.filter_by(login=login)
         for user in query:
@@ -278,6 +284,8 @@ def refresh_tokens(login=None):
                     continue
             except Exception as e:
                 audit.log("Discord token refresh error", user=user, error=e)
+                invalidate_user(user)
+                s.commit()
                 continue
             s.commit()
             refreshed_users.append(repr(user))
@@ -332,6 +340,15 @@ def _update_game_role(user: User, game: Game, action: str):
         audit.log(f"Discord game role {role} {action}ed for {user}")
     except Exception as e:
         audit.log(f"Discord game {action} error", user=user, game=game, error=e)
+
+
+def invalidate_user(user: User):
+    result = bool(user.discord_access_token or user.discord_refresh_token)
+    user.discord_access_token = None
+    user.discord_refresh_token = None
+    if result:
+        audit.log("Discord tokens invalidated", user=user)
+    return result
 
 
 def add_game(user: User, game: Game):

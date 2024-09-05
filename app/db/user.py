@@ -49,10 +49,19 @@ class User(Table, UserMixin, Id, Timed):
     def avatar_url(self) -> str:
         from app import config
 
+        size = config.GRAVATAR_AVATAR_SIZE
+        default = f"https://www.gravatar.com/avatar/?s={size}&d=mp"
+
         if self.image and self.image_type == User.ImageType.local:
             return flask.url_for("avatar", hash=self.image)
-        size = config.GRAVATAR_AVATAR_SIZE
-        return self.image or f"https://www.gravatar.com/avatar/?s={size}&d=mp"
+
+        if (
+            self.image_type == User.ImageType.discord
+            and not self.discord_access_token
+        ):
+            return default
+
+        return self.image or default
 
     @property
     def has_discord(self) -> bool:
