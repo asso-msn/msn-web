@@ -199,10 +199,9 @@ if not app.debug:
 def setup():
     from app.services import games
 
-    db.create_all()
+    if app.debug:
+        db.create_all()
     games.populate()
-    for job in app.scheduler.get_jobs():
-        app.scheduler.run_job(job.id)
 
 
 for module in ("cli", "filters", "routes", "services", "tasks", "db"):
@@ -210,3 +209,7 @@ for module in ("cli", "filters", "routes", "services", "tasks", "db"):
 
 if app.debug:
     setup()
+else:
+    from app import tasks
+
+    tasks.run_all()
