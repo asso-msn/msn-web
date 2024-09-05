@@ -119,6 +119,21 @@
             </span>
         </div>
         {% endfor %}
+        {% if current_user.is_authenticated and current_user.discord_id and (
+            not current_user.discord_access_token or
+            not current_user.discord_refresh_token
+        )%}
+        <div class="flash warning">
+            <span class="content">
+                Ta connexion à Discord a expiré de manière inattendue.
+                <a href="{{ url_for('discord_login') }}">Reconnecte-toi via Discord</a>
+                ou <a href="{{ url_for('settings') }}">dissocie ton compte Discord du site</a>.
+            </span>
+            <span class="flash-close">
+                <span class="material-icons icon">close</span>
+            </span>
+        </div>
+        {% endif %}
     </div>
 
 {% block body %}{% endblock %}
