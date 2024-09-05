@@ -10,6 +10,7 @@ platforms:
   - Mobile
   - PC
   - PS2
+popular: true
 description: |
   Un des jeux musicaux qui a le plus **influencé le genre** de par sa popularité
   dans les salles d'arcade japonaises. La série des beatmania est considérée
@@ -20,4 +21,6 @@ description: |
   présente 7 touches et une **platine** et exige un timing très précis.
   Il est également riche en **options de jeu** et en **customisation**, offrant
   une expérience très complète.
-popular: true
+description_short: |
+  IIDX se joue à l'aide de **7 boutons** et **d'une platine de DJ**. Il présente
+  de très nombreuses options et un gameplay exigeant.

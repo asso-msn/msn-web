@@ -197,3 +197,14 @@ def set_favorite(slug: str, user: User, favorite: bool) -> bool:
             s.commit()
             audit.log(f"Game {game} favorite set to {favorite} for {user}")
     return different
+
+
+def get_platforms() -> list[str]:
+    from app import app
+
+    return sorted(
+        set(
+            "Console" if value.get("console", True) else key
+            for key, value in app.data.get("platforms", {}).items()
+        )
+    )

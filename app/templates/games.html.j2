@@ -167,8 +167,29 @@
     text-align: center;
 }
 
-#full-list.arcade-only .game:not(.arcade) {
-    display: none;
+#search {
+    display: flex;
+    gap: 2em;
+    justify-content: start;
+    align-items: center;
+    margin: 1em auto;
+}
+
+@media screen and (max-width: 1200px) {
+    #search {
+        margin: 0 1em;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    #search {
+        flex-direction: column;
+        gap: 0.25em;
+    }
+}
+
+#full-list-title {
+    scroll-margin-top: 100px;
 }
 </style>
 {% endblock style %}
@@ -230,23 +251,29 @@
     {% endfor %}
 </div>
 
-<h2>Plus de jeux</h2>
+<h2 id="full-list-title">Tous les jeux</h2>
 
-<p>
-    {% with id='show-arcade', label='Arcade uniquement', checked=true %}
-    {% include "components/forms/checkbox.html.j2" %}
+<form id="search">
+    {% with input='platform', label='Plateforme' %}
+    {% include "components/forms/select.html.j2" %}
     {% endwith %}
-</p>
 
-<div class="games-list small arcade-only" id="full-list">
-    {% for game in games if game.slug not in config.GAMES_SHOWCASE %}
+    {% with input='name', label='Nom de jeu' %}
+    {% include "components/forms/input.html.j2" %}
+    {% endwith %}
+</form>
+
+<div class="games-list small" id="full-list">
+    {% for game in games %}
     <div
         class="
             game
-            {% if 'Arcade' in game.platforms %}
-            arcade
-            {% endif %}
-    ">
+            {% if game.slug in config.GAMES_SHOWCASE %}showcase{% endif %}
+        "
+        data-platforms="{{ game.platforms_short | join(',') }}"
+        data-name="{{ game }}"
+        data-slug="{{ game.slug }}"
+    >
         <div class="game-header">
             <div class="game-title">
                 {{ game }}
@@ -307,19 +334,73 @@
 {% block script %}
 <script>
 {
-    const toggle = document.getElementById('show-arcade');
-    const list = document.getElementById('full-list');
+    const form = document.getElementById('search');
+    const platform = form.querySelector('select[name="platform"]');
+    const name = form.querySelector('input[name="name"]');
+    const games = document.querySelectorAll('#full-list .game');
+    const title = document.getElementById('full-list-title');
+    let isDefaultPlatform = true;
 
-    if (toggle && list) {
-        function updateList() {
-            list.classList.toggle('arcade-only', toggle.checked);
-        }
+    function showAll() {
+        games.forEach(game => {
+            game.style.display = '';
+        });
+    }
 
-        toggle.addEventListener('change', () => {
-            updateList();
+    function filterPlatforms() {
+        let value = platform.value || 'Arcade';
+
+        if (value == 'all')
+            return;
+
+        games.forEach(game => {
+            const platforms = game.dataset.platforms.split(',');
+            if (!platforms.includes(value))
+                game.style.display = 'none';
         });
 
-        updateList();
+        isDefaultPlatform = value == 'Arcade';
+
+        const url = new URL(window.location);
+        if (isDefaultPlatform) {
+            url.searchParams.delete('platform');
+        } else {
+            url.searchParams.set('platform', value);
+        }
+        window.history.pushState({}, '', url);
+    }
+
+    function filterNames() {
+        const value = name.value.toLowerCase();
+
+        if (!value)
+            return;
+
+        games.forEach(game => {
+            const gameName = game.dataset.name.toLowerCase();
+            if (!(gameName.includes(value) || game.dataset.slug.includes(value)))
+                game.style.display = 'none';
+        });
+
+        const url = new URL(window.location);
+        url.searchParams.set('name', value);
+        window.history.pushState({}, '', url);
+    }
+
+    platform.addEventListener('change', filter);
+    name.addEventListener('input', filter);
+
+    function filter() {
+        showAll();
+        filterNames();
+        filterPlatforms();
+        cleanUrlParams();
+    }
+
+    filter();
+
+    if (!isDefaultPlatform || name.value) {
+        title.scrollIntoView({ behavior: 'smooth' });
     }
 }
 </script>
