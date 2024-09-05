@@ -63,7 +63,7 @@ class User(Table, UserMixin, Id, Timed):
 
     @property
     def has_discord(self) -> bool:
-        return bool(self.discord_id)
+        return bool(self.discord_access_token)
 
     def plays(self, game_id: str) -> bool:
         return any(game.game.slug == game_id for game in self.games)
