@@ -350,14 +350,13 @@
     function filterPlatforms() {
         let value = platform.value || 'Arcade';
 
-        if (value == 'all')
-            return;
-
-        games.forEach(game => {
-            const platforms = game.dataset.platforms.split(',');
-            if (!platforms.includes(value))
-                game.style.display = 'none';
-        });
+        if (value != 'all') {
+            games.forEach(game => {
+                const platforms = game.dataset.platforms.split(',');
+                if (!platforms.includes(value))
+                    game.style.display = 'none';
+            });
+        }
 
         isDefaultPlatform = value == 'Arcade';
 
@@ -373,14 +372,13 @@
     function filterNames() {
         const value = name.value.toLowerCase();
 
-        if (!value)
-            return;
-
-        games.forEach(game => {
-            const gameName = game.dataset.name.toLowerCase();
-            if (!(gameName.includes(value) || game.dataset.slug.includes(value)))
-                game.style.display = 'none';
-        });
+        if (value) {
+            games.forEach(game => {
+                const gameName = game.dataset.name.toLowerCase();
+                if (!(gameName.includes(value) || game.dataset.slug.includes(value)))
+                    game.style.display = 'none';
+            });
+        }
 
         const url = new URL(window.location);
         url.searchParams.set('name', value);
