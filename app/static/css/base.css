@@ -105,6 +105,11 @@ table tr:nth-child(2n-1) {
     justify-content: space-between;
 }
 
+.flash a {
+    color: var(--color-dark-blue);
+    text-decoration: underline;
+}
+
 .flash.error {
     background: var(--color-red);
     color: var(--color-black);
