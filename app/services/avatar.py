@@ -132,6 +132,7 @@ def update(user: User, type: User.ImageType, image: FileStorage = None) -> bool:
     if type == User.ImageType.discord and type != previous_type:
         if not discord.set_avatar(user):
             reset(user)
+            return True
 
     if type == User.ImageType.empty or not user.image:
         reset(user)
