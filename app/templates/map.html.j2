@@ -11,6 +11,14 @@
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/@drustack/leaflet.resetview/dist/L.Control.ResetView.min.css"
 >
+<link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"
+>
+<link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css"
+>
 <style>
 #map {
     height: 550px;
@@ -41,6 +49,9 @@
 ></script>
 <script
     src="https://cdn.jsdelivr.net/npm/@drustack/leaflet.resetview/dist/L.Control.ResetView.min.js"
+></script>
+<script
+    src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"
 ></script>
 <script>
     const users = {{ user_points | tojson }};
@@ -74,13 +85,18 @@
             }
         });
 
+        const userGroup = L.markerClusterGroup({
+            maxClusterRadius: 20,
+        });
+
         for (const point of users) {
             L.marker([point.lat, point.lon], {icon: new UserIcon({
                 iconUrl: point.icon,
-            })}).addTo(map).bindPopup(
+            })}).addTo(userGroup).bindPopup(
                 `<a href="${point.link}">${point.name}</a>`
             );
         }
+        userGroup.addTo(map);
     });
 </script>
 {% endblock scripts %}
