@@ -50,8 +50,13 @@
         const defaultZoom = 6;
 
         map.attributionControl.setPrefix(false);
+        map.setMaxBounds([
+            [-90, -180],
+            [90, 190],
+        ]);
         map.setView(defaultLatLng, defaultZoom);
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            minZoom: 2,
             maxZoom: 19,
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
