@@ -1,6 +1,6 @@
 {% extends "page.html.j2" %}
 
-{% block style %}
+{% block styles %}
 <style>
 #actions {
     display: flex;
@@ -8,7 +8,7 @@
     margin-top: 1em;
 }
 </style>
-{% endblock style %}
+{% endblock styles %}
 
 {% block content %}
 
@@ -118,7 +118,7 @@
 
 {% endblock content %}
 
-{% block script %}
+{% block scripts %}
 <script>
     const image_type = document.getElementById('image_type');
     const uploader = document.getElementById('image-input');
@@ -151,4 +151,4 @@
         makeActionButton(unlink_discord);
     makeActionButton(logout);
 </script>
-{% endblock script %}
+{% endblock scripts %}

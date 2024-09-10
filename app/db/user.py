@@ -43,6 +43,10 @@ class User(Table, UserMixin, Id, Timed):
         return f"{self.__class__.__name__}(login={self.login}, id={self.id})"
 
     def __str__(self):
+        return self.name
+
+    @property
+    def name(self):
         return self.display_name or self.login
 
     @property

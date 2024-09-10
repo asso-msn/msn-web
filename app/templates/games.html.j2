@@ -1,6 +1,6 @@
 {% extends "page.html.j2" %}
 
-{% block style %}
+{% block styles %}
 <style>
 .games-list {
     display: flex;
@@ -192,7 +192,7 @@
     scroll-margin-top: 100px;
 }
 </style>
-{% endblock style %}
+{% endblock styles %}
 
 {% block content %}
 
@@ -331,7 +331,7 @@
 
 {% endblock content %}
 
-{% block script %}
+{% block scripts %}
 <script>
 {
     const form = document.getElementById('search');
@@ -402,4 +402,4 @@
     }
 }
 </script>
-{% endblock script %}
+{% endblock scripts %}

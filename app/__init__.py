@@ -80,6 +80,7 @@ class App(flask.Flask):
         self.assets.register(
             "js",
             Bundle(
+                "js/base.js",
                 "js/navbar.js",
                 "js/flash.js",
                 "js/forms.js",
