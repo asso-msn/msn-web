@@ -2,7 +2,7 @@ import dataclasses
 import logging
 from dataclasses import dataclass
 
-from app import config, data, db
+from app import config, data
 from app.db import Game as GameTable
 from app.db import User, UserGame
 from app.services import audit
@@ -151,8 +151,7 @@ def add_to_list(slug: str, user: User, discord=True) -> bool:
 
     game = get(slug)
     with app.session() as s:
-        action = db.greate(
-            s,
+        action = s.greate(
             UserGame,
             filter={"user_id": user.id, "game_id": game.db.id},
         )

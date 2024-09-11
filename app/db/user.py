@@ -7,9 +7,10 @@ from typing import TYPE_CHECKING
 import flask
 from flask_login import UserMixin
 
-from . import Column, Id, Table, Timed, column, relation
+from . import Column, ForeignKey, Id, Table, Timed, column, relation
 
 if TYPE_CHECKING:
+    from .map_points import MapPoint
     from .relationships.user_game import UserGame
 
 
@@ -38,6 +39,8 @@ class User(Table, UserMixin, Id, Timed):
     games: Column[list[UserGame]] = relation(
         "UserGame", back_populates="user", cascade="all, delete-orphan"
     )
+    map_point_id = column(ForeignKey("map_points.id"))
+    map_point: Column[MapPoint] = relation("MapPoint", uselist=False)
 
     def __repr__(self):
         return f"{self.__class__.__name__}(login={self.login}, id={self.id})"

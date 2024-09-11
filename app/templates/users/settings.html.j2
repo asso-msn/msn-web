@@ -35,6 +35,10 @@
             {% include "components/forms/file.html.j2" %}
             {% endwith %}
 
+            {% with input='map_point_id', label='Ma position' %}
+            {% include "components/forms/select.html.j2" %}
+            {% endwith %}
+
             {% with
                 input='bio',
                 label='Description',

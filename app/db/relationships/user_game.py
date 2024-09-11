@@ -2,9 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from sqlalchemy import ForeignKey
-
-from .. import Column, Table, column, relation
+from .. import Column, ForeignKey, Table, column, relation
 
 if TYPE_CHECKING:
     from .. import Game, User

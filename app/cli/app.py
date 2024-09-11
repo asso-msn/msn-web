@@ -1,9 +1,9 @@
-from app import app, setup
+from app import app
 
 
 @app.cli.command("setup")
 def setup_():
-    setup()
+    app.setup()
 
 
 @app.cli.command("tasks")

@@ -49,6 +49,7 @@ def run_migrations_offline() -> None:
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
+        render_as_batch=True,
     )
 
     with context.begin_transaction():
@@ -73,7 +74,8 @@ def run_migrations_online() -> None:
         revision: str | Iterable[str | None] | Iterable[str],
         directives: list[MigrationScript],
     ):
-        assert config.cmd_opts is not None
+        if not config.cmd_opts:
+            return
         if getattr(config.cmd_opts, "autogenerate", False):
             script = directives[0]
             assert script.upgrade_ops is not None
@@ -91,6 +93,7 @@ def run_migrations_online() -> None:
             target_metadata=target_metadata,
             process_revision_directives=process_revision_directives,
             include_name=include_name,
+            render_as_batch=True,
         )
 
         with context.begin_transaction():

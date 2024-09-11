@@ -90,10 +90,10 @@
         });
 
         for (const point of users) {
-            L.marker([point.lat, point.lon], {icon: new UserIcon({
+            L.marker([point.latitude, point.longitude], {icon: new UserIcon({
                 iconUrl: point.icon,
             })}).addTo(userGroup).bindPopup(
-                `<a href="${point.link}">${point.name}</a>`
+                `<a href="${point.link}">${point.name}</a><br>${point.location}`
             );
         }
         userGroup.addTo(map);

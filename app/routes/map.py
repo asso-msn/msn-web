@@ -1,18 +1,18 @@
-import random
 from dataclasses import dataclass
 
 import flask
 
 from app import app
 from app.db import User
+from app.services import user
 
 
 @dataclass
 class UserPoint:
-    lat: float
-    lon: float
+    latitude: float
+    longitude: float
+    location: str
     name: str
-    login: str
     icon: str
     link: str
 
@@ -20,16 +20,18 @@ class UserPoint:
 @app.get("/map/")
 def map():
     with app.session() as s:
-        users = s.query(User).all()
+        query = s.query(User)
+        user.filter_public(query)
+        query = query.filter(User.map_point_id.isnot(None))
         user_points = [
             UserPoint(
-                lat=random.uniform(43, 50),
-                lon=random.uniform(-1.5, 6.7),
+                latitude=user.map_point.latitude,
+                longitude=user.map_point.longitude,
+                location=user.map_point.name,
                 name=user.name,
-                login=user.login,
                 icon=user.avatar_url,
                 link=flask.url_for("user", login=user.login),
             )
-            for user in users
+            for user in query
         ]
     return app.render("map", user_points=user_points)

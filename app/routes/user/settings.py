@@ -10,7 +10,7 @@ from wtforms import (
 )
 
 from app import app
-from app.db import User
+from app.db import MapPoint, User
 from app.forms import DisplayNameField, Form, Length, LoginField, PasswordField
 from app.services import audit, avatar
 from app.services import user as service
@@ -35,6 +35,7 @@ class EditProfileForm(Form):
     image_type = SelectField(
         choices=[(x, translate_image_type(x)) for x in User.ImageType]
     )
+    map_point_id = SelectField()
     hide_in_list = BooleanField()
     save = SubmitField()
     logout = SubmitField()
@@ -75,6 +76,16 @@ def settings():
         flask.flash("Ton compte Discord a été retiré")
         return app.redirect("settings")
 
+    with app.session() as s:
+        form.map_point_id.choices = [
+            ("hidden", "Masquée"),
+            ("", "-----"),
+            *[
+                (str(mp.id), mp.name)
+                for mp in s.query(MapPoint).order_by(MapPoint.name)
+            ],
+        ]
+
     if not form.validate_on_submit():
         form.login.data = form.login.data or current_user.login
         form.display_name.data = (
@@ -83,6 +94,13 @@ def settings():
         form.email.data = form.email.data or current_user.email
         form.bio.data = form.bio.data or current_user.bio
         form.image_type.data = form.image_type.data or current_user.image_type
+        form.map_point_id.data = (
+            form.map_point_id.data or current_user.map_point_id
+        )
+        if form.map_point_id.data:
+            form.map_point_id.data = str(form.map_point_id.data)
+        else:
+            form.map_point_id.data = "hidden"
         form.hide_in_list.data = (
             form.hide_in_list.data or current_user.hide_in_list
         )
@@ -107,11 +125,21 @@ def settings():
                 "users/settings", form=form, title="Paramètres", user=user
             )
 
+    if form.map_point_id.data == "hidden":
+        form.map_point_id.data = None
+
     with app.session() as s:
         modified = {}
         user = s.query(User).get(current_user.id)
 
-        for field in ("login", "email", "display_name", "bio", "hide_in_list"):
+        for field in (
+            "login",
+            "email",
+            "display_name",
+            "bio",
+            "map_point_id",
+            "hide_in_list",
+        ):
             if getattr(user, field) == getattr(form, field).data:
                 continue
             setattr(user, field, getattr(form, field).data)
