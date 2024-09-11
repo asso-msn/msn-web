@@ -57,11 +57,35 @@
 <script>
     const defaultLatLng = [46.45, 2.21];
     const defaultZoom = 6;
+    const maxZoom = 11;
+    const minZoom = 2;
     const autoSpiderfyZoom = 10;
-    // const tileLayer = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
-    // const tileLayer = "https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}.png";
-    // const tileLayer = "https://tile.jawg.io/jawg-sunny/{z}/{x}/{y}{r}.png?access-token={{ config.MAP_ACCESS_TOKEN }}";
-    const tileLayer = "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png";
+    const layers = {
+        "Carto Light": L.tileLayer(
+            "https://{s}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}{r}.png",
+            {
+                attribution: '&copy; <a href="https://carto.com/basemaps">CartoDB</a>'
+            }
+        ),
+        "Carto Dark": L.tileLayer(
+            "https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png",
+            {
+                attribution: '&copy; <a href="https://carto.com/basemaps">CartoDB</a>'
+            }
+        ),
+        "Carto Voyager": L.tileLayer(
+            "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png",
+            {
+                attribution: '&copy; <a href="https://carto.com/basemaps">CartoDB</a>'
+            }
+        ),
+        "OpenStreetMap": L.tileLayer(
+            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            {
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }
+        ),
+    }
 
     const users = {{ user_points | tojson }};
 
@@ -107,11 +131,11 @@
             [90, 190],
         ]);
         map.setView(defaultLatLng, defaultZoom);
-        L.tileLayer(tileLayer, {
-            minZoom: 2,
-            maxZoom: 19,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        }).addTo(map);
+        map.setZoom(defaultZoom);
+        map.setMaxZoom(maxZoom);
+        map.setMinZoom(minZoom);
+        layers["Carto Voyager"].addTo(map);
+        {# layers["Carto Light"].addTo(map); #}
         L.control.resetView({
             position: "topleft",
             title: "Reset view",
