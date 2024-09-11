@@ -24,6 +24,7 @@ class Config:
     GAMES_SHOWCASE: list = dataclasses.field(
         default_factory=lambda: ["2dx", "ddr", "sdvx", "taiko", "popn", "gc"]
     )
+    MAP_ACCESS_TOKEN: str = None
     RUN_TASKS: bool = False
 
     @property

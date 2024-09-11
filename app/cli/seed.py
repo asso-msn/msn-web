@@ -197,3 +197,9 @@ def popular(limit):
 def gps_():
     created = gps.populate_departments()
     print("Created", len(created), "departments")
+
+
+@seed.command("regions")
+def regions_():
+    gps.create_regions_topology(force=True)
+    print("Downloaded regions topology")

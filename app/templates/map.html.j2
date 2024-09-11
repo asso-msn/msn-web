@@ -29,8 +29,8 @@
 }
 
 #map .user-marker {
-    background-color: #333;
     border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.3);
 }
 </style>
 {% endblock styles %}
@@ -53,12 +53,53 @@
 <script
     src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"
 ></script>
+<script src="https://unpkg.com/topojson@3"></script>
 <script>
+    const defaultLatLng = [46.45, 2.21];
+    const defaultZoom = 6;
+    const autoSpiderfyZoom = 10;
+    // const tileLayer = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
+    // const tileLayer = "https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}.png";
+    // const tileLayer = "https://tile.jawg.io/jawg-sunny/{z}/{x}/{y}{r}.png?access-token={{ config.MAP_ACCESS_TOKEN }}";
+    const tileLayer = "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png";
+
     const users = {{ user_points | tojson }};
+
+    const UserIcon = L.Icon.extend({
+        options: {
+            iconSize: [32, 32],
+            className: 'user-marker',
+        }
+    });
+
+    const userGroup = L.markerClusterGroup({
+        maxClusterRadius: 20,
+    });
+
+    // https://gist.github.com/hpfast/2fb8de57c356d8c45ce511189eec5d6a
+    L.TopoJSON = L.GeoJSON.extend({
+        addData: function (data) {
+            var geojson, key;
+            if (data.type === "Topology") {
+                for (key in data.objects) {
+                    if (data.objects.hasOwnProperty(key)) {
+                    geojson = topojson.feature(data, data.objects[key]);
+                    L.GeoJSON.prototype.addData.call(this, geojson);
+                    }
+                }
+                return this;
+            }
+            L.GeoJSON.prototype.addData.call(this, data);
+            return this;
+        }
+    });
+
+    L.topoJson = function (data, options) {
+        return new L.TopoJSON(data, options);
+    };
+
     onLoad(() => {
         const map = L.map('map');
-        const defaultLatLng = [46.45, 2.21];
-        const defaultZoom = 6;
 
         map.attributionControl.setPrefix(false);
         map.setMaxBounds([
@@ -66,7 +107,7 @@
             [90, 190],
         ]);
         map.setView(defaultLatLng, defaultZoom);
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        L.tileLayer(tileLayer, {
             minZoom: 2,
             maxZoom: 19,
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -78,25 +119,56 @@
             zoom: defaultZoom,
         }).addTo(map);
 
-        const UserIcon = L.Icon.extend({
-            options: {
-                iconSize: [32, 32],
-                className: 'user-marker',
-            }
-        });
-
-        const userGroup = L.markerClusterGroup({
-            maxClusterRadius: 20,
-        });
-
         for (const point of users) {
-            L.marker([point.latitude, point.longitude], {icon: new UserIcon({
-                iconUrl: point.icon,
-            })}).addTo(userGroup).bindPopup(
+            const marker = L.marker(
+                [point.latitude, point.longitude],
+                {
+                    icon: new UserIcon({iconUrl: point.icon,})
+                }
+            );
+            marker.bindPopup(
                 `<a href="${point.link}">${point.name}</a><br>${point.location}`
             );
+            marker.addTo(userGroup)
         }
         userGroup.addTo(map);
-    });
+
+        // Tried to use zoomend event but seemed to be triggered before the
+        // plugin re-calculates the clusters, so they were always closed
+        setInterval(() => {
+            const zoom = map.getZoom();
+            if (zoom >= autoSpiderfyZoom) {
+                userGroup._gridClusters[zoom].eachObject((cluster) => {
+                    cluster.spiderfy();
+                });
+            }
+        }, 500);
+
+        const region = L.topoJson(null, {
+            style: function(feature) {
+                return {
+                    color: 'black',
+                    opacity: 0.1,
+                    weight: 1,
+                    fillColor: 'blue',
+                    fillOpacity: 0,
+                    }
+                },
+                onEachFeature: function(feature, layer) {
+                    layer.bindPopup(`${feature.properties.dep} - ${feature.properties.libgeo}`);
+                }
+        }).addTo(map);
+
+        async function loadRegions() {
+            const response = await fetch('{{ url_for("static", filename="data/regions.topojson") }}');
+            const data = await response.json();
+
+            // remove Droms
+            data.features = data.features.filter((feature) => feature.properties.dep < 900);
+
+            region.addData(data);
+        }
+        loadRegions();
+});
 </script>
 {% endblock scripts %}

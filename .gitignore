@@ -1,4 +1,5 @@
 .webassets-cache/
+/app/static/data/
 /app/static/style.css
 /app/static/script.js
 /config.yml

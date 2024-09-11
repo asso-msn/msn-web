@@ -6,8 +6,10 @@ from io import StringIO
 import requests
 from pydantic import BaseModel, Field
 
-from app import app
+from app import ROOT_DIR, app
 from app.db import MapPoint
+
+STATIC_DATA_DIR = ROOT_DIR / "static" / "data"
 
 
 def populate():
@@ -18,6 +20,7 @@ def populate():
             .count()
         ):
             populate_departments()
+    create_regions_topology()
 
 
 class GeoAPIDepartment(BaseModel):
@@ -93,6 +96,21 @@ def get_departments_from_api():
         for department in departments_list
         if department.code in departments_gps_by_code
     ]
+
+
+def create_regions_topology(force=False):
+    PATH = STATIC_DATA_DIR / "regions.topojson"
+    TOPOLOGY_URL = "https://www.data.gouv.fr/fr/datasets/r/92f37c92-3aae-452c-8af1-c77e6dd590e5"  # noqa
+
+    if PATH.exists() and not force:
+        return
+
+    regions = requests.get(TOPOLOGY_URL)
+    regions.raise_for_status()
+
+    PATH.parent.mkdir(parents=True, exist_ok=True)
+    with open(PATH, "w") as f:
+        f.write(regions.text)
 
 
 def populate_departments():
