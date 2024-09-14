@@ -11,7 +11,8 @@ from app.services import user
 class UserPoint:
     latitude: float
     longitude: float
-    location: str
+    map_point: str
+    map_point_id: int
     name: str
     icon: str
     link: str
@@ -27,7 +28,8 @@ def map():
             UserPoint(
                 latitude=user.map_point.latitude,
                 longitude=user.map_point.longitude,
-                location=user.map_point.name,
+                map_point=user.map_point.name,
+                map_point_id=user.map_point_id,
                 name=user.name,
                 icon=user.avatar_url,
                 link=flask.url_for("user", login=user.login),
