@@ -157,6 +157,8 @@ def populate_countries():
     with app.session() as s:
         for country in countries:
             code = country["Alpha-2 code"]
+            if code == "FR":
+                continue
             if code in droms:
                 name = droms[code]
                 type = MapPoint.Type.Department
