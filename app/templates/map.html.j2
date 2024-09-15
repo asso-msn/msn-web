@@ -1,28 +1,7 @@
 {% extends "page.html.j2" %}
 
 {% block styles %}
-<link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-    crossorigin=""
->
-<link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/@drustack/leaflet.resetview/dist/L.Control.ResetView.min.css"
->
-<link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"
->
-<link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"
->
-<link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet.fullscreen@3.0.2/Control.FullScreen.css"
->
+{% include "components/map_styles_includes.html.j2" %}
 <style>
 #map {
     height: 550px;
@@ -30,6 +9,8 @@
     width: 90%;
     margin: auto;
     z-index: 2;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
 }
 
 #map .user-marker {
@@ -41,135 +22,27 @@
 
 {% block content %}
 
+
+<h1>Carte des membres</h1>
+
+<p>
+    Une carte intéractive des membres de la communauté.
+    Si tu souhaites y figurer, <a href="{{ url_for('settings') }}">remplis la
+    section "Ma position" de ton profil</a>.
+</p>
+
 <div id="map"></div>
 
 {% endblock content %}
 
 {% block scripts %}
-<script
-    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-    crossorigin=""
-></script>
-<script
-    src="https://cdn.jsdelivr.net/npm/@drustack/leaflet.resetview/dist/L.Control.ResetView.min.js"
-></script>
-<script
-    src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"
-></script>
-<script src="https://unpkg.com/topojson@3"></script>
-<script
-    src="https://unpkg.com/leaflet.fullscreen@3.0.2/Control.FullScreen.js"
-></script>
+{% include "components/map_scripts_includes.html.j2" %}
 <script>
-    const defaultLatLng = [46.45, 2.21];
-    const defaultZoom = 6;
-    const maxZoom = 11;
-    const minZoom = 2;
-    const autoSpiderfyZoom = 10;
-    const maxClusterIterms = 12;
-    const layers = {
-        "Carto Light": L.tileLayer(
-            "https://{s}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}{r}.png",
-            {
-                attribution: '&copy; <a href="https://carto.com/basemaps">CartoDB</a>'
-            }
-        ),
-        "Carto Dark": L.tileLayer(
-            "https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png",
-            {
-                attribution: '&copy; <a href="https://carto.com/basemaps">CartoDB</a>'
-            }
-        ),
-        "Carto Voyager": L.tileLayer(
-            "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png",
-            {
-                attribution: '&copy; <a href="https://carto.com/basemaps">CartoDB</a>'
-            }
-        ),
-        "OpenStreetMap": L.tileLayer(
-            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-            {
-                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            }
-        ),
-    }
-
     const users = {{ user_points | tojson }};
-
-    const UserIcon = L.Icon.extend({
-        options: {
-            iconSize: [32, 32],
-            className: 'user-marker',
-        }
-    });
-
-    // https://gist.github.com/hpfast/2fb8de57c356d8c45ce511189eec5d6a
-    L.TopoJSON = L.GeoJSON.extend({
-        addData: function (data) {
-            var geojson, key;
-            if (data.type === "Topology") {
-                for (key in data.objects) {
-                    if (data.objects.hasOwnProperty(key)) {
-                    geojson = topojson.feature(data, data.objects[key]);
-                    L.GeoJSON.prototype.addData.call(this, geojson);
-                    }
-                }
-                return this;
-            }
-            L.GeoJSON.prototype.addData.call(this, data);
-            return this;
-        }
-    });
-
-    L.topoJson = function (data, options) {
-        return new L.TopoJSON(data, options);
-    };
+    const regions = '{{ url_for("static", filename="data/regions.topojson") }}';
 
     onLoad(() => {
-        const map = L.map('map', {
-            fullscreenControl: true,
-            fullscreenControlOptions: {
-                position: 'topleft',
-            },
-        });
-
-        map.attributionControl.setPrefix(false);
-        map.setMaxBounds([
-            [-90, -180],
-            [90, 190],
-        ]);
-        map.setView(defaultLatLng, defaultZoom);
-        map.setZoom(defaultZoom);
-        map.setMaxZoom(maxZoom);
-        map.setMinZoom(minZoom);
-
-        layers["Carto Voyager"].addTo(map);
-
-        L.control.resetView({
-            position: "topleft",
-            title: "Reset view",
-            latlng: L.latLng(defaultLatLng),
-            zoom: defaultZoom,
-        }).addTo(map);
-
-        function newUserGroup(layers) {
-            const options = {
-                maxClusterRadius: 20,
-            };
-
-            if (layers.length <= maxClusterIterms)
-                options.disableClusteringAtZoom = autoSpiderfyZoom;
-
-            const cluster = L.markerClusterGroup(options);
-            cluster.addTo(map);
-            for (const layer of layers)
-                cluster.addLayer(layer);
-            return cluster;
-        }
-
-        const clustersByLocation = new Map();
-        const usersByLocation = new Map();
+        const items = [];
 
         for (const point of users) {
             const marker = L.marker(
@@ -178,82 +51,14 @@
                     icon: new UserIcon({iconUrl: point.icon,})
                 }
             );
-            marker.user = point;
+            marker.point = point;
             marker.bindPopup(
                 `<a href="${point.link}">${point.name}</a><br>${point.map_point}`
             );
-            if (!usersByLocation.has(point.map_point_id))
-                usersByLocation.set(point.map_point_id, []);
-            usersByLocation.get(point.map_point_id).push(marker);
+            items.push(marker);
         }
 
-        usersByLocation.forEach((layers) => {
-            const cluster = newUserGroup(layers);
-            clustersByLocation.set(layers[0].user.map_point_id, cluster);
-        });
-
-        map.on('zoomend', (e) => {
-            const zoom = map.getZoom();
-
-            clustersByLocation.forEach((group) => {
-                if (!group.options.disableClusteringAtZoom)
-                    return;
-
-                const array = group.getLayers();
-
-                if (array.length < 2)
-                    return;
-
-                for (let i = 0; i < array.length; i++) {
-                    const latitude = array[i].user.latitude;
-                    const longitude = array[i].user.longitude;
-
-                    if (zoom < autoSpiderfyZoom) {
-                        array[i].setLatLng([latitude, longitude]);
-                        continue;
-                    }
-
-                    // set markers in a grid shape
-                    const rows = 4;
-                    const row = Math.floor(i / rows);
-                    const col = i % rows;
-                    const deltaX = zoom > 10 ? 0.02 : 0.04;
-                    const deltaY = zoom > 10 ? 0.01 : 0.02;
-                    const latLng = [
-                        latitude + deltaY * (row - (rows / 4)),
-                        longitude + deltaX * (col - (rows / 2)),
-                    ];
-                    array[i].setLatLng(latLng);
-                }
-            });
-
-        });
-
-        const region = L.topoJson(null, {
-            style: function(feature) {
-                return {
-                    color: 'black',
-                    opacity: 0.1,
-                    weight: 1,
-                    fillColor: 'blue',
-                    fillOpacity: 0,
-                    }
-                },
-                onEachFeature: function(feature, layer) {
-                    layer.bindPopup(`${feature.properties.dep} - ${feature.properties.libgeo}`);
-                }
-        }).addTo(map);
-
-        async function loadRegions() {
-            const response = await fetch('{{ url_for("static", filename="data/regions.topojson") }}');
-            const data = await response.json();
-
-            // remove Droms
-            data.features = data.features.filter((feature) => feature.properties.dep < 900);
-
-            region.addData(data);
-        }
-        loadRegions();
+        const map = createMap(regions, items);
 });
 </script>
 {% endblock scripts %}
