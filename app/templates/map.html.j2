@@ -19,6 +19,10 @@
     rel="stylesheet"
     href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"
 >
+<link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet.fullscreen@3.0.2/Control.FullScreen.css"
+>
 <style>
 #map {
     height: 550px;
@@ -54,6 +58,9 @@
     src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"
 ></script>
 <script src="https://unpkg.com/topojson@3"></script>
+<script
+    src="https://unpkg.com/leaflet.fullscreen@3.0.2/Control.FullScreen.js"
+></script>
 <script>
     const defaultLatLng = [46.45, 2.21];
     const defaultZoom = 6;
@@ -120,7 +127,12 @@
     };
 
     onLoad(() => {
-        const map = L.map('map');
+        const map = L.map('map', {
+            fullscreenControl: true,
+            fullscreenControlOptions: {
+                position: 'topleft',
+            },
+        });
 
         map.attributionControl.setPrefix(false);
         map.setMaxBounds([
