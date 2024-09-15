@@ -197,6 +197,8 @@ def popular(limit):
 def gps_():
     created = gps.populate_departments()
     print("Created", len(created), "departments")
+    created = gps.populate_countries()
+    print("Created", len(created), "countries")
 
 
 @seed.command("regions")

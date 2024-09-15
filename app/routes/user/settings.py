@@ -82,7 +82,18 @@ def settings():
             ("", "-----"),
             *[
                 (str(mp.id), mp.name)
-                for mp in s.query(MapPoint).order_by(MapPoint.name)
+                for mp in sorted(
+                    s.query(MapPoint).filter_by(type=MapPoint.Type.Department),
+                    key=lambda mp: mp.name_normalized,
+                )
+            ],
+            ("", "-----"),
+            *[
+                (str(mp.id), mp.name)
+                for mp in sorted(
+                    s.query(MapPoint).filter_by(type=MapPoint.Type.Country),
+                    key=lambda mp: mp.name_normalized,
+                )
             ],
         ]
 

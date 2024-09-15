@@ -1,6 +1,8 @@
 import enum
 from enum import Enum
 
+import unidecode
+
 from . import Column, Id, Table, column
 
 
@@ -14,6 +16,11 @@ class MapPoint(Table, Id):
     type: Column[Type]
     longitude: Column[float]
     latitude: Column[float]
+
+    @property
+    def name_normalized(self):
+        # Convert accents etc
+        return unidecode.unidecode(self.name).lower()
 
     def __str__(self):
         return self.name

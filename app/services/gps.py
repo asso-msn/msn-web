@@ -20,6 +20,8 @@ def populate():
             .count()
         ):
             populate_departments()
+        if not s.query(MapPoint).filter_by(type=MapPoint.Type.Country).count():
+            populate_countries()
     create_regions_topology()
 
 
@@ -128,5 +130,52 @@ def populate_departments():
             ).created:
                 created.append(department)
                 logging.info(f"Created {department}")
+                s.commit()
+    return created
+
+
+def populate_countries():
+    COUNTRIES_URL = "https://gist.github.com/metal3d/5b925077e66194551df949de64e910f6/raw/c5f20a037409d96958553e2eb6b8251265c6fd63/country-coord.csv"
+    COUNTRIES_ISO_TO_FRENCH_URL = "https://gist.github.com/lneveu/cdb444b0e609ed81d3ad1f5907cda6f8/raw/8ad6e298e55284b074dcd716da2d3b25904c29f8/iso-3166_country_french.json"
+
+    countries = requests.get(COUNTRIES_URL)
+    countries.raise_for_status()
+
+    countries_names = requests.get(COUNTRIES_ISO_TO_FRENCH_URL)
+    countries_names.raise_for_status()
+    countries_names = countries_names.json()
+
+    countries = csv.DictReader(StringIO(countries.text))
+    created = []
+    droms = {
+        "GP": "971 - Guadeloupe",
+        "MQ": "972 - Martinique",
+        "GF": "973 - Guyane",
+        "RE": "974 - Réunion",
+        "YT": "976 - Mayotte",
+    }
+    with app.session() as s:
+        for country in countries:
+            code = country["Alpha-2 code"]
+            if code in droms:
+                name = droms[code]
+                type = MapPoint.Type.Department
+            else:
+                name = countries_names.get(code)
+                type = MapPoint.Type.Country
+            if not name:
+                logging.warning(f"Skipping {country}, no name")
+                continue
+            if s.greate(
+                MapPoint,
+                filter={"name": name},
+                defaults={
+                    "type": type,
+                    "longitude": float(country["Longitude (average)"]),
+                    "latitude": float(country["Latitude (average)"]),
+                },
+            ).created:
+                created.append(country)
+                logging.info(f"Created {country}")
                 s.commit()
     return created
