@@ -1,0 +1,61 @@
+colors:
+  main: rgb(227, 145, 46)
+  accent: rgb(241, 218, 163)
+
+description: |
+  **Facile à apprendre** et amusant pour tout le monde, jouer sur des tambours
+  rend Taiko no Tatsujin à la fois original et familier. À haut niveau, c’est un
+  des jeux les **plus durs**. Contient de nombreuses licences de musiques
+  populaires.
+
+games:
+  - name: Jeux Taiko récents
+    subtext: Officiel
+    type: console
+    description: |
+      PC, PS5, PS4, Switch, Xbox Series
+
+      Jeu de base **40 à 60€**
+
+      Abonnement **4€/mo** pour avoir tous les DLCs
+
+  - name: OpenTaiko
+    type: pc
+    description: |
+      Le simulateur recommandé
+
+      Proche de la sensation arcade
+
+  - name: osu!taiko ou Malody
+    type: pc
+    description: |
+      Très facile à lancer et configurer
+
+      Ne cherche pas à imiter l'arcade
+
+controllers:
+  - name: Officiel PC/PS/Switch
+    price: $80 - 100
+    description: Petite taille mais jouable
+    image: tatacon_switch.jpg
+
+  - name: Taiko Force LV5
+    price: $467 - 550
+    description: Taille arcade - Chaque plateforme est en option
+    image: taikoforce.jpg
+
+  - name: ZhongTaiko
+    price: $550
+    description: Taille arcade
+    image: zhong.jpg
+
+  - name: Taikoller
+    price: $329
+    description: Taille arcade - Supporte les double notes
+    image: taikoller.png
+
+controllers_notes:
+  shipping:
+    France: $110
+    Asie: $50 - $80
+    Autre: $100 - $160
