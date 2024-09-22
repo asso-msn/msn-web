@@ -1,3 +1,6 @@
+colors:
+  main: '#6cccdc'
+  accent: '#d1eef9'
 description: |
   Véritable pionnier du genre, beatmania IIDX met au défi le joueur avec un
   concept **simple à comprendre**, mais **difficile à maîtriser** : taper les

@@ -1,7 +1,4 @@
 name: beatmania IIDX
-colors:
-  main: '#6cccdc'
-  accent: '#d1eef9'
 start: 1999
 publisher: KONAMI
 image: 2dx_epolis_idol.jpg

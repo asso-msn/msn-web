@@ -13,8 +13,8 @@
     :root {
         --font-logo: 'Bungee';
         --font-main: 'Poppins';
-        --color-main: {{ game.colors.main }};
-        --color-accent: {{ game.colors.accent }};
+        --color-main: {{ game.poster.colors.main }};
+        --color-accent: {{ game.poster.colors.accent }};
     }
 
     * {
@@ -67,8 +67,13 @@
         text-align: center;
         font-family: var(--font-logo);
         color: var(--color-main);
+        {% if game.name | length > 20 %}
+        font-size: 3rem;
+        line-height: 3rem;
+        {% else %}
         font-size: 4rem;
         line-height: 4rem;
+        {% endif %}
     }
 
     h1, h2, h3, h4 {
@@ -222,7 +227,7 @@
 
 <div id="intro" class="container">
     <div id="platforms">
-        {% for platform in game.platforms %}
+        {% for platform in game.platforms_smart %}
         <span class="item">{{ platform }}</span>
         {% endfor %}
     </div>
@@ -285,6 +290,7 @@
                         <div class="description">{{ controller.description | markdown }}</div>
                     </div>
                     {% endfor %}
+                    {% if game.poster.controllers_notes %}
                     <div class="item notes">
                         {% for extra in game.poster.controllers_notes.extras %}
                         <p>{{ extra }}</p>
@@ -295,6 +301,7 @@
                         {% endfor %}
                         <p class="customs-warning">⚠ Attention douane ⚠</p>
                     </div>
+                    {% endif %}
                 </div>
             </div>
 
