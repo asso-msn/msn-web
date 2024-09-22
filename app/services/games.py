@@ -1,5 +1,6 @@
 import dataclasses
 import logging
+import typing as t
 from dataclasses import dataclass
 
 from app import config, data
@@ -11,15 +12,42 @@ from app.services import audit
 @dataclass
 class Game:
     @dataclass
-    class Colors:
-        main: str
-        accent: str
+    class Poster:
+
+        @dataclass
+        class Colors:
+            main: str = "#330000"
+            accent: str = "#333333"
+
+        @dataclass
+        class Game:
+            name: str
+            type: t.Literal["pc", "console", "mobile"]
+            subtext: str
+            description: str
+
+        @dataclass
+        class Controller:
+            name: str
+            price: str
+            description: str
+            image: str
+
+        @dataclass
+        class ControllersNotes:
+            extras: list[str] = dataclasses.field(default_factory=list)
+            shipping: dict[str, str] = dataclasses.field(default_factory=dict)
+
+        colors: Colors = dataclasses.field(default_factory=Colors)
+        description: str = None
+        games: list[Game] = dataclasses.field(default_factory=list)
+        controllers: list[Controller] = dataclasses.field(default_factory=list)
+        controllers_notes: ControllersNotes = None
 
     slug: str
     name: str
     image: str = None
     igdb: list[str] = None
-    colors: Colors = None
     start: int = None
     end: int = None
     publisher: str = None
@@ -46,13 +74,32 @@ class Game:
         return self.slug in app.data.get("games_pages", [])
 
     @property
-    def poster(self):
+    def poster(self) -> Poster:
         from app import app
 
-        return app.data["games_posters"].get(self.slug)
+        data = app.data.get("games_posters", {}).get(self.slug, {})
+        return self.Poster(
+            **{
+                field.name: data.get(field.name)
+                for field in dataclasses.fields(self.Poster)
+                if field.name in data
+            }
+        )
 
     @property
     def platforms_short(self):
+        if not self.platforms:
+            return []
+
+        return sorted(
+            set(
+                "Console" if key in self.platforms_console else key
+                for key in self.platforms
+            )
+        )
+
+    @property
+    def platforms_console(self):
         from app import app
 
         if not self.platforms:
@@ -61,11 +108,17 @@ class Game:
         platforms = app.data.get("platforms", {})
         return sorted(
             set(
-                "Console" if value.get("console", True) else key
-                for key, value in platforms.items()
-                if key in self.platforms
+                platform
+                for platform in self.platforms
+                if platforms.get(platform, {}).get("console", True)
             )
         )
+
+    @property
+    def platforms_smart(self):
+        if len(self.platforms_console) > 1:
+            return self.platforms_short
+        return self.platforms
 
     @property
     def path(self):
