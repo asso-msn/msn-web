@@ -14,7 +14,7 @@ jobs:
       - run: pip install -r requirements.txt
       - run: playwright install chromium
       - run: flask pdf poster
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           name: posters
           path: output
