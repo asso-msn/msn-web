@@ -135,8 +135,8 @@ def populate_departments():
 
 
 def populate_countries():
-    COUNTRIES_URL = "https://gist.github.com/metal3d/5b925077e66194551df949de64e910f6/raw/c5f20a037409d96958553e2eb6b8251265c6fd63/country-coord.csv"
-    COUNTRIES_ISO_TO_FRENCH_URL = "https://gist.github.com/lneveu/cdb444b0e609ed81d3ad1f5907cda6f8/raw/8ad6e298e55284b074dcd716da2d3b25904c29f8/iso-3166_country_french.json"
+    COUNTRIES_URL = "https://gist.github.com/metal3d/5b925077e66194551df949de64e910f6/raw/c5f20a037409d96958553e2eb6b8251265c6fd63/country-coord.csv"  # noqa
+    COUNTRIES_ISO_TO_FRENCH_URL = "https://gist.github.com/lneveu/cdb444b0e609ed81d3ad1f5907cda6f8/raw/8ad6e298e55284b074dcd716da2d3b25904c29f8/iso-3166_country_french.json"  # noqa
 
     countries = requests.get(COUNTRIES_URL)
     countries.raise_for_status()
