@@ -1,0 +1,70 @@
+{% extends "page.html.j2" %}
+
+{% block styles %}
+{% include "components/map_styles_includes.html.j2" %}
+<style>
+#map {
+    height: 550px;
+    max-width: 700px;
+    width: 90%;
+    margin: auto;
+    z-index: 2;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+}
+
+#map .user-marker {
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+@media screen and (max-width: 700px) {
+    #map {
+        width: 100%;
+    }
+}
+</style>
+{% endblock styles %}
+
+{% block content %}
+
+
+<h1>Carte des membres</h1>
+
+<p>
+    Une carte intéractive des membres de la communauté.
+    Si tu souhaites y figurer, <a href="{{ url_for('settings') }}">remplis la
+    section "Ma position" de ton profil</a>.
+</p>
+
+<div id="map"></div>
+
+{% endblock content %}
+
+{% block scripts %}
+{% include "components/map_scripts_includes.html.j2" %}
+<script>
+    const users = {{ user_points | tojson }};
+    const regions = '{{ url_for("static", filename="data/regions.topojson") }}';
+
+    onLoad(() => {
+        const items = [];
+
+        for (const point of users) {
+            const marker = L.marker(
+                [point.latitude, point.longitude],
+                {
+                    icon: new UserIcon({iconUrl: point.icon,})
+                }
+            );
+            marker.point = point;
+            marker.bindPopup(
+                `<a href="${point.link}">${point.name}</a><br>${point.map_point}`
+            );
+            items.push(marker);
+        }
+
+        const map = createMap(regions, items);
+});
+</script>
+{% endblock scripts %}

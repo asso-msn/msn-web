@@ -1,3 +1,6 @@
+colors:
+  main: '#6cccdc'
+  accent: '#d1eef9'
 description: |
   Véritable pionnier du genre, beatmania IIDX met au défi le joueur avec un
   concept **simple à comprendre**, mais **difficile à maîtriser** : taper les
@@ -49,6 +52,7 @@ controllers:
     price: $200
     description: |
       Peu cher, plus petite TT
+    image: fps.png
   - name: GAMO2 FP7
     image: fp7.jpg
     price: $217
@@ -58,19 +62,22 @@ controllers:
     price: $300
     description: |
       Haute qualité
+    image: pwan.jpg
   - name: Yuan DX6th
     price: $209
     description: |
       Autre fabricant
+    image: yuaniidx.png
   - name: IST Mall IIDX
     price: $175
     description: |
       Fabricant coréen
+    image: istmall.jpg
 
 controllers_notes:
   extras:
     - 'Boutons arcade : +$80'
   shipping:
-    asia: $50 - $80
-    world: $80 - $130
-    france: $90 - $120
+    France: $90 - $120
+    Asie: $50 - $80
+    Autre: $80 - $130

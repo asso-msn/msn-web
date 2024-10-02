@@ -1,6 +1,6 @@
 {% extends "page.html.j2" %}
 
-{% block style %}
+{% block styles %}
 <style>
 #actions {
     display: flex;
@@ -8,7 +8,7 @@
     margin-top: 1em;
 }
 </style>
-{% endblock style %}
+{% endblock styles %}
 
 {% block content %}
 
@@ -33,6 +33,10 @@
 
             {% with input='image', label='Avatar', id='image-input' %}
             {% include "components/forms/file.html.j2" %}
+            {% endwith %}
+
+            {% with input='map_point_id', label='Ma position' %}
+            {% include "components/forms/select.html.j2" %}
             {% endwith %}
 
             {% with
@@ -118,7 +122,7 @@
 
 {% endblock content %}
 
-{% block script %}
+{% block scripts %}
 <script>
     const image_type = document.getElementById('image_type');
     const uploader = document.getElementById('image-input');
@@ -151,4 +155,4 @@
         makeActionButton(unlink_discord);
     makeActionButton(logout);
 </script>
-{% endblock script %}
+{% endblock scripts %}

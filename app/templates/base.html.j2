@@ -19,11 +19,12 @@
     <link href="{{ ASSET_URL }}" rel="stylesheet">
     {% endassets %}
 
-    {% block style %}
-    {% endblock style %}
+    {% block styles %}
+    {% endblock styles %}
 </head>
 
 <body>
+    <script>0</script>
     <nav id="navbar">
         <div class="content">
             <a class="logo-text" href="{{ url_for('index') }}">
@@ -191,8 +192,8 @@
     <script src="{{ ASSET_URL }}"></script>
     {% endassets %}
 
-    {% block script %}
-    {% endblock script %}
+    {% block scripts %}
+    {% endblock scripts %}
 </body>
 
 </html>

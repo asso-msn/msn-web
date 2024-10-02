@@ -1,7 +1,7 @@
 import click
 
 from app import app, config, data
-from app.services import discord, games, igdb, platforms
+from app.services import discord, games, gps, igdb, platforms
 
 
 @app.cli.group()
@@ -191,3 +191,17 @@ def popular(limit):
         print("Updated", game.name, "popularity to", is_popular)
         updated += 1
     print("Updated", updated, "games")
+
+
+@seed.command("gps")
+def gps_():
+    created = gps.populate_departments()
+    print("Created", len(created), "departments")
+    created = gps.populate_countries()
+    print("Created", len(created), "countries")
+
+
+@seed.command("regions")
+def regions_():
+    gps.create_regions_topology(force=True)
+    print("Downloaded regions topology")

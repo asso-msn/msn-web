@@ -342,7 +342,7 @@ def _update_game_role(user: User, game: Game, action: str):
             api.add_role(server.id, user_id, role_id)
         elif action == "remove":
             api.remove_role(server.id, user_id, role_id)
-        audit.log(f"Discord game role {role} {action}ed for {user}")
+        audit.log(f"Discord game role {role} {action} for {user}")
     except Exception as e:
         audit.log(f"Discord game {action} error", user=user, game=game, error=e)
 

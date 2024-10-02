@@ -30,6 +30,14 @@
                     <td>Jeux</td>
                     <td>{{ user.get_games() | length }}</td>
                 </tr>
+                <tr>
+                    <td>Position</td>
+                    {% if user.map_point %}
+                    <td>{{ user.map_point }}</td>
+                    {% else %}
+                    <td>Masquée</td>
+                    {% endif %}
+                </tr>
             </table>
 
             {% if current_user == user and request.endpoint != 'settings' %}

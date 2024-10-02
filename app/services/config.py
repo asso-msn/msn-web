@@ -1,4 +1,5 @@
 import dataclasses
+import os
 from dataclasses import dataclass, fields
 from pathlib import Path
 
@@ -23,10 +24,18 @@ class Config:
     GAMES_SHOWCASE: list = dataclasses.field(
         default_factory=lambda: ["2dx", "ddr", "sdvx", "taiko", "popn", "gc"]
     )
+    MAP_ACCESS_TOKEN: str = None
+    RUN_TASKS: bool = False
 
     @property
     def LANG(self):
         return self.ARROW_LANG
+
+    @staticmethod
+    def convert(value, type):
+        if type == bool:
+            return value.lower() in ["true", "1", "yes"]
+        return type(value)
 
     @classmethod
     def load(cls, path="config.yml"):
@@ -42,4 +51,9 @@ class Config:
                 )
         with path.open() as f:
             data = yaml.safe_load(f)
+        for field in fields(cls):
+            if field.name in os.environ:
+                data[field.name] = cls.convert(
+                    os.environ[field.name], field.type
+                )
         return cls(**data)

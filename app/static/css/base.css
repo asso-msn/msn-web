@@ -415,6 +415,12 @@ input[type="button"].alert {
     gap: 1em;
 }
 
+#footer .nav section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 #footer .title {
     font-weight: bold;
 }

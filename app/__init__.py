@@ -80,6 +80,7 @@ class App(flask.Flask):
         self.assets.register(
             "js",
             Bundle(
+                "js/base.js",
                 "js/navbar.js",
                 "js/flash.js",
                 "js/forms.js",
@@ -121,7 +122,8 @@ class App(flask.Flask):
             secret_key_path.write_text(secrets.token_hex())
         self.config["SECRET_KEY"] = secret_key_path.read_text().strip()
 
-        self.scheduler.start()
+        if config.RUN_TASKS:
+            self.scheduler.start()
 
     def redirect(self, route, external=False, code=302):
         external = external or route.split(":")[0] in ("http", "https")
@@ -155,6 +157,15 @@ class App(flask.Flask):
             rv = dataclasses.asdict(rv)
 
         return super().make_response(rv)
+
+    def setup(self):
+        """Populate the database with initial data"""
+        from app.services import games, gps
+
+        if self.debug:
+            db.create_all()
+        games.populate()
+        gps.populate()
 
 
 format = "[%(levelname)s] %(name)s - %(pathname)s:%(lineno)s: %(message)s"
@@ -196,20 +207,13 @@ if not app.debug:
     logger.setLevel(logging.INFO)
 
 
-def setup():
-    from app.services import games
-
-    if app.debug:
-        db.create_all()
-    games.populate()
-
-
 for module in ("cli", "filters", "routes", "services", "tasks", "db"):
     auto_import.auto_import(module)
 
 if app.debug:
-    setup()
-else:
+    app.setup()
+
+if config.RUN_TASKS:
     from app import tasks
 
     tasks.run_all()

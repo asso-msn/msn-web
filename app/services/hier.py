@@ -24,6 +24,7 @@ def get():
             None,
             [
                 Entry("Membres", flask.url_for("users")),
+                Entry("Carte", flask.url_for("map")),
             ],
         ),
     ]

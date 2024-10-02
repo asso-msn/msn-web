@@ -1,14 +1,3 @@
-function setupFlashClose(el) {
-    const close = el.querySelector('.flash-close');
-    if (!close)
-        return;
-    close.addEventListener('click', () => el.remove());
-}
-
-for (const el of document.querySelectorAll('.flash')) {
-    setupFlashClose(el);
-}
-
 function flash(msg, type='info') {
     const flashBox = document.getElementById('flashes');
     if (!flashBox)
@@ -25,3 +14,16 @@ function flash(msg, type='info') {
     flashBox.appendChild(el);
     setupFlashClose(el);
 }
+
+function setupFlashClose(el) {
+    const close = el.querySelector('.flash-close');
+    if (!close)
+        return;
+    close.addEventListener('click', () => el.remove());
+}
+
+onLoad(() => {
+    for (const el of document.querySelectorAll('.flash')) {
+        setupFlashClose(el);
+    }
+});

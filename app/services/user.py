@@ -68,4 +68,8 @@ def logout():
     flask_login.logout_user()
 
 
+def filter_public(query):
+    return query.filter_by(hide_in_list=False)
+
+
 authenticated = flask_login.login_required

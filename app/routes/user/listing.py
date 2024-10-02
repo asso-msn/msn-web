@@ -6,6 +6,7 @@ from app.db import Game, User, UserGame
 from app.forms import Form
 from app.paging import Pager
 from app.services import games
+from app.services import user as service
 
 
 class SearchForm(Form):
@@ -25,7 +26,8 @@ def users():
         form.game.data = None
 
     with app.session() as s:
-        query = s.query(User).filter_by(hide_in_list=False)
+        query = s.query(User)
+        query = service.filter_public(query)
         if form.name.data:
             query = query.where(
                 User.display_name.ilike(f"%{form.name.data}%")

@@ -1,0 +1,62 @@
+colors:
+  main: rgb(229, 123, 170)
+  accent: rgb(244, 208, 226)
+
+description: |
+  A défini à lui tout seul le sous-genre des **jeux de danse** avec son tapis
+  iconique aux 4 flèches. Des **timings serrés**, des musiques originales, des
+  collaborations avec d’autres jeux KONAMI ainsi que des licences de musiques
+  populaires !
+
+  *Ay yay yay, I’m a little butterfly!* 🦋
+
+games:
+  - name: StepMania
+    type: pc
+    description: |
+      **Gratuit** et open-source
+
+      Efficace et customisable
+
+      Tourne sur n’importe quel PC, raspberry pis, et consoles moddées
+
+      Facile de trouver du contenu DDR ou communautaire
+
+  - name: DDR GrandPrix
+    subtext: Officiel
+    type: pc
+    description: |
+      **12€/mo** - Sons jusqu'à 2009
+
+      \+ **0.80€** par crédit (3 sons) ou DLCs pour tout le reste du contenu
+
+  - name: DDR console
+    subtext: Officiel
+    type: console
+    description: |
+      Contenu vieux et limité
+
+      Jeux de **10 à 50€**
+
+      Pour Wii, PS2, PS3, Xbox 360, et plus
+
+
+controllers:
+  - name: LTEK EX PRO 2
+    price: $222
+    description: Assez similaire à l'arcade
+    image: ltek_ex2.jpg
+
+  - name: Tapis mousse d'occasion
+    price: $10 - 80
+    description: Suffisant pour débuter
+    image: ddr_softmat.jpg
+
+  - name: Borne et tapis de seconde main
+    description: Prix dépendant de l'état
+    image: ddr_cab.jpg
+
+  - name: StepManiaX Stage
+    price: $1400
+    description: Tapis d'un jeu similaire à DDR
+    image: smx_stage.png
