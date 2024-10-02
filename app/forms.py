@@ -7,6 +7,13 @@ from wtforms.validators import DataRequired, Length
 from app.services import user
 
 
+def permissive_int(value):
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return value
+
+
 class Form(FlaskForm):
     class Meta:
         locales = ["fr", "fr_FR"]
