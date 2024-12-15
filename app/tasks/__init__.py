@@ -6,8 +6,11 @@ from app import app
 from app.services import audit
 
 
-def run_all():
+def run_all(task=None):
     for job in app.scheduler.get_jobs():
+        if task and job.name != task:
+            print(f"Skipping {job.name} != {task}")
+            continue
         app.scheduler.run_job(job.id)
 
 
