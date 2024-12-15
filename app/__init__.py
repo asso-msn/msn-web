@@ -168,26 +168,35 @@ class App(flask.Flask):
         gps.populate()
 
 
-format = "[%(levelname)s] %(name)s - %(pathname)s:%(lineno)s: %(message)s"
-
-
 class CustomFormatter(logging.Formatter):
+    def __init__(self):
+        self._format = "[%(levelname)s] %(pathname)s:%(lineno)s: %(message)s"
+        self._foreign_format = "[%(levelname)s] %(name)s: %(message)s"
+
     def format(self, record):
         # Replace the pathname with a path relative to the current working
         # directory
         # This allows for easy navigation to the file from an IDE, usually using
         # Ctrl+Click
         record.pathname = os.path.relpath(record.pathname)
-        return super().format(record)
+        if record.name != "root":
+            return logging.Formatter(self._foreign_format).format(record)
+        return logging.Formatter(self._format).format(record)
 
 
 class CustomFilter(logging.Filter):
     def filter(self, record):
-        return record.name == "root"
+        if record.name != "root":
+            return False
+        if "/".join(Path(record.pathname).parts).endswith(
+            "sssimp/generators/data.py"
+        ):
+            return False
+        return True
 
 
 handler = logging.StreamHandler()
-handler.setFormatter(CustomFormatter(format))
+handler.setFormatter(CustomFormatter())
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
@@ -196,6 +205,7 @@ logger.addFilter(CustomFilter())
 
 logging.getLogger("apscheduler").setLevel(logging.WARNING)
 logging.getLogger("urllib3").setLevel(logging.WARNING)
+logging.getLogger("tzlocal").setLevel(logging.WARNING)
 # TODO: Implement named logger in sssimp
 # logging.getLogger("sssimp").setLevel(logging.WARNING)
 
