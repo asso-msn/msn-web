@@ -1,3 +1,5 @@
+import click
+
 from app import app
 
 
@@ -7,7 +9,8 @@ def setup_():
 
 
 @app.cli.command("tasks")
-def tasks():
+@click.argument("task", default="")
+def tasks(task):
     from app import tasks
 
-    tasks.run_all()
+    tasks.run_all(task)

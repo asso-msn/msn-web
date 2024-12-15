@@ -49,6 +49,7 @@ def discord_callback():
         user.discord_refresh_token = token.refresh_token
         s.commit()
         user_service.login(user)
+        service.refresh_avatars(user.login)
 
     if next := flask.session.pop("next", None):
         return app.redirect(next)

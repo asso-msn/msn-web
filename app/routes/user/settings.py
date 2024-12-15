@@ -9,7 +9,7 @@ from wtforms import (
     TextAreaField,
 )
 
-from app import app
+from app import app, forms
 from app.db import MapPoint, User
 from app.forms import DisplayNameField, Form, Length, LoginField, PasswordField
 from app.services import audit, avatar
@@ -35,7 +35,7 @@ class EditProfileForm(Form):
     image_type = SelectField(
         choices=[(x, translate_image_type(x)) for x in User.ImageType]
     )
-    map_point_id = SelectField()
+    map_point_id = SelectField(coerce=forms.permissive_int)
     hide_in_list = BooleanField()
     save = SubmitField()
     logout = SubmitField()
