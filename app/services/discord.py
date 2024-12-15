@@ -251,8 +251,9 @@ def get_db_user(access_token) -> User | None:
 def refresh_avatars(login=None):
     refreshed_users = []
     with app.session() as s:
-        query = s.query(User).filter_by(
-            image_type=User.ImageType.discord and User.discord_access_token
+        query = s.query(User).filter(
+            User.image_type == User.ImageType.discord,
+            User.discord_access_token.isnot(None),
         )
         if login:
             query = query.filter_by(login=login)
@@ -274,7 +275,7 @@ def refresh_tokens(login=None):
     refreshed_users = []
     with app.session() as s:
         query = s.query(User).filter(
-            User.discord_id and User.discord_refresh_token
+            User.discord_id.isnot(None), User.discord_refresh_token.isnot(None)
         )
         if login:
             query = query.filter_by(login=login)
