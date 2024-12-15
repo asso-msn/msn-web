@@ -183,7 +183,7 @@ def popular(limit):
         with game.path.open() as f:
             doc = data.yaml.load(f)
         is_popular = game in top_roles
-        if doc.get("popular") == is_popular:
+        if doc.get("popular", False) == is_popular:
             continue
         doc["popular"] = is_popular
         with game.path.open("w") as f:
