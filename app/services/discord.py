@@ -303,7 +303,7 @@ def set_avatar(user: User) -> bool:
         invalidate_user(user)
         return False
     if user.image == image:
-        return True
+        return False
     user.image = image
     user.image_type = User.ImageType.discord
     audit.log("Discord avatar set", user=user)
