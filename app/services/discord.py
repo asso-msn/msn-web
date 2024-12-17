@@ -251,8 +251,9 @@ def get_db_user(access_token) -> User | None:
 def refresh_avatars(login=None):
     refreshed_users = []
     with app.session() as s:
-        query = s.query(User).filter_by(
-            image_type=User.ImageType.discord and User.discord_access_token
+        query = s.query(User).filter(
+            User.image_type == User.ImageType.discord,
+            User.discord_access_token.isnot(None),
         )
         if login:
             query = query.filter_by(login=login)
@@ -274,7 +275,7 @@ def refresh_tokens(login=None):
     refreshed_users = []
     with app.session() as s:
         query = s.query(User).filter(
-            User.discord_id and User.discord_refresh_token
+            User.discord_id.isnot(None), User.discord_refresh_token.isnot(None)
         )
         if login:
             query = query.filter_by(login=login)
@@ -302,7 +303,7 @@ def set_avatar(user: User) -> bool:
         invalidate_user(user)
         return False
     if user.image == image:
-        return True
+        return False
     user.image = image
     user.image_type = User.ImageType.discord
     audit.log("Discord avatar set", user=user)
