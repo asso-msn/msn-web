@@ -45,7 +45,6 @@ class EditProfileForm(Form):
 @app.route("/settings/")
 @service.authenticated
 def settings(form: EditProfileForm):
-    # form = EditProfileForm()
 
     if form.logout.data or form.unlink_discord.data:
         form._csrf.validate_csrf_token(form, form.csrf_token)

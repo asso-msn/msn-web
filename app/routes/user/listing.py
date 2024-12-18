@@ -20,7 +20,6 @@ class SearchForm(Form):
 
 @app.get("/users/")
 def users(form: SearchForm):
-    # form = SearchForm(flask.request.args)
 
     if form.game.data == "all":
         form.game.data = None

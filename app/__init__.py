@@ -16,6 +16,7 @@ from flask_assets import Bundle, Environment
 from flask_login import LoginManager
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
+from flask_wtf import FlaskForm
 from pydantic import BaseModel as Model
 
 from app.services.config import Config
@@ -29,6 +30,7 @@ from app.services import hier  # noqa: E402
 
 from . import auto_import, data  # noqa: E402
 
+import inspect
 
 class App(flask.Flask):
     def __init__(self):
@@ -147,10 +149,7 @@ class App(flask.Flask):
         and POST methods, useful for form-based routes.
         """
         options.setdefault("methods", ("GET", "POST"))
-        # return super().route(rule, **options)
-        import inspect
-        from flask_wtf import FlaskForm
-        from flask import request
+        
         def decorator(func):
             # Get function signature
             signature = inspect.signature(func)
@@ -162,7 +161,7 @@ class App(flask.Flask):
                     if issubclass(param.annotation, FlaskForm):
                         form_class = param.annotation
                         # Choose data source based on HTTP method
-                        form_data = request.form if request.method == "POST" else request.args
+                        form_data = flask.request.form if flask.request.method == "POST" else flask.request.args
                         form_instance = form_class(form_data)
                         kwargs[name] = form_instance
 
