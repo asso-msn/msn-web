@@ -147,7 +147,34 @@ class App(flask.Flask):
         and POST methods, useful for form-based routes.
         """
         options.setdefault("methods", ("GET", "POST"))
-        return super().route(rule, **options)
+        # return super().route(rule, **options)
+        import inspect
+        from flask_wtf import FlaskForm
+        from flask import request
+        def decorator(func):
+            # Get function signature
+            signature = inspect.signature(func)
+            annotations = signature.parameters
+            
+            def wrapped_view(*args, **kwargs):
+                # Inject forms into kwargs based on annotations
+                for name, param in annotations.items():
+                    if issubclass(param.annotation, FlaskForm):
+                        form_class = param.annotation
+                        # Choose data source based on HTTP method
+                        form_data = request.form if request.method == "POST" else request.args
+                        form_instance = form_class(form_data)
+                        kwargs[name] = form_instance
+
+                return func(*args, **kwargs)
+
+            # Register the route with the wrapped view
+            endpoint = options.pop("endpoint", func.__name__)
+            self.add_url_rule(rule, endpoint, wrapped_view, **options)
+            return wrapped_view
+
+        return decorator
+
 
     def make_response(self, rv):
         if isinstance(rv, Model):

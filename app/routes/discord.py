@@ -70,8 +70,8 @@ class DiscordRegisterForm(Form):
 
 
 @app.route("/register/discord/")
-def discord_register():
-    form = DiscordRegisterForm()
+def discord_register(form: DiscordRegisterForm):
+    # form = DiscordRegisterForm()
 
     access_token = flask.session.get("discord_access_token")
     refresh_token = flask.session.get("discord_refresh_token")

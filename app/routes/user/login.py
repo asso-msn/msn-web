@@ -21,8 +21,8 @@ class LoginForm(Form):
 
 
 @app.route("/login/")
-def login():
-    form = LoginForm()
+def login(form: LoginForm):
+    # form = LoginForm()
 
     def get():
         return app.render(
