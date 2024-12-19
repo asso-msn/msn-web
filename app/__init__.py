@@ -58,9 +58,7 @@ class App(Flask):
             }
             if without_empty != dict(request.args):
                 return self.redirect(
-                    request.path
-                    + "?"
-                    + urllib.parse.urlencode(without_empty)
+                    request.path + "?" + urllib.parse.urlencode(without_empty)
                 )
 
         self.jinja_env.lstrip_blocks = True
