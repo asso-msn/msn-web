@@ -7,7 +7,7 @@ from app.services import user as service
 class RegisterForm(Form):
     login = LoginField()
     password = PasswordField(validators=[DataRequired()])
-    
+
 
 @app.route("/register/")
 def register(form: RegisterForm):

@@ -1,4 +1,3 @@
-import flask
 from wtforms import SelectField, StringField
 
 from app import app

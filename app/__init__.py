@@ -9,7 +9,8 @@ import secrets
 import urllib.parse
 from pathlib import Path
 
-import flask
+import inspect
+from flask import Flask, request, url_for, render_template
 import werkzeug.utils
 from flask_apscheduler import APScheduler
 from flask_assets import Bundle, Environment
@@ -30,9 +31,8 @@ from app.services import hier  # noqa: E402
 
 from . import auto_import, data  # noqa: E402
 
-import inspect
 
-class App(flask.Flask):
+class App(Flask):
     def __init__(self):
         super().__init__(__name__)
 
@@ -54,11 +54,11 @@ class App(flask.Flask):
         @self.before_request
         def _():
             without_empty = {
-                key: value for key, value in flask.request.args.items() if value
+                key: value for key, value in request.args.items() if value
             }
-            if without_empty != dict(flask.request.args):
+            if without_empty != dict(request.args):
                 return self.redirect(
-                    flask.request.path
+                    request.path
                     + "?"
                     + urllib.parse.urlencode(without_empty)
                 )
@@ -130,7 +130,7 @@ class App(flask.Flask):
     def redirect(self, route, external=False, code=302):
         external = external or route.split(":")[0] in ("http", "https")
         if not external and not route.startswith("/"):
-            route = flask.url_for(route)
+            route = url_for(route)
         return werkzeug.utils.redirect(route, code)
 
     def render(self, template_name, **context):
@@ -138,7 +138,7 @@ class App(flask.Flask):
         default_page = default_page.replace("/", "-")
         default_page = default_page.replace("_", "-")
         context.setdefault("page", default_page)
-        return flask.render_template(f"{template_name}.html.j2", **context)
+        return render_template(f"{template_name}.html.j2", **context)
 
     def session(self, **kwargs):
         return db.session(**kwargs)
@@ -149,21 +149,23 @@ class App(flask.Flask):
         and POST methods, useful for form-based routes.
         """
         options.setdefault("methods", ("GET", "POST"))
-        
+
         def decorator(func):
-            # Get function signature
             signature = inspect.signature(func)
             annotations = signature.parameters
-            
+
             def wrapped_view(*args, **kwargs):
-                # Inject forms into kwargs based on annotations
                 for name, param in annotations.items():
-                    if issubclass(param.annotation, FlaskForm):
-                        form_class = param.annotation
-                        # Choose data source based on HTTP method
-                        form_data = flask.request.form if flask.request.method == "POST" else flask.request.args
-                        form_instance = form_class(form_data)
-                        kwargs[name] = form_instance
+                    if not issubclass(param.annotation, FlaskForm):
+                        continue
+                    form_class = param.annotation
+                    # Choose data source based on HTTP method
+                    if request.method == "POST":
+                        form_data = request.form
+                    else:
+                        form_data = request.args
+                    form_instance = form_class(form_data)
+                    kwargs[name] = form_instance
 
                 return func(*args, **kwargs)
 
@@ -173,7 +175,6 @@ class App(flask.Flask):
             return wrapped_view
 
         return decorator
-
 
     def make_response(self, rv):
         if isinstance(rv, Model):

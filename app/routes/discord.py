@@ -155,7 +155,6 @@ def discord_link_confirm(form: DiscordLinkForm):
             )
             return app.redirect("index")
 
-
     if not form.validate_on_submit():
         return app.render(
             "users/discord_link_confirm",
