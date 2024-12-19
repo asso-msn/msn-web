@@ -70,8 +70,7 @@ class DiscordRegisterForm(Form):
 
 
 @app.route("/register/discord/")
-def discord_register():
-    form = DiscordRegisterForm()
+def discord_register(form: DiscordRegisterForm):
 
     access_token = flask.session.get("discord_access_token")
     refresh_token = flask.session.get("discord_refresh_token")
@@ -135,7 +134,7 @@ def discord_link():
 
 @app.route("/link/discord/confirm/")
 @user_service.authenticated
-def discord_link_confirm():
+def discord_link_confirm(form: DiscordLinkForm):
     if current_user.has_discord:
         flask.flash(ALREADY_LINKED_MESSAGE, "error")
         return app.redirect("index")
@@ -155,8 +154,6 @@ def discord_link_confirm():
                 "Ce compte Discord est déjà lié à un compte MSN.", "error"
             )
             return app.redirect("index")
-
-    form = DiscordLinkForm()
 
     if not form.validate_on_submit():
         return app.render(

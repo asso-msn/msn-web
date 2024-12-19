@@ -9,13 +9,15 @@ import secrets
 import urllib.parse
 from pathlib import Path
 
-import flask
+import inspect
+from flask import Flask, request, url_for, render_template
 import werkzeug.utils
 from flask_apscheduler import APScheduler
 from flask_assets import Bundle, Environment
 from flask_login import LoginManager
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
+from flask_wtf import FlaskForm
 from pydantic import BaseModel as Model
 
 from app.services.config import Config
@@ -30,7 +32,7 @@ from app.services import hier  # noqa: E402
 from . import auto_import, data  # noqa: E402
 
 
-class App(flask.Flask):
+class App(Flask):
     def __init__(self):
         super().__init__(__name__)
 
@@ -52,13 +54,11 @@ class App(flask.Flask):
         @self.before_request
         def _():
             without_empty = {
-                key: value for key, value in flask.request.args.items() if value
+                key: value for key, value in request.args.items() if value
             }
-            if without_empty != dict(flask.request.args):
+            if without_empty != dict(request.args):
                 return self.redirect(
-                    flask.request.path
-                    + "?"
-                    + urllib.parse.urlencode(without_empty)
+                    request.path + "?" + urllib.parse.urlencode(without_empty)
                 )
 
         self.jinja_env.lstrip_blocks = True
@@ -128,7 +128,7 @@ class App(flask.Flask):
     def redirect(self, route, external=False, code=302):
         external = external or route.split(":")[0] in ("http", "https")
         if not external and not route.startswith("/"):
-            route = flask.url_for(route)
+            route = url_for(route)
         return werkzeug.utils.redirect(route, code)
 
     def render(self, template_name, **context):
@@ -136,7 +136,7 @@ class App(flask.Flask):
         default_page = default_page.replace("/", "-")
         default_page = default_page.replace("_", "-")
         context.setdefault("page", default_page)
-        return flask.render_template(f"{template_name}.html.j2", **context)
+        return render_template(f"{template_name}.html.j2", **context)
 
     def session(self, **kwargs):
         return db.session(**kwargs)
@@ -147,7 +147,32 @@ class App(flask.Flask):
         and POST methods, useful for form-based routes.
         """
         options.setdefault("methods", ("GET", "POST"))
-        return super().route(rule, **options)
+
+        def decorator(func):
+            signature = inspect.signature(func)
+            annotations = signature.parameters
+
+            def wrapped_view(*args, **kwargs):
+                for name, param in annotations.items():
+                    if not issubclass(param.annotation, FlaskForm):
+                        continue
+                    form_class = param.annotation
+                    # Choose data source based on HTTP method
+                    if request.method == "POST":
+                        form_data = request.form
+                    else:
+                        form_data = request.args
+                    form_instance = form_class(form_data)
+                    kwargs[name] = form_instance
+
+                return func(*args, **kwargs)
+
+            # Register the route with the wrapped view
+            endpoint = options.pop("endpoint", func.__name__)
+            self.add_url_rule(rule, endpoint, wrapped_view, **options)
+            return wrapped_view
+
+        return decorator
 
     def make_response(self, rv):
         if isinstance(rv, Model):

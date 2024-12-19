@@ -10,8 +10,7 @@ class RegisterForm(Form):
 
 
 @app.route("/register/")
-def register():
-    form = RegisterForm()
+def register(form: RegisterForm):
     if not form.validate_on_submit():
         return app.render(
             "users/register", form=form, page="login", title="Inscription"

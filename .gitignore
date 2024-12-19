@@ -5,3 +5,4 @@
 /config.yml
 /output/
 /var/
+__pycache__/
