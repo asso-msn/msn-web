@@ -14,19 +14,19 @@ class Arcade:
     games: list[str]
 
     @property
-    def street_address(self):
+    def street_address(self) -> str:
         return self.address.splitlines()[0]
 
     @property
-    def city(self):
+    def city(self) -> str:
         return self.address.splitlines()[1]
 
     @property
-    def region(self):
+    def region(self) -> str:
         return self.address.splitlines()[2].split(", ")[0]
 
     @property
-    def zip_code(self):
+    def zip_code(self) -> str:
         return self.address.splitlines()[2].split(", ")[1]
 
 
