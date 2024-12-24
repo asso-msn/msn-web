@@ -156,6 +156,7 @@ def dates(slug):
 @seed.command()
 @click.argument("limit", default=10)
 def popular(limit):
+    """Update popular bool based on Discord roles"""
     api = discord.API(config.DISCORD_BOT_TOKEN)
     members = api.get_members()
     roles_by_id = {role.id: role.name for role in api.get_server().roles}
@@ -195,6 +196,7 @@ def popular(limit):
 
 @seed.command("gps")
 def gps_():
+    """Populate database with departments and countries"""
     created = gps.populate_departments()
     print("Created", len(created), "departments")
     created = gps.populate_countries()
@@ -203,5 +205,6 @@ def gps_():
 
 @seed.command("regions")
 def regions_():
+    """Download regions topology"""
     gps.create_regions_topology(force=True)
     print("Downloaded regions topology")
