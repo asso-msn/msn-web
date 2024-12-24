@@ -30,7 +30,7 @@ class Arcade:
         return self.address.splitlines()[2].split(", ")[1]
 
 
-def get_arcade(id: int):
+def get_arcade(id: int) -> Arcade:
     url = f"https://zenius-i-vanisher.com/v5.2/arcade.php?id={id}"
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
