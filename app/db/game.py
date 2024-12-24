@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 from . import Column, Id, Table, column, relation
 
 if TYPE_CHECKING:
-    from . import User
+    from . import Arcade, User
 
 
 class Game(Table, Id):
@@ -13,6 +13,9 @@ class Game(Table, Id):
 
     users: Column[list[User]] = relation(
         "UserGame", back_populates="game", cascade="all, delete-orphan"
+    )
+    arcades: Column[list[Arcade]] = relation(
+        "ArcadeGame", back_populates="game", cascade="all, delete-orphan"
     )
 
     @property

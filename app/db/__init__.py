@@ -100,7 +100,9 @@ class Timed:
 from sqlalchemy import ForeignKey  # noqa: E402 F401
 from sqlalchemy.orm import relationship as relation  # noqa: E402 F401
 
+from .arcade import Arcade  # noqa: E402 F401
 from .game import Game  # noqa: E402 F401
 from .map_points import MapPoint  # noqa: E402 F401
+from .relationships.arcade_game import ArcadeGame  # noqa: E402 F401
 from .relationships.user_game import UserGame  # noqa: E402 F401
 from .user import User  # noqa: E402 F401
