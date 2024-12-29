@@ -1,5 +1,6 @@
 alembic
 arrow
+BeautifulSoup4
 black
 cachelib
 Flake8

@@ -17,8 +17,7 @@ class SearchForm(Form):
 
 
 @app.route("/games/")
-def games():
-    form = SearchForm(flask.request.args)
+def games(form: SearchForm):
     form.platform.data = form.platform.data or "Arcade"
     games_ = service.get_all(sort="name")
     for game in games_:

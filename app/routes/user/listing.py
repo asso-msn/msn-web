@@ -1,4 +1,3 @@
-import flask
 from wtforms import SelectField, StringField
 
 from app import app
@@ -19,8 +18,7 @@ class SearchForm(Form):
 
 
 @app.get("/users/")
-def users():
-    form = SearchForm(flask.request.args)
+def users(form: SearchForm):
 
     if form.game.data == "all":
         form.game.data = None
