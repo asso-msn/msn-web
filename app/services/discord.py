@@ -152,7 +152,7 @@ class API:
                 return None
             return (
                 f"{CDN_URL}/avatars/{self.id}"
-                f"/{self.avatar}.webp?size={config.DISCORD_AVATAR_SIZE}"
+                f"/{self.avatar}?size={config.DISCORD_AVATAR_SIZE}"
             )
 
     class Role(Model):
