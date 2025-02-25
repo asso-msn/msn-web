@@ -260,6 +260,7 @@ def refresh_avatars(login=None):
         for user in query:
             try:
                 if not set_avatar(user):
+                    s.commit()
                     continue
             except Exception as e:
                 audit.log("Discord avatar refresh error", user=user, error=e)
