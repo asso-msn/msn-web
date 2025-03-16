@@ -36,4 +36,7 @@ def map():
             )
             for user in query
         ]
-    return app.render("map", user_points=user_points)
+    og_data = {
+        "description": "La carte des membres",
+    }
+    return app.render("map", user_points=user_points, og_data=og_data)
