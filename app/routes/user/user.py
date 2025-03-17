@@ -13,6 +13,6 @@ def user(login: str):
         return app.render(
             "users/profile",
             user=user,
-            title=f"Profil de {user.display_name}",
+            title=f"Profil MSN de {user}",
             embed_image=user.avatar_url,
         )
