@@ -19,7 +19,6 @@ class SearchForm(Form):
 
 @app.get("/users/")
 def users(form: SearchForm):
-
     if form.game.data == "all":
         form.game.data = None
 
