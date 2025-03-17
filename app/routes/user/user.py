@@ -10,8 +10,9 @@ def user(login: str):
         user = s.query(User).filter_by(login=login).first()
         if not user:
             return flask.abort(404)
-        og_data = {
-            "description": "Le profil de {}".format(user.name),
-            "image": user.avatar_url,
-        }
-        return app.render("users/profile", user=user, og_data=og_data)
+        return app.render(
+            "users/profile",
+            user=user,
+            title=f"Profil de {user.display_name}",
+            embed_image=user.avatar_url,
+        )
