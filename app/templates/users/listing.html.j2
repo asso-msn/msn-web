@@ -76,9 +76,9 @@ form .input .text-field {
 <div id="users">
   {% for user in pager %}
   <a class="user-card" href="{{ url_for('user', login=user.login)}}">
-    <img src="{{ user.avatar_url }}" alt="{{ user }} avatar" class="avatar">
+    <img src="{{ user.avatar_url }}" alt="{{ user | e }} avatar" class="avatar">
     <span class="infos">
-        <span class="name">{{ user }}</span>
+        <span class="name">{{ user | e }}</span>
     </span>
   </a>
   {% endfor %}

@@ -11,7 +11,8 @@
     </title>
 
     <meta property="og:site_name" content="Make Some Noise">
-    <meta property="og:title" content="{{ title }}">
+    {# In the case of a user profile, user injection is possible #}
+    <meta property="og:title" content="{{ title | e }}">
     {% if embed_description %}
     <meta property="og:description" content="{{ embed_description }}">
     {% endif %}
@@ -67,7 +68,7 @@
                     <span class="material-icons dropdown-toggle">arrow_drop_down</span>
                     <div class="dropdown">
                         <a href="{{ url_for('user', login=current_user.login )}}" class="user">
-                            {{ current_user }}
+                            {{ current_user | e }}
                         </a>
                         <a href="{{ url_for('settings')}}">
                             <span class="material-icons">settings</span>
@@ -103,7 +104,7 @@
             {% else %}
             <div class="title">Mon profil</div>
             <a href="{{ url_for('user', login=current_user.login )}}" class="user">
-                {{ current_user }}
+                {{ current_user | e }}
                 <img src="{{ current_user.avatar_url }}" class="avatar">
             </a>
             <a href="{{ url_for('settings')}}">
