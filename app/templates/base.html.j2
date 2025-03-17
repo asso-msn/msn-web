@@ -10,6 +10,14 @@
         {% endblock %}
     </title>
 
+    <meta property="og:site_name" content="Make Some Noise">
+    <meta property="og:title" content="{{ title }}">
+    {% if embed_description %}
+    <meta property="og:description" content="{{ embed_description }}">
+    {% endif %}
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:image" content="{{ embed_image or url_for('static', _external=True, filename='logo-border.png') }}">
+
     <link rel="icon" href="{{ url_for('static', filename='logo-black.svg') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

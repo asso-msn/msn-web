@@ -10,4 +10,9 @@ def user(login: str):
         user = s.query(User).filter_by(login=login).first()
         if not user:
             return flask.abort(404)
-        return app.render("users/profile", user=user)
+        return app.render(
+            "users/profile",
+            user=user,
+            title=f"Profil de {user.display_name}",
+            embed_image=user.avatar_url,
+        )
