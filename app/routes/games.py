@@ -26,11 +26,7 @@ def games(form: SearchForm):
         "description": "Les jeux proposés",
     }
     return app.render(
-        "games",
-        games=games_,
-        title="Les jeux",
-        form=form,
-        og_data=og_data
+        "games", games=games_, title="Les jeux", form=form, og_data=og_data
     )
 
 

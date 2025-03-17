@@ -135,8 +135,7 @@ class App(Flask):
         default_page = template_name
         default_og_data = {
             "image": url_for(
-                "static", _external=True,
-                filename="logo-border.png"
+                "static", _external=True, filename="logo-border.png"
             ),
             "description": "Make Some Noise est une association \
             qui a pour but de promouvoir les jeux vidéo musicaux \

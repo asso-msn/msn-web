@@ -42,5 +42,5 @@ def users(form: SearchForm):
             pager=pager,
             title="Membres",
             form=form,
-            og_data=og_data
+            og_data=og_data,
         )

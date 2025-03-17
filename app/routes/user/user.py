@@ -12,6 +12,6 @@ def user(login: str):
             return flask.abort(404)
         og_data = {
             "description": "Le profil de {}".format(user.name),
-            "image": user.avatar_url
+            "image": user.avatar_url,
         }
         return app.render("users/profile", user=user, og_data=og_data)
