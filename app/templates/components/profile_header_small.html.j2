@@ -6,7 +6,7 @@
             </a>
             <h2 class="name">
                 <a href="{{ url_for('user', login=user.login) }}">
-                    {{ user }}
+                    {{ user | e }}
                 </a>
             </h2>
         </div>
