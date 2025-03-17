@@ -133,9 +133,20 @@ class App(Flask):
 
     def render(self, template_name, **context):
         default_page = template_name
+        default_og_data = {
+            "image": url_for(
+                "static", _external=True, filename="logo-border.png"
+            ),
+            "description": "Make Some Noise est une association \
+            qui a pour but de promouvoir les jeux vidéo musicaux \
+            sur bornes d'arcade, et les moyens d'y jouer chez soi.",
+        }
+        custom_og_data = context.get("og_data", default_og_data)
+        merged_og_data = default_og_data | custom_og_data
         default_page = default_page.replace("/", "-")
         default_page = default_page.replace("_", "-")
         context.setdefault("page", default_page)
+        context["og_data"] = merged_og_data
         return render_template(f"{template_name}.html.j2", **context)
 
     def session(self, **kwargs):

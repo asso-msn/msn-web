@@ -11,9 +11,13 @@ def events():
         future_events = None
     else:
         future_events = service.get_future_events()
+    og_data = {
+        "description": "Les prochains évènements",
+    }
     return app.render(
         "events",
         future_events=future_events,
         past_events_pager=pager,
         title="Évènements",
+        og_data=og_data,
     )

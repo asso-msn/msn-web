@@ -22,7 +22,12 @@ def games(form: SearchForm):
     games_ = service.get_all(sort="name")
     for game in games_:
         game.load_db(sa_orm.joinedload(Game.users))
-    return app.render("games", games=games_, title="Les jeux", form=form)
+    og_data = {
+        "description": "Les jeux proposés",
+    }
+    return app.render(
+        "games", games=games_, title="Les jeux", form=form, og_data=og_data
+    )
 
 
 @app.route("/games/<slug>/")

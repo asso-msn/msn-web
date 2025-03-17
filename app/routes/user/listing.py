@@ -19,7 +19,6 @@ class SearchForm(Form):
 
 @app.get("/users/")
 def users(form: SearchForm):
-
     if form.game.data == "all":
         form.game.data = None
 
@@ -35,6 +34,13 @@ def users(form: SearchForm):
             game = s.query(Game).filter_by(slug=form.game.data).one()
             query = query.filter(User.games.any(UserGame.game_id == game.id))
         pager = Pager.get_from_request(query, per_page=20, total=query.count())
+        og_data = {
+            "description": "La liste des membres",
+        }
         return app.render(
-            "users/listing", pager=pager, title="Membres", form=form
+            "users/listing",
+            pager=pager,
+            title="Membres",
+            form=form,
+            og_data=og_data,
         )

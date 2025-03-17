@@ -9,7 +9,11 @@
         {{ title }} - Make Some Noise
         {% endblock %}
     </title>
-
+    <meta property="og:site_name" content="Make Some Noise">
+    <meta property="og:title" content="{{ self.title() }}">
+    <meta property="og:description" content="{{ og_data.description }}">
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:image" content="{{ og_data.image }}">
     <link rel="icon" href="{{ url_for('static', filename='logo-black.svg') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
