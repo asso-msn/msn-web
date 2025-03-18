@@ -6,7 +6,8 @@
     <title>
         {% block title %}
         {% set title = title or request.endpoint | title | replace('_', ' ') %}
-        {{ title }} - Make Some Noise
+        {# In the case of a user profile, user injection is possible #}
+        {{ title | e }} - Make Some Noise
         {% endblock %}
     </title>
 
