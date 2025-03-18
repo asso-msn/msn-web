@@ -36,7 +36,7 @@ def log(*args, level=logging.INFO, codeblock=None, **kwargs):
     chunks = [
         webhook_msg[i : i + 2000] for i in range(0, len(webhook_msg), 2000)
     ]
-    for i in range(0, len(codeblock), 1900):
+    for i in range(0, codeblock and len(codeblock), 1900):
         content = codeblock[i : i + 1900]
         chunks.append(f"```\n{content.strip()}\n```")
     for chunk in chunks:
