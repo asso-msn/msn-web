@@ -1,0 +1,16 @@
+name: Convention Epitanime 2025
+dates:
+  - 2025-05-17
+  - 2025-05-18
+games:
+  - bms
+  - ddr
+  - gc
+  - sdvx
+  - taiko
+start_time: 900
+end_time: 1900
+nightly: true
+links:
+  Billeterie: https://convention.epitanime.com/billetterie/
+  "Site web": https://convention.epitanime.com/
