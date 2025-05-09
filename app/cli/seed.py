@@ -208,3 +208,15 @@ def regions_():
     """Download regions topology"""
     gps.create_regions_topology(force=True)
     print("Downloaded regions topology")
+
+
+@seed.command("all")
+@click.pass_context
+def all_(ctx):
+    """Run all seed commands"""
+    ctx.invoke(dates)
+    ctx.invoke(gps_)
+    ctx.invoke(platforms_)
+    ctx.invoke(popular)
+    ctx.invoke(regions_)
+    ctx.invoke(roles_)
