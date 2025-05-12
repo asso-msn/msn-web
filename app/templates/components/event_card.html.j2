@@ -13,7 +13,12 @@
                 <span class="month">{{ event.month }}</span>
             </div>
             {% if event.time_range %}
-            <span class="hours">{{ event.time_range }}</span>
+            <span class="hours">
+                {{ event.time_range }}
+                {% if event.days_span > 0 %}
+                <sup>+{{ event.days_span }}</sup>
+                {% endif %}
+            </span>
             {% endif %}
         </div>
 

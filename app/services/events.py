@@ -95,6 +95,10 @@ class Event:
         return self.arrow and self.arrow.format("D")
 
     @property
+    def days_span(self):
+        return len(self.dates) - 1
+
+    @property
     def month(self):
         return self.arrow and self.arrow.format("MMM", locale=config.LANG)
 
