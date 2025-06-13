@@ -22,10 +22,11 @@ def update_last_seen():
         return
     with app.session() as s:
         user = s.query(User).get(current_user.id)
-        now = datetime.now()
-        delta_seconds = now.timestamp() - user.last_seen.timestamp()
+        now = datetime.now(UTC)
+        last_seen = user.last_seen.replace(tzinfo=UTC)
+        delta_seconds = now.timestamp() - last_seen.timestamp()
         if (delta_seconds // 60 > 1):
-            user.last_seen = now
+            user.last_seen = datetime.now(UTC)
         try:
             s.commit()
         except Exception as e:
