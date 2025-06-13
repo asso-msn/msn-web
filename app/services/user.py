@@ -7,6 +7,7 @@ from flask_login import current_user
 
 from app import app
 from app.db import User
+from app.services import audit
 
 
 @app.login_manager.user_loader
@@ -21,8 +22,14 @@ def update_last_seen():
         return
     with app.session() as s:
         user = s.query(User).get(current_user.id)
-        user.last_seen = datetime.now(UTC)
-        s.commit()
+        now = datetime.now()
+        delta_seconds = now.timestamp() - user.last_seen.timestamp()
+        if (delta_seconds // 60 > 1):
+            user.last_seen = now
+        try:
+            s.commit()
+        except Exception as e:
+            audit.log("Error while updating last seen date", user=user, error=e)
 
 
 def login(user: User) -> User:
