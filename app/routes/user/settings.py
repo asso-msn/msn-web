@@ -80,7 +80,7 @@ def settings(form: EditProfileForm):
             ("hidden", "Masquée"),
             ("", "-----"),
             *[
-                (str(mp.id), mp.name)
+                (mp.id, mp.name)
                 for mp in sorted(
                     s.query(MapPoint).filter_by(type=MapPoint.Type.Department),
                     key=lambda mp: mp.name_normalized,
@@ -88,7 +88,7 @@ def settings(form: EditProfileForm):
             ],
             ("", "-----"),
             *[
-                (str(mp.id), mp.name)
+                (mp.id, mp.name)
                 for mp in sorted(
                     s.query(MapPoint).filter_by(type=MapPoint.Type.Country),
                     key=lambda mp: mp.name_normalized,
@@ -108,7 +108,7 @@ def settings(form: EditProfileForm):
             form.map_point_id.data or current_user.map_point_id
         )
         if form.map_point_id.data:
-            form.map_point_id.data = str(form.map_point_id.data)
+            form.map_point_id.data = form.map_point_id.data
         else:
             form.map_point_id.data = "hidden"
         form.hide_in_list.data = (
