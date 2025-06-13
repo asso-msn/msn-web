@@ -262,16 +262,26 @@ def refresh_avatars(login=None):
             query = query.filter_by(login=login)
         for user in query:
             try:
-                if not set_avatar(user):
-                    s.commit()
-                    continue
+                changed_successfully = set_avatar(user)
             except Exception as e:
                 audit.log("Discord avatar refresh error", user=user, error=e)
                 invalidate_user(user)
-                s.commit()
-                continue
             s.commit()
-            refreshed_users.append(repr(user))
+            if changed_successfully:
+                refreshed_users.append(repr(user))
+        query = s.query(User).filter(
+            User.image_type == User.ImageType.discord,
+            User.discord_access_token.is_(None)
+        )
+        if login:
+            query = query.filter_by(login=login)
+        for user in query:
+            response = requests.head(user.image)
+            if 400 <= response.status_code < 600:
+                audit.log("Discord avatar fetch error", user=user, status_code=response.status_code)
+                user.image = None
+                user.image_type = User.ImageType.empty
+                s.commit()
     return refreshed_users
 
 
@@ -303,7 +313,7 @@ def set_avatar(user: User) -> bool:
     try:
         image = api.get_user().avatar_url
     except Exception as e:
-        audit.log("Discord avatar fetch error", user=user, error=e)
+        audit.log("Discord avatar API error", user=user, error=e)
         invalidate_user(user)
         return False
     if user.image == image:
@@ -324,7 +334,7 @@ def refresh_token(user: User) -> bool:
 
 
 def _update_game_role(user: User, game: Game, action: str):
-    if not user.has_discord:
+    if not user.discord_auth_active:
         return
 
     # Do not crash if Discord game role update fails
