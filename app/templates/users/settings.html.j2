@@ -77,14 +77,17 @@
 
             <p>
                 Lié à Discord :
-                {% with condition=current_user.has_discord %}
+                {% with condition=current_user.discord_linked %}
                 {% include "components/boolean_badge.html.j2" %}
                 {% endwith %}
+                {% if current_user.discord_linked and not current_user.discord_auth_active %}
+                    <span class="small">(Reconnexion nécessaire)</span>
+                {% endif %}
             </p>
 
             <div id="actions">
                 <div class="input">
-                    {% if current_user.discord_id %}
+                    {% if current_user.discord_auth_active %}
                     <button class="discord" type="button" name="{{ form.unlink_discord.id }}" id="{{ form.unlink_discord.id }}">
                         {% include "components/icons/discord_white.html.j2" %}
                         Dissocier Discord

@@ -121,7 +121,7 @@ class DiscordLinkForm(Form):
 @app.route("/link/discord/")
 @user_service.authenticated
 def discord_link():
-    if current_user.has_discord:
+    if current_user.discord_auth_active:
         flask.flash(ALREADY_LINKED_MESSAGE, "error")
         return app.redirect("index")
 
@@ -135,7 +135,7 @@ def discord_link():
 @app.route("/link/discord/confirm/")
 @user_service.authenticated
 def discord_link_confirm(form: DiscordLinkForm):
-    if current_user.has_discord:
+    if current_user.discord_auth_active:
         flask.flash(ALREADY_LINKED_MESSAGE, "error")
         return app.redirect("index")
 

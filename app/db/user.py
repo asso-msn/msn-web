@@ -61,14 +61,18 @@ class User(Table, UserMixin, Id, Timed):
 
         if (
             self.image_type == User.ImageType.discord
-            and not self.discord_access_token
+            and not self.discord_linked
         ):
             return avatar.DEFAULT
 
         return self.image or avatar.DEFAULT
 
     @property
-    def has_discord(self) -> bool:
+    def discord_linked(self) -> bool:
+        return bool(self.discord_id)
+
+    @property
+    def discord_auth_active(self) -> bool:
         return bool(self.discord_access_token)
 
     def plays(self, game_id: str) -> bool:

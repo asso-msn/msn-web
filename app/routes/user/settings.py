@@ -183,7 +183,7 @@ def settings_password():
     if form.delete.data:
         del form.password
         if form.validate_on_submit():
-            if not current_user.has_discord:
+            if not current_user.discord_auth_active:
                 flask.flash(
                     "Ton compte doit être lié à Discord pour pouvoir supprimer"
                     " l'authentification par mot de passe",
