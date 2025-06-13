@@ -45,7 +45,7 @@ def import_games():
 @discord.command()
 def create():
     """Create Discord roles using games data files"""
-    api = service.API(config.DISCORD_BOT_TOKEN)
+    api = service.API(config.DISCORD_BOT_TOKEN, bot=True)
     server = api.get_server()
     games_ = games.get_all()
     roles_to_create = [x.name for x in games_ if not server.get_role(x.name)]

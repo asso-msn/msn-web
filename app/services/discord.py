@@ -1,3 +1,4 @@
+import logging
 import typing as t
 import urllib
 
@@ -55,11 +56,13 @@ def get_discord_token(code: str) -> AccessTokenResponse:
     data = AccessTokenRequest(
         code=code, redirect_uri=app.url_for("discord_callback", _external=True)
     )
+    logging.debug(f"{url}, {data}")
     response = session.post(
         url,
         data=data.model_dump(),
         auth=(config.DISCORD_CLIENT_ID, config.DISCORD_CLIENT_SECRET),
     )
+    logging.debug(response.text)
     response.raise_for_status()
     return AccessTokenResponse(**response.json())
 
@@ -87,8 +90,6 @@ class API:
             raise ValueError("Missing Discord access_token")
 
         self.access_token = access_token
-        if bot is None:
-            bot = "." in access_token
         auth_type = "Bot" if bot else "Bearer"
         self._authorization_header = f"{auth_type} {access_token}"
 
@@ -96,6 +97,7 @@ class API:
         api = kwargs.pop("api", True)
         base = API_URL if api else BASE_URL
         url = base + url
+        logging.debug(f"{method}, {url}, {kwargs}, {data}, {self._authorization_header}")
         response = requests.request(
             method,
             url,
@@ -103,6 +105,7 @@ class API:
             json=data,
             headers={"Authorization": self._authorization_header},
         )
+        logging.debug(response.text)
         response.raise_for_status()
         if not response.text:
             return
@@ -326,7 +329,7 @@ def _update_game_role(user: User, game: Game, action: str):
 
     # Do not crash if Discord game role update fails
     try:
-        api = API(config.DISCORD_BOT_TOKEN)
+        api = API(config.DISCORD_BOT_TOKEN, bot=True)
         server = api.get_server()
         if not api.get_member(user.discord_id):
             audit.log(
@@ -368,7 +371,7 @@ def remove_game(user: User, game: Game):
 
 def import_games_lists(login=None):
     refreshed_users = []
-    api = API(config.DISCORD_BOT_TOKEN)
+    api = API(config.DISCORD_BOT_TOKEN, bot=True)
     server = api.get_server()
     members_by_id = {
         member["user"]["id"]: member for member in api.get_members(server.id)
@@ -404,5 +407,5 @@ def import_games_lists(login=None):
 
 
 if __name__ == "__main__":
-    api = API(config.DISCORD_BOT_TOKEN)
+    api = API(config.DISCORD_BOT_TOKEN, bot=True)
     print(api.get_member(90203398963466241))

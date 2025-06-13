@@ -14,7 +14,7 @@ def roles_():
     """Create game data files and populate db using existing Discord roles"""
     path = data.resolve("games")
     path.mkdir(exist_ok=True)
-    api = discord.API(config.DISCORD_BOT_TOKEN)
+    api = discord.API(config.DISCORD_BOT_TOKEN, bot=True)
     server = api.get_server()
     role_names = [x.name for x in server.roles]
     created = []
@@ -157,7 +157,7 @@ def dates(slug):
 @click.argument("limit", default=10)
 def popular(limit):
     """Update popular bool based on Discord roles"""
-    api = discord.API(config.DISCORD_BOT_TOKEN)
+    api = discord.API(config.DISCORD_BOT_TOKEN, bot=True)
     members = api.get_members()
     roles_by_id = {role.id: role.name for role in api.get_server().roles}
     roles_count = {}
