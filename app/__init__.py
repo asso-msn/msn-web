@@ -3,15 +3,15 @@ import sys
 if sys.version_info < (3, 11):
     raise RuntimeError("Python 3.11+ is required")
 import dataclasses
+import inspect
 import logging
 import os
 import secrets
 import urllib.parse
 from pathlib import Path
 
-import inspect
-from flask import Flask, request, url_for, render_template
 import werkzeug.utils
+from flask import Flask, render_template, request, url_for
 from flask_apscheduler import APScheduler
 from flask_assets import Bundle, Environment
 from flask_login import LoginManager
