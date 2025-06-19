@@ -97,7 +97,9 @@ class API:
         api = kwargs.pop("api", True)
         base = API_URL if api else BASE_URL
         url = base + url
-        logging.debug(f"{method}, {url}, {kwargs}, {data}, {self._authorization_header}")
+        logging.debug(
+            f"{method}, {url}, {kwargs}, {data}, {self._authorization_header}"
+        )
         response = requests.request(
             method,
             url,
@@ -271,14 +273,18 @@ def refresh_avatars(login=None):
                 refreshed_users.append(repr(user))
         query = s.query(User).filter(
             User.image_type == User.ImageType.discord,
-            User.discord_access_token.is_(None)
+            User.discord_access_token.is_(None),
         )
         if login:
             query = query.filter_by(login=login)
         for user in query:
             response = requests.head(user.image)
             if 400 <= response.status_code < 600:
-                audit.log("Discord avatar fetch error", user=user, status_code=response.status_code)
+                audit.log(
+                    "Discord avatar fetch error",
+                    user=user,
+                    status_code=response.status_code,
+                )
                 user.image = None
                 user.image_type = User.ImageType.empty
                 s.commit()

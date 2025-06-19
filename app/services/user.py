@@ -29,7 +29,7 @@ def update_last_seen():
         else:
             last_seen = user.last_seen.replace(tzinfo=UTC)
             delta_seconds = now.timestamp() - last_seen.timestamp()
-            if (delta_seconds // 60 > 1):
+            if delta_seconds // 60 > 1:
                 user.last_seen = now
         try:
             s.commit()

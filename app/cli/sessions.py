@@ -5,6 +5,7 @@ from app import app
 def sessions():
     pass
 
+
 @sessions.command()
 def clear():
     with app.session() as s:
