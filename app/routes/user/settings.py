@@ -156,7 +156,13 @@ def settings(form: EditProfileForm):
             modified[field] = True
 
         try:
-            if avatar.update(user, form.image_type.data, form.image.data):
+            if avatar.update(
+                user,
+                form.image_type.data,
+                # form.image.data,
+                # for some reason form.image.data does not get populated
+                flask.request.files.get(form.image.name),
+            ):
                 modified["avatar"] = True
         except avatar.UnsupportedImageFormat:
             flask.flash("Format d'image non supporté", "error")
