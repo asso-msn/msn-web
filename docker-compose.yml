@@ -1,0 +1,12 @@
+services:
+  python:
+    build:
+      dockerfile: .docker/Dockerfile
+    environment:
+      DOCKER: "true"
+      ENV: "dev"
+    ports:
+      - "5000:5000"
+    volumes:
+      - './:/app'
+    entrypoint: ./flask_run.sh
