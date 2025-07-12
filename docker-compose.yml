@@ -3,10 +3,13 @@ services:
     build:
       dockerfile: .docker/Dockerfile
     environment:
-      DOCKER: "true"
-      ENV: "dev"
+      FLASK_RUN_DEBUG: "true"
+      FLASK_RUN_HOST: "0.0.0.0"
+      FLASK_RUN_PORT: "5000"
     ports:
       - "5000:5000"
     volumes:
       - './:/app'
-    entrypoint: ./flask_run.sh
+    entrypoint: /bin/bash -c
+    command:
+      - flask run

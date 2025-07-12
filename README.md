@@ -84,7 +84,7 @@ The project includes a `docker-compose.yml` file that can be used to create a de
 You can the the project inside Docker with: 
 
 ```bash
-docker compose up -d
+docker compose up
 ```
 
 The application will be available on port 5000 of your computer (http://127.0.0.1:5000).
