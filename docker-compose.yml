@@ -9,7 +9,5 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - './:/app'
-    entrypoint: /bin/bash -c
-    command:
-      - flask run
+      - "./:/app"
+    command: "flask run"
