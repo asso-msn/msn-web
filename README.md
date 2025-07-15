@@ -78,6 +78,17 @@ flask run
 If you need to bind to a specific port you can use `-p <PORT>`, or to a specific
 interface with `-h <IP>`.
 
+### Running with Docker
+
+The project includes a `docker-compose.yml` file that can be used to create a development environment inside Docker.
+You can the the project inside Docker with: 
+
+```bash
+docker compose up
+```
+
+The application will be available on port 5000 of your computer (http://127.0.0.1:5000).
+
 ### Understanding the code
 
 The entrypoint of the web server is the `app` symbol available in the `app`
