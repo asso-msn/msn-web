@@ -1,7 +1,7 @@
 services:
   web:
     build:
-      dockerfile: .docker/Dockerfile
+      dockerfile: Containerfile # needed for Docker compatibility
     environment:
       FLASK_RUN_DEBUG: true
       FLASK_RUN_HOST: 0.0.0.0
