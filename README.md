@@ -45,7 +45,23 @@ This project leverages [Tina's sssimp][sssimp] for several file handling
 features, such as Markdown conversions, and loading of data files (JSON, YAML,
 ...).
 
-### Running locally
+### Running locally with containers
+
+The project includes a `compose.yml` file that can be used to run the
+application as a containerized service.
+
+Running:
+
+```bash
+docker compose up
+# or docker-compose up
+# or podman-compose up
+```
+
+The application will be available on port 5000 of your computer
+(http://127.0.0.1:5000).
+
+### Running locally natively
 
 If you do not have Python 3.11 or later provided by your OS, we recommend using
 [pyenv](https://github.com/pyenv/pyenv). Then `pyenv install 3.11` and `pyenv
@@ -54,8 +70,6 @@ shell 3.11` before running the following commands.
 Setting up:
 
 ```bash
-git clone https://github.com/asso-msn/msn-web
-cd msn-web
 python -m venv .venv
 source .venv/bin/activate
 # Or if you use Windows:
@@ -77,17 +91,6 @@ flask run
 
 If you need to bind to a specific port you can use `-p <PORT>`, or to a specific
 interface with `-h <IP>`.
-
-### Running with Docker
-
-The project includes a `docker-compose.yml` file that can be used to create a development environment inside Docker.
-You can the the project inside Docker with: 
-
-```bash
-docker compose up
-```
-
-The application will be available on port 5000 of your computer (http://127.0.0.1:5000).
 
 ### Understanding the code
 
