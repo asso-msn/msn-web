@@ -108,6 +108,8 @@ class Event:
             for key, value in template.items():
                 if not getattr(self, key):
                     setattr(self, key, value)
+                elif type(getattr(self, key)) is dict:
+                    setattr(self, key, {**value, **getattr(self, key)})
 
     @property
     def is_past(self):
