@@ -5,3 +5,9 @@ dates:
 start_time: 2000
 end_time: 600
 nightly: true
+games:
+  - bms
+  - ddr
+  - gc
+  - sdvx
+  - taiko
