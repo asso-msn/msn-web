@@ -1,9 +1,7 @@
 name: Deploy new release
 
 on:
-  push:
-    branches:
-      - release
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -11,6 +9,7 @@ jobs:
     with:
       app: msnweb
       webhook_msg: "Version publique du site mise à jour. Visitez https://asso-msn.fr/ pour voir les changements."
+      healthcheck: https://asso-msn.fr/
     secrets:
       host: "${{ secrets.DEPLOY_HOST }}"
       user: "${{ secrets.DEPLOY_USER }}"

@@ -11,6 +11,7 @@ jobs:
     with:
       app: msnweb-demo
       webhook_msg: "Démo du site mise à jour. Visitez https://demo.asso-msn.fr/ pour voir les changements."
+      healthcheck: https://demo.asso-msn.fr/
     secrets:
       host: "${{ secrets.DEPLOY_HOST }}"
       user: "${{ secrets.DEPLOY_USER }}"
