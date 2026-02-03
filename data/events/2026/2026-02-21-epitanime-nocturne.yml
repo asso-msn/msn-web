@@ -2,6 +2,10 @@ name: Nocturne Epitanime Saint Valentin
 dates:
   - 2026-02-21
   - 2026-02-22
+games:
+  - ddr
+  - gc
+  - taiko
 start_time: 2000
 end_time: 600
 nightly: true
