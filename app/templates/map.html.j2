@@ -18,6 +18,12 @@
     border: 1px solid rgba(0, 0, 0, 0.3);
 }
 
+#map-filter-form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1em;
+}
+
 @media screen and (max-width: 700px) {
     #map {
         width: 100%;
@@ -36,6 +42,13 @@
     Si tu souhaites y figurer, <a href="{{ url_for('settings') }}">remplis la
     section "Ma position" de ton profil</a>.
 </p>
+
+<form method="get" id="map-filter-form">
+    {{ form.hidden_tag() }}
+    {% with input='game', label='Jeu' %}
+    {% include "components/forms/select.html.j2" %}
+    {% endwith %}
+</form>
 
 <div id="map"></div>
 
@@ -65,6 +78,18 @@
         }
 
         const map = createMap(regions, items);
-});
+
+        const form = document.getElementById("map-filter-form");
+        form.addEventListener("change", () => {
+            const game = form.elements["game"].value;
+            const url = new URL(window.location);
+            if (game) {
+                url.searchParams.set("game", game);
+            } else {
+                url.searchParams.delete("game");
+            }
+            window.location = url;
+        });
+    });
 </script>
 {% endblock scripts %}
