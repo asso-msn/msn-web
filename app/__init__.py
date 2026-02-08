@@ -223,16 +223,18 @@ handler.setFormatter(CustomFormatter())
 
 logger = logging.getLogger("msnweb")
 logger.setLevel(logging.DEBUG)
-logger.propagate = False
-logger.addHandler(handler)
 
 root_logger = logging.getLogger()
 root_logger.addHandler(handler)
 root_logger.addFilter(CustomFilter())
 
-logging.getLogger("apscheduler").setLevel(logging.WARNING)
-logging.getLogger("urllib3").setLevel(logging.WARNING)
-logging.getLogger("tzlocal").setLevel(logging.WARNING)
+for level, loggers in {
+    logging.WARNING: ("apscheduler", "sqlalchemy", "tzlocal", "urllib3"),
+    logging.INFO: ("alembic",),
+}.items():
+    for logger_name in loggers:
+        logging.getLogger(logger_name).setLevel(level)
+
 # TODO: Implement named logger in sssimp
 # logging.getLogger("sssimp").setLevel(logging.WARNING)
 
@@ -247,7 +249,9 @@ if not app.debug:
 from . import auto_import  # noqa: E402
 
 for module in ("cli", "filters", "routes", "services", "tasks", "db"):
-    auto_import.auto_import(module)
+    # alembic's env.py should never be imported outside of a migration as it
+    # depends on alembic.context being set
+    auto_import.auto_import(module, excludes=["app.db.migrations"])
 
 if app.debug:
     app.setup()
@@ -256,3 +260,28 @@ if config.RUN_TASKS:
     from app import tasks
 
     tasks.run_all()
+
+
+def interrupt_on_logger_disabled():
+    """
+    Use this to debug unexpected logger disabling
+    Was useful to find that sqlalchemy's env.py was disabling the root logger
+    It was always called by either auto_import or db.create_all
+    """
+
+    _original_logger_setattr = logging.Logger.__setattr__
+
+    def _watch_logger_setattr(self, name, value):
+        if name == "disabled" and value is True:
+            import sys
+            import traceback
+
+            print(f"DEBUG-WATCH: Logger.{name} <- {value}", file=sys.stderr)
+            traceback.print_stack(limit=20)
+            input("Press Enter to continue...")
+        return _original_logger_setattr(self, name, value)
+
+    logging.Logger.__setattr__ = _watch_logger_setattr
+
+
+# interrupt_on_logger_disabled()

@@ -12,9 +12,12 @@ def _send(content):
 
 def log(*args, level=logging.INFO, codeblock=None, error=None, **kwargs):
     items = [str(x) for x in args]
+
     for key, value in kwargs.items():
         items.append(f"{key}={repr(value)}")
+
     console_msg = " ".join(items)
+
     if error:
         level = logging.ERROR
         error_traceback = traceback.format_exception(
@@ -24,8 +27,10 @@ def log(*args, level=logging.INFO, codeblock=None, error=None, **kwargs):
             codeblock += "\n" + "".join(error_traceback)
         else:
             codeblock = "".join(error_traceback)
+
     if codeblock:
         console_msg += "\n" + codeblock
+
     logger.log(level, msg=console_msg)
 
     if not config.AUDIT_WEBHOOK:
