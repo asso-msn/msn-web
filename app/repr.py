@@ -1,4 +1,8 @@
+from functools import wraps
+
+
 def repr(*keys):
+    @wraps
     def decorator(cls):
         def __repr__(self):
             attrs = ", ".join(f"{key}={getattr(self, key)!r}" for key in keys)
