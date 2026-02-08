@@ -9,5 +9,5 @@ services:
     ports:
       - 5000:5000
     volumes:
-      - ./:/app
-    command: flask run
+      - ./:/app:Z
+    command: flask run --debug
