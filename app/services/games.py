@@ -1,15 +1,16 @@
 import dataclasses
-import logging
 import typing as t
 from dataclasses import dataclass
 
-from app import config, data
+from app import config, data, logger
 from app.db import Game as GameTable
 from app.db import User, UserGame
+from app.repr import repr
 from app.services import audit
 
 
 @dataclass
+@repr("slug", "name")
 class Game:
     @dataclass
     class Poster:
@@ -194,7 +195,7 @@ def populate():
         for game in get_all():
             if not game.db:
                 s.add(GameTable(slug=game.slug))
-                logging.info(f"Populating DB with game {game}")
+                logger.info(f"Populating DB with game {game}")
         s.commit()
 
 

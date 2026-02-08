@@ -1,22 +1,32 @@
 import logging
+import traceback
 
 import requests
 
-from app import config
+from app import config, logger
 
 
 def _send(content):
     requests.post(config.AUDIT_WEBHOOK, json={"content": content})
 
 
-def log(*args, level=logging.INFO, codeblock=None, **kwargs):
+def log(*args, level=logging.INFO, codeblock=None, error=None, **kwargs):
     items = [str(x) for x in args]
     for key, value in kwargs.items():
         items.append(f"{key}={repr(value)}")
     console_msg = " ".join(items)
+    if error:
+        level = logging.ERROR
+        error_traceback = traceback.format_exception(
+            type(error), error, error.__traceback__
+        )
+        if codeblock:
+            codeblock += "\n" + "".join(error_traceback)
+        else:
+            codeblock = "".join(error_traceback)
     if codeblock:
         console_msg += "\n" + codeblock
-    logging.log(level, msg=console_msg)
+    logger.log(level, msg=console_msg)
 
     if not config.AUDIT_WEBHOOK:
         return

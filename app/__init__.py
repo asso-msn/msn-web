@@ -29,7 +29,7 @@ VAR_DIR = Path("var").resolve()
 from app import db  # noqa: E402
 from app.services import hier  # noqa: E402
 
-from . import auto_import, data  # noqa: E402
+from . import data  # noqa: E402
 
 
 class App(Flask):
@@ -204,15 +204,13 @@ class CustomFormatter(logging.Formatter):
         # This allows for easy navigation to the file from an IDE, usually using
         # Ctrl+Click
         record.pathname = os.path.relpath(record.pathname)
-        if record.name != "root":
+        if record.name != "msnweb":
             return logging.Formatter(self._foreign_format).format(record)
         return logging.Formatter(self._format).format(record)
 
 
 class CustomFilter(logging.Filter):
     def filter(self, record):
-        if record.name != "root":
-            return False
         if "/".join(Path(record.pathname).parts).endswith(
             "sssimp/generators/data.py"
         ):
@@ -223,10 +221,14 @@ class CustomFilter(logging.Filter):
 handler = logging.StreamHandler()
 handler.setFormatter(CustomFormatter())
 
-logger = logging.getLogger()
+logger = logging.getLogger("msnweb")
 logger.setLevel(logging.DEBUG)
+logger.propagate = False
 logger.addHandler(handler)
-logger.addFilter(CustomFilter())
+
+root_logger = logging.getLogger()
+root_logger.addHandler(handler)
+root_logger.addFilter(CustomFilter())
 
 logging.getLogger("apscheduler").setLevel(logging.WARNING)
 logging.getLogger("urllib3").setLevel(logging.WARNING)
@@ -241,6 +243,8 @@ app.config.from_object(config)
 if not app.debug:
     logger.setLevel(logging.INFO)
 
+
+from . import auto_import  # noqa: E402
 
 for module in ("cli", "filters", "routes", "services", "tasks", "db"):
     auto_import.auto_import(module)

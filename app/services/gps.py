@@ -1,12 +1,11 @@
 import csv
-import logging
 from dataclasses import dataclass
 from io import StringIO
 
 import requests
 from pydantic import BaseModel, Field
 
-from app import ROOT_DIR, app
+from app import ROOT_DIR, app, logger
 from app.db import MapPoint
 
 STATIC_DATA_DIR = ROOT_DIR / "static" / "data"
@@ -63,18 +62,18 @@ def get_departments_from_api():
     DEPARTMENTS_LIST_URL = "https://geo.api.gouv.fr/departements"
     DEPARTMENTS_GPS_URL = "https://www.data.gouv.fr/fr/datasets/r/de8e4904-45f6-4a38-b3fc-efb03f8e75bf"  # noqa
 
-    logging.info("Fetching departments from API")
+    logger.info("Fetching departments from API")
     departments_list = requests.get(DEPARTMENTS_LIST_URL)
     departments_list.raise_for_status()
-    logging.info("Done")
+    logger.info("Done")
     departments_list = [
         GeoAPIDepartment(**entry) for entry in departments_list.json()
     ]
 
-    logging.info("Fetching departments GPS from data gouv dataset")
+    logger.info("Fetching departments GPS from data gouv dataset")
     departments_gps = requests.get(DEPARTMENTS_GPS_URL)
     departments_gps.raise_for_status()
-    logging.info("Done")
+    logger.info("Done")
     departments_gps = csv.reader(StringIO(departments_gps.text))
     next(departments_gps)  # skip header
     departments_gps = [
@@ -129,7 +128,7 @@ def populate_departments():
                 },
             ).created:
                 created.append(department)
-                logging.info(f"Created {department}")
+                logger.info(f"Created {department}")
                 s.commit()
     return created
 
@@ -166,7 +165,7 @@ def populate_countries():
                 name = countries_names.get(code)
                 type = MapPoint.Type.Country
             if not name:
-                logging.warning(f"Skipping {country}, no name")
+                logger.warning(f"Skipping {country}, no name")
                 continue
             if s.greate(
                 MapPoint,
@@ -178,6 +177,6 @@ def populate_countries():
                 },
             ).created:
                 created.append(country)
-                logging.info(f"Created {country}")
+                logger.info(f"Created {country}")
                 s.commit()
     return created

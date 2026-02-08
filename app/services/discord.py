@@ -1,4 +1,3 @@
-import logging
 import typing as t
 import urllib
 
@@ -6,8 +5,9 @@ import requests
 from pydantic import BaseModel as Model
 from requests import Session
 
-from app import app, config
+from app import app, config, logger
 from app.db import User
+from app.repr import repr
 from app.services import audit, games
 from app.services.games import Game
 
@@ -56,13 +56,13 @@ def get_discord_token(code: str) -> AccessTokenResponse:
     data = AccessTokenRequest(
         code=code, redirect_uri=app.url_for("discord_callback", _external=True)
     )
-    logging.debug(f"{url}, {data}")
+    logger.debug(f"{url}, {data}")
     response = session.post(
         url,
         data=data.model_dump(),
         auth=(config.DISCORD_CLIENT_ID, config.DISCORD_CLIENT_SECRET),
     )
-    logging.debug(response.text)
+    logger.debug(response.text)
     response.raise_for_status()
     return AccessTokenResponse(**response.json())
 
@@ -97,7 +97,7 @@ class API:
         api = kwargs.pop("api", True)
         base = API_URL if api else BASE_URL
         url = base + url
-        logging.debug(
+        logger.debug(
             f"{method}, {url}, {kwargs}, {data}, {self._authorization_header}"
         )
         response = requests.request(
@@ -107,7 +107,7 @@ class API:
             json=data,
             headers={"Authorization": self._authorization_header},
         )
-        logging.debug(response.text)
+        logger.debug(response.text)
         response.raise_for_status()
         if not response.text:
             return
@@ -169,6 +169,7 @@ class API:
         def __str__(self):
             return self.name
 
+    @repr("id", "name")
     class Server(Model):
         id: str
         name: str
@@ -177,6 +178,9 @@ class API:
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
             self.roles.sort(key=lambda role: role.position, reverse=True)
+
+        def __str__(self):
+            return self.name
 
         def get_role(self, name: str) -> t.Optional["API.Role"]:
             for role in self.roles:
@@ -423,5 +427,6 @@ def import_games_lists(login=None):
 
 
 if __name__ == "__main__":
-    api = API(config.DISCORD_BOT_TOKEN, bot=True)
-    print(api.get_member(90203398963466241))
+    with app.session() as s:
+        quentin = s.query(User).filter_by(login="quentin5110054").first()
+        _update_game_role(quentin, games.get("ddr"), "add")
