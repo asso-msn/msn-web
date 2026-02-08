@@ -73,6 +73,7 @@ class App(Flask):
                 "css/events.css",
                 "css/forms.css",
                 "css/user.css",
+                "css/games.css",
                 "css/responsive.css",
                 output="style.css",
             ),

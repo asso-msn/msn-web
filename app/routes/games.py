@@ -27,5 +27,8 @@ def games(form: SearchForm):
 
 @app.route("/games/<slug>/")
 def game(slug):
-    flask.flash("TODO!")
-    return app.redirect("games")
+    game = service.get(slug)
+    if not game:
+        return flask.abort(404)
+    game.load_db()
+    return app.render("game", game=game)

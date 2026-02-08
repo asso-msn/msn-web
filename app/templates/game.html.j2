@@ -1,0 +1,61 @@
+{% extends "page.html.j2" %}
+{% set title = game.name %}
+
+{% block styles %}
+<style>
+.game-image {
+    max-width: 100%;
+    max-height: 400px;
+    margin: 10px;
+    object-fit: contain;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+}
+
+.game-platforms {
+    margin-top: 10px;
+}
+</style>
+{% endblock styles %}
+
+{% block content %}
+<div id="game-page">
+    <header class="columns">
+        <main>
+            <h1>{{ game.name }}</h1>
+
+            {% if game.publisher or game.start %}
+            <div class="small">
+                {% if game.publisher %}
+                <span class="game-publisher">
+                    {{ game.publisher }}
+                </span>
+                {% endif %}
+                {% if game.start %}
+                ({{ game.start }} - {{ game.end or "Aujourd'hui" }})
+                {% endif %}
+            </div>
+            {% endif %}
+
+            {% if game.platforms %}
+            <div class="game-platforms">
+            {% for platform in game.platforms_short %}
+                <div class="game-platform {{ platform | lower }}" title="{{ platform }}">
+                    {{ platform }}
+                </div>
+            {% endfor %}
+            </div>
+            {% endif %}
+
+            {% if game.description %}
+            <p>{{ game.description | markdown }}</p>
+            {% endif %}
+        </main>
+        <aside>
+        {% if game.image %}
+        <img class="game-image" src="{{ game.image_url }}">
+        {% endif %}
+        </aside>
+    </header>
+</div>
+{% endblock content %}
