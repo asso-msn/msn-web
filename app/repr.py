@@ -1,7 +1,7 @@
 import functools
 
 
-def repr(*keys):
+def auto_repr(*keys):
     def decorator(cls):
         @functools.wraps(cls.__repr__)
         def __repr__(self):

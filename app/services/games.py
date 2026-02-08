@@ -5,12 +5,12 @@ from dataclasses import dataclass
 from app import config, data, logger
 from app.db import Game as GameTable
 from app.db import User, UserGame
-from app.repr import repr
+from app.repr import auto_repr
 from app.services import audit
 
 
 @dataclass
-@repr("slug", "name")
+@auto_repr("slug", "name")
 class Game:
     @dataclass
     class Poster:

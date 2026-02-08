@@ -7,7 +7,7 @@ from requests import Session
 
 from app import app, config, logger
 from app.db import User
-from app.repr import repr
+from app.repr import auto_repr
 from app.services import audit, games
 from app.services.games import Game
 
@@ -169,7 +169,7 @@ class API:
         def __str__(self):
             return self.name
 
-    @repr("id", "name")
+    @auto_repr("id", "name")
     class Server(Model):
         id: str
         name: str
