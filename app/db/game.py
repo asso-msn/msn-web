@@ -2,12 +2,15 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from app.repr import auto_repr
+
 from . import Column, Id, Table, column, relation
 
 if TYPE_CHECKING:
     from . import Arcade, User
 
 
+@auto_repr("slug")
 class Game(Table, Id):
     slug: Column[str] = column(unique=True)
 

@@ -398,9 +398,11 @@ def import_games_lists(login=None):
     }
     roles_by_id = {role.id: role.name for role in server.roles}
     game_roles = {}
+    roles_by_name = {}
     for role_id, role_name in roles_by_id.items():
         if game := games.get_by_name(role_name):
             game_roles[role_id] = game
+            roles_by_name[role_name] = role_id
     with app.session() as s:
         query = s.query(User).filter(User.discord_id)
         if login:
@@ -409,6 +411,43 @@ def import_games_lists(login=None):
             if not (member := members_by_id.get(user.discord_id)):
                 continue
             changed = False
+            member_games = [
+                game_roles[role_id]
+                for role_id in member["roles"]
+                if role_id in game_roles
+            ]
+            if len(member_games) == 0 and (user_games := user.get_games()):
+                audit.log(
+                    "User has no Discord game roles, but has website games,"
+                    " importing from website to Discord instead",
+                    user=user,
+                )
+                imported_games = []
+                for game in user_games:
+                    if game.data["name"] not in roles_by_name:
+                        continue
+                    try:
+                        result = api.add_role(
+                            server.id,
+                            user.discord_id,
+                            roles_by_name[game.data["name"]],
+                        )
+                        logger.debug(f"Discord add role {result=}")
+                        imported_games.append(game)
+                    except Exception as e:
+                        audit.log(
+                            "Discord game role add error during import",
+                            user=user,
+                            game=game,
+                            error=e,
+                        )
+                audit.log(
+                    "Imported games from website to Discord",
+                    user=user,
+                    games=imported_games,
+                )
+                member = api.get_member(user.discord_id)
+
             for role_id, game in game_roles.items():
                 if role_id in member["roles"]:
                     changed = (
@@ -427,6 +466,6 @@ def import_games_lists(login=None):
 
 
 if __name__ == "__main__":
-    with app.session() as s:
-        quentin = s.query(User).filter_by(login="quentin5110054").first()
-        _update_game_role(quentin, games.get("ddr"), "add")
+    api = API(config.DISCORD_BOT_TOKEN, bot=True)
+    for member in api.get_members():
+        print(member)
