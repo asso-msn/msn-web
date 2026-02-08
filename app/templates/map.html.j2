@@ -42,6 +42,9 @@
     Si tu souhaites y figurer, <a href="{{ url_for('settings') }}">remplis la
     section "Ma position" de ton profil</a>.
 </p>
+<p>
+    Résultats : {{ user_points|length }}
+</p>
 
 <form method="get" id="map-filter-form">
     {{ form.hidden_tag() }}
