@@ -1,9 +1,9 @@
-from functools import wraps
+import functools
 
 
 def repr(*keys):
-    @wraps
     def decorator(cls):
+        @functools.wraps(cls.__repr__)
         def __repr__(self):
             attrs = ", ".join(f"{key}={getattr(self, key)!r}" for key in keys)
             return f"{self.__class__.__name__}({attrs})"
