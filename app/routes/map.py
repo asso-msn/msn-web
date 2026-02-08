@@ -22,7 +22,7 @@ class UserPoint:
 
 class MapForm(Form):
     game = SelectField(
-        choices=[("", "Tous")]
+        choices=[("", "Tous"), ("", "-----")]
         + [(x.slug, x.name) for x in games.get_all(sort="name")],
     )
 
