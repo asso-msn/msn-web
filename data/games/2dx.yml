@@ -21,3 +21,82 @@ description: |
 description_short: |
   IIDX se joue à l'aide de **7 boutons** et **d'une platine de DJ**. Il présente
   de très nombreuses options et un gameplay exigeant.
+
+home_games:
+  - name: IIDX INFINITAS
+    platforms:
+    - PC
+    links:
+    - name: Site officiel (japonais)
+      url: https://p.eagate.573.jp/game/infinitas/2/index.html
+    prices:
+    - name: Abonnement mensuel, obligatoire
+      value: Environ 10€/mois
+    - name: Packs de musiques
+      value: Environ 45€ pour 30 musiques
+    description: |
+      IIDX INFINITAS est la version PC officielle de IIDX. Elle propose une
+      expérience très proche de celle du jeu d'arcade, avec une interface
+      moderne et de nombreuses options de personnalisation. Cependant, elle
+      nécessite un abonnement mensuel pour jouer et les packs de musiques sont
+      assez coûteux si achetés en dehors des périodes de promotions.
+
+      Le jeu supporte le 120Hz et ASIO.
+  - name: 'BMS: beatoraja / Lunatic Rave 2'
+    platforms:
+    - PC
+    links:
+    - name: Guide anglais pour découvrir beatoraja et BMS
+      url: https://github.com/wcko87/beatoraja-english-guide/wiki
+    - name: lr2oraja-endlessdream
+      url: https://github.com/seraxis/lr2oraja-endlessdream/
+    description: |
+      BMS est un format de fichier créé par un fan de beatmania dès 1998. Il a permis à la communauté de créer des milliers de musiques originales.
+      Contrairement à d'autres jeux musicaux communautaires, la création d'une BMS implique également la création de la musique elle-même, car
+      seul le compositeur original peut séparer les instruments de sa musique pour créer les sons de chaque note à jouer. Ce n'est donc pas seulement une alternative gratuite à beatmania, mais aussi un jeu à part entière avec une énorme scène d'artistes musicaux, visuels, et de charters.
+
+      Certaines créations connus composés pour BMS comprennent : FREEDOM DiVE↓ et Halcyon de xi, Destr0yer et Altale de Sakuzyo, DRAGONLADY de Nankumo, Mope Mope, Calamity Fortune et Aleph-0 de LeaF, B.B.K.K.B.K.K de nora2r, conflict de siromaru et cranky, et bien d'autres.
+
+      Plusieurs jeux ont été créés pour jouer des BMS, pendant longtemps Lunatic
+      Rave 2 était le plus populaire, et de nombreux scores ont été fait dessus.
+      Aujourd'hui, beatoraja est vu comme une alternative moderne : il supporte
+      plus d'options, des skins en 1080p, et est plus facile à configurer que
+      Lunatic Rave 2. La communauté utilise lr2oraja-endlessdream, une version
+      modifiée de beatoraja avec encore plus d'options, et les timings et barres
+      de vie de LR2.
+  - name: IIDX 3 à 16 sur PlayStation 2
+    platforms:
+    - Console
+    prices:
+    - name: Console PS2 japonaise
+      value: Environ 80€
+    - name: Jeux IIDX pour PS2
+      value: Entre 35€ et 150€ selon le jeu
+    description: |
+      Entre 2000 et 2009, KONAMI a sorti sur PS2 des portages des différentes versions d'arcade de IIDX. C'est la seule option pour quelqu'un qui ne souhaite pas payer un abonnement mais jouer au jeu officiel à la maison. Les musiques et les options sont limitées comparé aux versions actuelles.
+
+controllers:
+  - name: GAMO2 PHOENIXWAN+ LMT
+    image: pwan.jpg
+    price: $300 + $110,50 de frais de port
+    link: https://www.gamo2.com/en/index.php?dispatch=products.view&product_id=386
+    description: |
+      La manette par le fabricant chinois GAMO2, réputé dans la communauté pour la qualité de ses produits et étant établi depuis 2011. Malheureusement les options moins onéreuses anciennement proposées ne sont plus produites.
+  - name: Yuancon DX 6th+
+    image: yuaniidx.png
+    price: $255 + $99 de frais de port
+    link: https://shop.yuancon.io/products/yuancon-iidx
+    description: |
+      Autre fabricant chinois.
+  - name: Yuancon MiniDX
+    image: minidx.jpg
+    price: $145 + $55 de frais de port
+    link: https://shop.yuancon.io/products/yuancon-minidx
+    description: |
+      Manette moins chère et plus petite, la distance entre les touches et la platine est plus courte que sur arcade.
+  - name: IST Mall IIDX
+    image: istmall.jpg
+    price: $145 + $62,95 de frais de port
+    link: https://www.us.istmall.co.kr/Product/Detail/view/pid/187/cid/194
+    description: |
+      Fabricant coréen.

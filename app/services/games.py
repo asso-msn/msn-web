@@ -45,6 +45,28 @@ class Game:
         controllers: list[Controller] = dataclasses.field(default_factory=list)
         controllers_notes: ControllersNotes = None
 
+    @dataclass
+    class HomeGame:
+        name: str
+        platforms: list[str] = dataclasses.field(default_factory=list)
+        description: str = None
+        prices: list[tuple[str, str]] = dataclasses.field(default_factory=list)
+        links: list[tuple[str, str]] = dataclasses.field(default_factory=list)
+
+    @dataclass
+    class Controller:
+        name: str
+        image: str = None
+        price: str = None
+        link: str = None
+        description: str = None
+
+        @property
+        def image_url(self) -> str | None:
+            if not self.image:
+                return None
+            return f"{config.CLOUD_ASSETS_URL}/controllers/{self.image}"
+
     slug: str
     name: str
     image: str = None
@@ -56,6 +78,8 @@ class Game:
     description_short: str = None
     description: str = None
     popular: bool = False
+    home_games: list[HomeGame] = dataclasses.field(default_factory=list)
+    controllers: list[Controller] = dataclasses.field(default_factory=list)
 
     def __post_init__(self):
         self._db = None
@@ -65,7 +89,6 @@ class Game:
 
     @property
     def image_url(self):
-
         return f"{config.CLOUD_ASSETS_URL}/games/{self.image}"
 
     @property
@@ -141,10 +164,20 @@ class Game:
             self._db = self._db.first()
 
 
+_home_game_fields = {f.name for f in dataclasses.fields(Game.HomeGame)} - {
+    "prices",
+    "links",
+}
+_controller_fields = {f.name for f in dataclasses.fields(Game.Controller)}
+
+
 def get(slug: str) -> Game | None:
     from app import app
 
-    fields = [x.name for x in dataclasses.fields(Game)]
+    fields = {x.name for x in dataclasses.fields(Game)} - {
+        "home_games",
+        "controllers",
+    }
     game_data = app.data.get("games", {}).get(slug)
 
     if not game_data:
@@ -152,6 +185,20 @@ def get(slug: str) -> Game | None:
 
     return Game(
         **{key: value for key, value in game_data.items() if key in fields},
+        home_games=[
+            Game.HomeGame(
+                **{k: v for k, v in g.items() if k in _home_game_fields},
+                prices=[(p["name"], p["value"]) for p in g.get("prices") or []],
+                links=[(l["name"], l["url"]) for l in g.get("links") or []],
+            )
+            for g in game_data.get("home_games") or []
+        ],
+        controllers=[
+            Game.Controller(
+                **{k: v for k, v in c.items() if k in _controller_fields}
+            )
+            for c in game_data.get("controllers") or []
+        ],
         slug=slug,
     )
 
@@ -261,3 +308,23 @@ def get_platforms() -> list[str]:
             for key, value in app.data.get("platforms", {}).items()
         )
     )
+
+
+if __name__ == "__main__":
+    import sys
+
+    from app import app
+
+    slug = sys.argv[1]
+    with app.app_context():
+        game = get(slug)
+    if not game:
+        print(f"Game not found: {slug}")
+        sys.exit(1)
+    print(f"=== {game.name} ({slug}) ===")
+    print(f"home_games ({len(game.home_games)}):")
+    for hg in game.home_games:
+        print(f"  {hg}")
+    print(f"\ncontrollers ({len(game.controllers)}):")
+    for c in game.controllers:
+        print(f"  {c}")
