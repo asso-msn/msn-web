@@ -3,17 +3,93 @@
 
 {% block styles %}
 <style>
-.game-image {
-    max-width: 100%;
+#game-page .game-image {
     max-height: 400px;
     margin: 10px;
-    object-fit: contain;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     border-radius: 10px;
 }
 
-.game-platforms {
+#game-page .game-platforms {
     margin-top: 10px;
+}
+
+#at-home > .content {
+    gap: 2em;
+}
+
+#at-home .section-name {
+    margin-bottom: 0;
+}
+
+
+#at-home .game > .name,
+.controller > .name {
+    margin-top: 0;
+}
+
+#at-home > .content > * {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+#at-home .game,
+.controller {
+    padding: 1em;
+    border-radius: 8px;
+    background: var(--color-very-light-gray);
+}
+
+#at-home .game .prices,
+#at-home .game .links {
+    margin-top: 0.6em;
+}
+
+#at-home .game .prices .title,
+#at-home .game .links .title {
+    margin: 0.4rem 0 0.2rem;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+
+#at-home .game .prices ul,
+#at-home .game .links ul {
+    margin: 0;
+    padding-left: 1.2em;
+}
+
+.controller .content {
+    display: flex;
+    gap: 1.5em;
+    align-items: flex-start;
+}
+
+.controller aside {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    align-self: stretch;
+    gap: 1em;
+    flex-shrink: 0;
+}
+
+.controller .controller-image {
+    max-width: 160px;
+    max-height: 120px;
+    border-radius: 6px;
+    flex-shrink: 0;
+}
+
+.controller main {
+    flex: 1;
+}
+
+.controller .controller-price {
+    font-weight: bold;
+    margin-bottom: 0.4rem;
 }
 </style>
 {% endblock styles %}
@@ -38,13 +114,9 @@
             {% endif %}
 
             {% if game.platforms %}
-            <div class="game-platforms">
-            {% for platform in game.platforms_short %}
-                <div class="game-platform {{ platform | lower }}" title="{{ platform }}">
-                    {{ platform }}
-                </div>
-            {% endfor %}
-            </div>
+            {% with platforms=game.platforms_short %}
+            {% include "components/game_platforms.html.j2" %}
+            {% endwith %}
             {% endif %}
 
             {% if game.description %}
@@ -57,5 +129,83 @@
         {% endif %}
         </aside>
     </header>
+
+    {% if game.home_games or game.controllers %}
+    <section id="at-home">
+        <h2>Comment jouer chez soi</h2>
+        <p class="note">
+            Les options ci-dessous sont les recommendations de la rédaction, et
+            non pas une liste exhaustive de tout ce qui existe.
+        </p>
+        <div class="columns content">
+            {% if game.home_games %}
+            <div class="games">
+                <h3 class="section-name">Jeux</h3>
+                {% for home_game in game.home_games %}
+                <div class="game">
+                    <h3 class="name">{{ home_game.name }}</h3>
+                    {% if home_game.platforms %}
+                    {% with platforms=home_game.platforms %}
+                    {% include "components/game_platforms.html.j2" %}
+                    {% endwith %}
+                    {% endif %}
+                    {% if home_game.description %}
+                    {{ home_game.description | markdown }}
+                    {% endif %}
+                    {% if home_game.prices %}
+                    <div class="prices">
+                        <h4 class="title">Tarifs</h4>
+                        <ul>
+                            {% for price in home_game.prices %}
+                            <li><strong>{{ price[0] }}</strong> : {{ price[1] }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    {% if home_game.links %}
+                    <div class="links">
+                        <h4 class="title">Liens</h4>
+                        <ul>
+                            {% for link in home_game.links %}
+                            <li><a href="{{ link[1] }}" target="_blank" rel="noopener">{{ link[0] }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% if game.controllers %}
+            <div class="controllers">
+                <h3 class="section-name">Manettes</h3>
+                {% for controller in game.controllers %}
+                <div class="controller">
+                    <h3 class="name">{{ controller.name }}</h3>
+                    <div class="content">
+                        <aside>
+                            {% if controller.image %}
+                            <img class="controller-image" src="{{ controller.image_url }}" alt="{{ controller.name }}">
+                            {% endif %}
+                            {% if controller.link %}
+                            <a href="{{ controller.link }}" class="button" target="_blank" rel="noopener">Voir la boutique</a>
+                            {% endif %}
+                        </aside>
+                        <main>
+                            {% if controller.price %}
+                            <div class="controller-price">{{ controller.price }}</div>
+                            {% endif %}
+                            {% if controller.description %}
+                            {{ controller.description | markdown }}
+                            {% endif %}
+                        </main>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </section>
+    {% endif %}
 </div>
 {% endblock content %}

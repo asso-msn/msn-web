@@ -1,0 +1,7 @@
+<div class="game-platforms">
+{% for platform in platforms %}
+    <div class="game-platform {{ platform | lower }}" title="{{ platform }}">
+        {{ platform }}
+    </div>
+{% endfor %}
+</div>
