@@ -188,8 +188,13 @@ def get(slug: str) -> Game | None:
         home_games=[
             Game.HomeGame(
                 **{k: v for k, v in g.items() if k in _home_game_fields},
-                prices=[(p["name"], p["value"]) for p in g.get("prices") or []],
-                links=[(l["name"], l["url"]) for l in g.get("links") or []],
+                prices=[
+                    (price["name"], price["value"])
+                    for price in g.get("prices") or []
+                ],
+                links=[
+                    (link["name"], link["url"]) for link in g.get("links") or []
+                ],
             )
             for g in game_data.get("home_games") or []
         ],
