@@ -1,6 +1,7 @@
 name: Rizline
 platforms:
   - Mobile
+  - PC
 popular: false
 publisher: Pigeon Games
 start: 2021

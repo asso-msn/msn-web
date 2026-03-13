@@ -1,1 +1,3 @@
 name: Bleap
+platforms:
+  - Mobile
