@@ -16,3 +16,13 @@ def platforms():
 
     for platform in result:
         print(platform.slug, platform.name)
+
+
+@igdb.command()
+def types():
+    """List all game types from IGDB"""
+    api = service.API()
+    result = api.get_game_types()
+
+    for game_type in sorted(result, key=lambda x: x["id"]):
+        print(game_type["id"], game_type["type"])

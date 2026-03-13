@@ -60,7 +60,7 @@ class API:
     class Platform(Model):
         id: int
         slug: str
-        name: str = None
+        name: str | None = None
 
     def get_platforms(self, search=None, with_name=False) -> list[Platform]:
         fields = "id, slug"
@@ -75,6 +75,9 @@ class API:
         )
         return [self.Platform(**platform) for platform in data]
 
+    def get_game_types(self):
+        return self.request("game_types", "fields id, type", "limit 500")
+
     class Collection(Model):
         id: int
         name: str
@@ -84,13 +87,22 @@ class API:
             "name, slug, first_release_date, platforms.slug, collection.name"
         )
 
-        class Category(Enum):
+        class Type(Enum):
             MAIN_GAME = 0
             DLC = 1
+            EXPANSION = 2
+            BUNDLE = 3
+            STANDALONE_EXPANSION = 4
+            MOD = 5
+            EPISODE = 6
+            SEASON = 7
+            REMAKE = 8
+            REMASTER = 9
             EXPANDED = 10
             PORT = 11
             FORK = 12
-            ...
+            ADDON = 13
+            UPDATE = 14
 
             def __str__(self):
                 return str(self.value)
@@ -100,10 +112,10 @@ class API:
         platforms: list["API.Platform"] = dataclasses.field(
             default_factory=list
         )
-        first_release_date: datetime.datetime = None
-        collection: "API.Collection" = None
+        first_release_date: datetime.datetime | None = None
+        collection: "API.Collection | None" = None
 
-    def get_game(self, slug: str) -> Game:
+    def get_game(self, slug: str) -> Game | None:
         data = self.request(
             "games",
             f"fields {self.Game.FIELDS}",
@@ -126,14 +138,15 @@ class API:
             "games",
             f"fields {self.Game.FIELDS}",
             f'search "{query}"',
-            "where category = ("
-            f"      {self.Game.Category.MAIN_GAME},"
-            f"      {self.Game.Category.EXPANDED},"
-            f"      {self.Game.Category.PORT},"
-            f"      {self.Game.Category.FORK}"
+            "where game_type = ("
+            f"      {self.Game.Type.MAIN_GAME},"
+            f"      {self.Game.Type.EXPANDED},"
+            f"      {self.Game.Type.PORT},"
+            f"      {self.Game.Type.FORK}"
             ")",
             f"limit {limit}",
         )
+        print(f"Found {len(data)} games for search '{query}': {data}")
         result = [self.Game(**game) for game in data]
 
         if match:
