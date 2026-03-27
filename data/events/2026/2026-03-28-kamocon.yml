@@ -1,0 +1,11 @@
+name: KamoCon 2026 Jour 1
+games:
+  - ddr
+  - taiko
+  - sdvx
+  - popn
+start_time: 1000
+end_time: 1800
+
+links:
+  Billeterie: https://my.weezevent.com/kamo-con-2026
