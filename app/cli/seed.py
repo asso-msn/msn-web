@@ -56,7 +56,11 @@ def platforms_(slug):
     modified = set()
 
     if slug:
-        games_ = [games.get(slug)]
+        game_ = games.get(slug)
+        if not game_:
+            print("Game not found for slug", slug)
+            return
+        games_ = [game_]
     else:
         games_ = games.get_all()
 
