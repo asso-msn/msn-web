@@ -1,0 +1,46 @@
+name: Create Pull Requests from seed commands
+
+on:
+  workflow_dispatch:
+    inputs:
+      seed_command:
+        required: false
+
+env:
+  DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+  DISCORD_SERVER_ID: ${{ vars.DISCORD_SERVER_ID }}
+  TWITCH_CLIENT_ID: ${{ secrets.TWITCH_CLIENT_ID }}
+  TWITCH_CLIENT_SECRET: ${{ secrets.TWITCH_CLIENT_SECRET }}
+  GHA_SEED_COMMAND: ${{ github.event.inputs.seed_command || 'data' }}
+
+jobs:
+  create_prs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+          cache: 'pip'
+      - run: pip install -r requirements.txt
+      - run: flask seed ${{ env.GHA_SEED_COMMAND }}
+      - name: List changed files
+        id: list-changed-files
+        run: |
+          git add -A
+          by_line=$(git diff --staged --name-only | xargs -n1 basename)
+          echo "files_by_line=$by_line" >> $GITHUB_OUTPUT
+          echo "files_by_space=$(echo $by_line | xargs)" >> $GITHUB_OUTPUT
+          git reset -- .
+      - uses: peter-evans/create-pull-request@v8
+        with:
+          title: "Automated update for seeds: ${{ env.GHA_SEED_COMMAND }}"
+          branch: "gha-update-from-seeds/${{ env.GHA_SEED_COMMAND }}"
+          delete-branch: true
+          base: main
+          body: |
+            Triggered from ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+            Changed files:
+            ${{ steps.list-changed-files.outputs.files_by_line }}
+          commit-message: Update data for ${{ steps.list-changed-files.outputs.files_by_space }}

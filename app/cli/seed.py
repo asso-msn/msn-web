@@ -56,7 +56,11 @@ def platforms_(slug):
     modified = set()
 
     if slug:
-        games_ = [games.get(slug)]
+        game_ = games.get(slug)
+        if not game_:
+            print("Game not found for slug", slug)
+            return
+        games_ = [game_]
     else:
         games_ = games.get_all()
 
@@ -220,4 +224,14 @@ def all_(ctx):
     ctx.invoke(platforms_)
     ctx.invoke(popular)
     ctx.invoke(regions_)
+    ctx.invoke(roles_)
+
+
+@seed.command("data")
+@click.pass_context
+def data_(ctx):
+    """Run all seed commands that update data files"""
+    ctx.invoke(dates)
+    ctx.invoke(platforms_)
+    ctx.invoke(popular)
     ctx.invoke(roles_)
