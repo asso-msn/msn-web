@@ -36,13 +36,14 @@ def roles_():
             print("Skipping existing game", name)
             continue
 
-        created.append(name)
+        filename = name
         for c in ("!", "/", "'", "@", "."):
-            name = name.replace(c, "")
+            filename = name.replace(c, "")
         filename = name.lower()
         print("Creating game data file", filename)
         with open(path / f"{filename}.yml", "w") as f:
             f.write(f"name: {name}\n")
+        created.append(name)
 
     print("Created", len(created), "games:", *created)
 
