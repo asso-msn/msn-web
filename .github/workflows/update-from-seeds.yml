@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       seed_command:
-        default: all
+        required: false
 
 env:
   TWITCH_CLIENT_ID: ${{ secrets.TWITCH_CLIENT_ID }}
