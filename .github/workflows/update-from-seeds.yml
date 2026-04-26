@@ -28,7 +28,12 @@ jobs:
         id: list-changed-files
         run: |
           git add -A
-          by_line=$(git diff --staged --name-only | xargs -n1 basename)
+          by_line=$(git diff --staged --name-only)
+          if [ -z "$by_line" ]; then
+            echo "No changes detected. Exiting."
+            exit 0
+          fi
+          by_line=$(echo "$by_line" | xargs -n1 basename)
           echo "files_by_line=$by_line" >> $GITHUB_OUTPUT
           echo "files_by_space=$(echo $by_line | xargs)" >> $GITHUB_OUTPUT
           git reset -- .
