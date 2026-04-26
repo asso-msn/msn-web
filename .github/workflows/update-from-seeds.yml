@@ -12,21 +12,31 @@ env:
   DISCORD_SERVER_ID: ${{ vars.DISCORD_SERVER_ID }}
   TWITCH_CLIENT_ID: ${{ secrets.TWITCH_CLIENT_ID }}
   TWITCH_CLIENT_SECRET: ${{ secrets.TWITCH_CLIENT_SECRET }}
+  GHA_SEED_COMMAND: ${{ github.event.inputs.seed_command || 'data' }}
 
 jobs:
   create_prs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          ref: main
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
           cache: 'pip'
       - run: pip install -r requirements.txt
-      - run: flask seed ${{ github.event.inputs.seed_command || 'data' }}
+      - run: flask seed ${{ env.GHA_SEED_COMMAND }}
+      - name: List changed files
+        id: list-changed-files
+        run: git ls-files --modified >> $GITHUB_OUTPUT
       - uses: peter-evans/create-pull-request@v8
         with:
-          title: "Update from seeds: ${{ github.event.inputs.seed_command }}"
-          branch: "gha-update-from-seeds-${{ github.event.inputs.seed_command }}"
+          title: "Automated update for seeds: ${{ env.GHA_SEED_COMMAND }}"
+          branch: "gha-update-from-seeds/${{ env.GHA_SEED_COMMAND }}"
           delete-branch: true
-          base: main
+          body: |
+            Triggered from ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+            Changed files:
+            ${{ steps.list-changed-files.outputs.files }}
