@@ -45,17 +45,20 @@ class API:
         return self.auth_token
 
     def request(self, endpoint: str, *commands: str):
-        result = requests.post(
-            f"{API_URL}{endpoint}",
-            ";".join(commands) + ";",
-            headers={
-                "Authorization": f"Bearer {self.auth_token}",
-                "Client-ID": self.client_id,
-            },
-        )
-        if not result.ok:
-            raise Exception(result.content.decode())
-        return result.json()
+        while True:
+            result = requests.post(
+                f"{API_URL}{endpoint}",
+                ";".join(commands) + ";",
+                headers={
+                    "Authorization": f"Bearer {self.auth_token}",
+                    "Client-ID": self.client_id,
+                },
+            )
+            if not result.ok:
+                raise Exception(
+                    f"{result.status_code}: " + result.content.decode()
+                )
+            return result.json()
 
     class Platform(Model):
         id: int
