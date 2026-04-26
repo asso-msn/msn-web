@@ -8,6 +8,8 @@ on:
         required: false
 
 env:
+  DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+  DISCORD_SERVER_ID: ${{ vars.DISCORD_SERVER_ID }}
   TWITCH_CLIENT_ID: ${{ secrets.TWITCH_CLIENT_ID }}
   TWITCH_CLIENT_SECRET: ${{ secrets.TWITCH_CLIENT_SECRET }}
 
