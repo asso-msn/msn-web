@@ -19,8 +19,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-        with:
-          ref: main
       - uses: actions/setup-python@v6
         with:
           python-version: '3.13'
@@ -29,14 +27,21 @@ jobs:
       - run: flask seed ${{ env.GHA_SEED_COMMAND }}
       - name: List changed files
         id: list-changed-files
-        run: git ls-files --modified >> $GITHUB_OUTPUT
+        run: |
+          git add -A
+          by_line=$(git diff --staged --name-only | xargs -n1 basename)
+          echo "files_by_line=$by_line" >> $GITHUB_OUTPUT
+          echo "files_by_space=$(echo $by_line | xargs)" >> $GITHUB_OUTPUT
+          git unadd .
       - uses: peter-evans/create-pull-request@v8
         with:
           title: "Automated update for seeds: ${{ env.GHA_SEED_COMMAND }}"
           branch: "gha-update-from-seeds/${{ env.GHA_SEED_COMMAND }}"
           delete-branch: true
+          base: main
           body: |
             Triggered from ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
             Changed files:
-            ${{ steps.list-changed-files.outputs.files }}
+            ${{ steps.list-changed-files.outputs.files_by_line }}
+          commit-message: Update data for ${{ steps.list-changed-files.outputs.files_by_space }}
