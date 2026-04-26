@@ -221,3 +221,13 @@ def all_(ctx):
     ctx.invoke(popular)
     ctx.invoke(regions_)
     ctx.invoke(roles_)
+
+
+@seed.command("data")
+@click.pass_context
+def data_(ctx):
+    """Run all seed commands that update data files"""
+    ctx.invoke(dates)
+    ctx.invoke(platforms_)
+    ctx.invoke(popular)
+    ctx.invoke(roles_)
