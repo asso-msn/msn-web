@@ -32,7 +32,7 @@ jobs:
           by_line=$(git diff --staged --name-only | xargs -n1 basename)
           echo "files_by_line=$by_line" >> $GITHUB_OUTPUT
           echo "files_by_space=$(echo $by_line | xargs)" >> $GITHUB_OUTPUT
-          git unadd .
+          git reset -- .
       - uses: peter-evans/create-pull-request@v8
         with:
           title: "Automated update for seeds: ${{ env.GHA_SEED_COMMAND }}"
