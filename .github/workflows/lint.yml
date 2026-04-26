@@ -2,10 +2,15 @@ name: Check for linting errors
 
 on:
   push:
+    paths:
+      - '**.py'
   pull_request:
     branches:
       - develop
       - release
+    paths:
+      - '**.py'
+
 
 jobs:
   lint:
