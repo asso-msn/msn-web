@@ -2,6 +2,7 @@
 
 import dataclasses
 import datetime
+import time
 import typing as t
 from enum import Enum
 
@@ -12,6 +13,7 @@ from app import config
 
 API_URL = "https://api.igdb.com/v4/"
 TWITCH_AUTH_URL = "https://id.twitch.tv/oauth2/token"
+RATE_LIMIT_SECONDS = 1
 
 
 class API:
@@ -23,6 +25,7 @@ class API:
         self.client_id = client_id
         self.client_secret = client_secret
         self._auth_token = None
+        self.last_request_time = None
 
     @property
     def auth_token(self):
@@ -45,6 +48,11 @@ class API:
         return self.auth_token
 
     def request(self, endpoint: str, *commands: str):
+        now = time.time()
+        if self.last_request_time:
+            delta = now - self.last_request_time
+            if delta < RATE_LIMIT_SECONDS:
+                time.sleep(RATE_LIMIT_SECONDS - delta)
         while True:
             result = requests.post(
                 f"{API_URL}{endpoint}",
@@ -54,6 +62,11 @@ class API:
                     "Client-ID": self.client_id,
                 },
             )
+            self.last_request_time = now
+            if result.status_code == 429:
+                print("Rate limited, retrying in 1 second...")
+                time.sleep(1)
+                continue
             if not result.ok:
                 raise Exception(
                     f"{result.status_code}: " + result.content.decode()
