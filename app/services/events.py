@@ -96,6 +96,8 @@ class Event:
 
     @property
     def days_span(self):
+        if len(self.dates) <= 1 and self.start_time >= self.end_time:
+            return 1
         return len(self.dates) - 1
 
     @property
