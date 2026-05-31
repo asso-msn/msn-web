@@ -78,6 +78,7 @@ class Game:
     description_short: str = None
     description: str = None
     popular: bool = False
+    page: bool = False
     home_games: list[HomeGame] = dataclasses.field(default_factory=list)
     controllers: list[Controller] = dataclasses.field(default_factory=list)
 
@@ -90,12 +91,6 @@ class Game:
     @property
     def image_url(self):
         return f"{config.CLOUD_ASSETS_URL}/games/{self.image}"
-
-    @property
-    def page(self) -> bool:
-        from app import app
-
-        return self.slug in app.data.get("games_pages", [])
 
     @property
     def poster(self) -> Poster:
