@@ -1,0 +1,11 @@
+name: Matsuri Epitanime 2026
+games:
+  - ddr
+  - taiko
+  - sdvx
+start_time: 1400
+end_time: 600
+nightly: true
+
+links:
+  Billeterie: https://www.helloasso.com/associations/epitanime/evenements/matsuri-epitanime-2026
