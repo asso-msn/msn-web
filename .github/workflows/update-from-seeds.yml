@@ -34,7 +34,11 @@ jobs:
             exit 0
           fi
           by_line=$(echo "$by_line" | xargs -n1 basename)
-          echo "files_by_line=$by_line" >> $GITHUB_OUTPUT
+          {
+            echo "files_by_line<<EOF"
+            echo "$by_line"
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
           echo "files_by_space=$(echo $by_line | xargs)" >> $GITHUB_OUTPUT
           git reset -- .
       - uses: peter-evans/create-pull-request@v8
