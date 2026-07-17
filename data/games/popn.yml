@@ -8,7 +8,7 @@ platforms:
   - PS2
   - PSP
   - Wii
-popular: false
+popular: true
 start: 1998
 publisher: KONAMI
 image: popn_lively_chocosmile.jpg
