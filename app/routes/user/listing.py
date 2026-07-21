@@ -1,3 +1,4 @@
+import flask
 from wtforms import SelectField, StringField
 
 from app import app
@@ -31,7 +32,9 @@ def users(form: SearchForm):
                 | User.login.ilike(f"%{form.name.data}%")
             )
         if form.game.data:
-            game = s.query(Game).filter_by(slug=form.game.data).one()
+            game = s.query(Game).filter_by(slug=form.game.data).one_or_none()
+            if game is None:
+                return flask.abort(404)
             query = query.filter(User.games.any(UserGame.game_id == game.id))
         pager = Pager.get_from_request(query, per_page=20, total=query.count())
         return app.render(
