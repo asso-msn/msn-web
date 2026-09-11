@@ -1,3 +1,4 @@
+const CARTO_API_KEY = "cb1_3hfg_1_8336da7d18224a6d6e1047c9";
 const DEFAULT_LAT_LNG = [47, 2.21];
 const DEFAULT_ZOOM = 6;
 const MAX_ZOOM = 11;
@@ -6,19 +7,19 @@ const AUTO_SPIDERFY_ZOOM = 10;
 const MAX_CLUSTER_ITEMS = 12;
 const MAP_LAYERS = {
     "Carto Light": L.tileLayer(
-        "https://{s}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}{r}.png",
+        `https://{s}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}{r}.png?key=${CARTO_API_KEY}`,
         {
             attribution: '&copy; <a href="https://carto.com/basemaps">CartoDB</a>'
         }
     ),
     "Carto Dark": L.tileLayer(
-        "https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png",
+        `https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png?key=${CARTO_API_KEY}`,
         {
             attribution: '&copy; <a href="https://carto.com/basemaps">CartoDB</a>'
         }
     ),
     "Carto Voyager": L.tileLayer(
-        "https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png",
+        `https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png?key=${CARTO_API_KEY}`,
         {
             attribution: '&copy; <a href="https://carto.com/basemaps">CartoDB</a>'
         }
