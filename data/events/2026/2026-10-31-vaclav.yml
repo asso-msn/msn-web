@@ -1,0 +1,22 @@
+name: Fête de la Culture du Jeu Vidéo à la Bibliothèque Václav Havel
+
+games:
+  - ddr
+  - taiko
+  - sdvx
+
+hero: https://cdn.paris.fr/qfapv4/2026/10/09/huge-41f3b34356aafbc65d9e790bfee7567f.png
+
+description: |
+  La Bibliothèque Václav Havel vous invite ce samedi 31 octobre, à la Fête de la Culture du Jeu Vidéo, toute la journée entre 10h et 18h !
+
+  Découvrez librement les différents espaces jeux vidéo de la bibliothèque durant cette journée. MSN y proposera une sélection de jeux musicaux à disposition.
+  L'accès à la bibliothèque et aux jeux est complètement gratuit, venez nombreux !
+
+location: Bibliothèque Václav Havel, 26 esplanade Nathalie Sarraute, Paris 18e
+
+start_time: 1000
+end_time: 1800
+
+links:
+  Article: https://www.paris.fr/evenements/fete-du-jeu-video-115540
